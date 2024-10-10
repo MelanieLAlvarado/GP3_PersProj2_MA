@@ -11,6 +11,10 @@ public class Player : MonoBehaviour
 
     private Transform _characterSpawnLocation;
     private GameObject currentCharacter;
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     public void SetCharacter(CharacterScriptable characterToSelect) 
     {
         _characterScriptable = characterToSelect;
