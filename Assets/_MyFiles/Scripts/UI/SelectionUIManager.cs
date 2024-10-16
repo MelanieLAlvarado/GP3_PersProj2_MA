@@ -18,6 +18,17 @@ public class SelectionUIManager : MonoBehaviour
     private List<PlayerSelectionWidget> _playerSelections = new List<PlayerSelectionWidget>();
 
     [SerializeField] private GameObject fightButton;
+    public void SpawnPlayerSelectionUI(GameObject player) 
+    {
+        if (playerSelectionGroup == null || playerSelectionUIPrefab == null)
+        { return; }
+
+        PlayerSelectionWidget playerSelectUI = Instantiate(playerSelectionUIPrefab).GetComponent<PlayerSelectionWidget>();
+        playerSelectUI.SetOwner(player);
+
+        playerSelectUI.transform.SetParent(playerSelectionGroup);
+        _playerSelections.Add(playerSelectUI);
+    }
     private void Awake()
     {
         if (characterSelectionGroup == null || selectionSlotPrefab == null)
@@ -38,25 +49,12 @@ public class SelectionUIManager : MonoBehaviour
 
         }
     }
-    private void Start()
-    {
-        if (playerSelectionGroup == null || playerSelectionUIPrefab == null)
-        { return; }
-
-        List<GameObject> players = GameManager.m_Instance.GetPlayers();
-        foreach (GameObject player in players)
-        {
-            PlayerSelectionWidget playerSelectUI = Instantiate(playerSelectionUIPrefab).GetComponent<PlayerSelectionWidget>();
-            playerSelectUI.SetOwner(player);
-
-            playerSelectUI.transform.SetParent(playerSelectionGroup);
-            _playerSelections.Add(playerSelectUI);
-        }
-    }
     private void Update() //change to delegates?
     {
         //update player here instead of start (or through delegate events)
         //check if players all have their pick, then reveal fight button.
+        if (_playerSelections.Count < 0) { return; }
+
         foreach (PlayerSelectionWidget playerSelection in _playerSelections)
         {
             if (playerSelection.GetCharacterProfile() == null)

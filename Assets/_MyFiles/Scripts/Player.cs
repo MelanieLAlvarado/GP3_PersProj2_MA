@@ -1,5 +1,9 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
 {
     [Header("Player Info")]
@@ -9,11 +13,15 @@ public class Player : MonoBehaviour
     [Header("Character Info")]
     [SerializeField] private CharacterScriptable _characterScriptable;
 
-    private Transform _characterSpawnLocation;
     private GameObject currentCharacter;
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+        GameManager.m_Instance.AddPlayer(this.gameObject);
+        GameManager.m_Instance.GetSelectUIManager().SpawnPlayerSelectionUI(this.gameObject);
+
+        GameObject playerHolder = GameManager.m_Instance.GetPlayerHolder();
+        transform.SetParent(playerHolder.transform);
     }
     public void SetCharacter(CharacterScriptable characterToSelect) 
     {
@@ -23,8 +31,16 @@ public class Player : MonoBehaviour
     {
         _characterScriptable = null;
     }
-    public void CharacterSpawn() 
+    public void SpawnCharacter(Transform spawnPosition) 
     {
-        currentCharacter = Instantiate(_characterScriptable.GetCharacterPrefab(), _characterSpawnLocation.position, _characterSpawnLocation.rotation);
+        Debug.Log("Spawning Character...");
+        currentCharacter = Instantiate(_characterScriptable.GetCharacterPrefab(), spawnPosition.position, spawnPosition.rotation);
+        CharacterBase charBase = currentCharacter.GetComponent<CharacterBase>();
+        charBase.SetOwner(gameObject);
+
+        PlayerController playerCtrl = GetComponent<PlayerController>();
+        playerCtrl.SetCharacterController(charBase.GetComponent<CharacterController>());
+        playerCtrl.SetPlayerOwner(gameObject);
+        currentCharacter.transform.SetParent(gameObject.transform);
     }
 }
