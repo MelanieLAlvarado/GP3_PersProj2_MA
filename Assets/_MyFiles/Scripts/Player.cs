@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     private float _playerHealth = 100; //may change to damage later
 
     [Header("Character Info")]
-    private CharacterScriptable _characterScriptable;
+    [SerializeField] private CharacterScriptable _characterScriptable;
 
     private Transform _characterSpawnLocation;
     private GameObject currentCharacter;
