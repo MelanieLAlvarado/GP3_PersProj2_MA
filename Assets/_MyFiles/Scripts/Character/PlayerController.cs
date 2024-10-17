@@ -5,26 +5,30 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private GameObject _playerOwner;
+    private CharacterBase _characterBase;
     private PlayerInputActions _playerInputActions;
-
     private CharacterController _characterController;
+
+    private float _currentSpeed;
     private float _moveInput; //change to a Vector2 later???
-    [SerializeField] private float _moveSpeed = 3f;//will probably have it changed in CharacterChild class
-    [SerializeField] private float _jumpHeight = 3f;
+    private float _moveSpeed = 3f;//will probably have it changed in CharacterChild class
+    private float _jumpHeight = 3f;
 
     private Vector3 _playerVelocity;
     private bool _isGrounded;
     private float _gravity = -9.81f;
-    public void SetPlayerOwner(GameObject player) 
+    public float GetCurrentSpeed() { return _currentSpeed; }
+    public void SetCharacter(CharacterBase characterBase) 
     {
-        _playerOwner = player;
+        _characterBase = characterBase;
+        _characterController = _characterBase.GetComponent<CharacterController>();
+        _moveSpeed = characterBase.GetSpeed();
+        _moveSpeed = characterBase.GetJumpHeight();
     }
-    public void SetCharacterController(CharacterController charCtrl) { _characterController = charCtrl; }
     private void Start()
     {
-        _characterController = GetComponent<CharacterController>();
         _playerInputActions = new PlayerInputActions();
+        //_playerInputActions = GetComponent<PlayerInput>().actions;
         _playerInputActions.Enable();
     }
     private void Update()
@@ -42,9 +46,13 @@ public class PlayerController : MonoBehaviour
     {
         if (!_characterController) { return; }
 
-        _moveInput = Input.GetAxisRaw("Horizontal"); //will change later to be more optimized
-        Vector3 movementVal = new Vector3(/*_moveInput.x*/ _moveInput, 0, 0);
+        Vector2 rawInput = _playerInputActions.Player.Move.ReadValue<Vector2>(); //will change later to be more optimized
+        
+        Vector3 movementVal = new Vector3(/*_moveInput.x*/ rawInput.x, 0, 0);
         Vector3 moveInDir= transform.TransformDirection(movementVal);
+
+        Debug.Log($"process movement: {moveInDir * (_moveSpeed * Time.deltaTime)}");
+
         _characterController.Move(moveInDir * (_moveSpeed * Time.deltaTime));
 
         ProcessGravity();
@@ -59,11 +67,25 @@ public class PlayerController : MonoBehaviour
         }
         _characterController.Move(Time.deltaTime * _playerVelocity);
     }
-    public void Jump(InputAction.CallbackContext context) 
+    public void JumpAction(InputAction.CallbackContext context) 
     {
         if (_isGrounded) 
         {
             _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
+        }
+    }
+    public void Attack1Action(InputAction.CallbackContext context)
+    {
+        if (_characterBase) 
+        {
+            _characterBase.Attack1();
+        }
+    }
+    public void Attack2Action(InputAction.CallbackContext context)
+    {
+        if (_characterBase)
+        {
+            _characterBase.Attack2();
         }
     }
 }
