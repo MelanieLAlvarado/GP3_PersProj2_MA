@@ -1,14 +1,19 @@
 using System;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public struct AttackOptions 
+[Serializable]
+public struct AttackInfo 
 {
-    public Vector3 _attackOrigin;
-    public Vector3 _attackEnd;//if length needed (capsule collider)
-    public Quaternion _attackDirection; //if dir needed (capsule & box colliders)
+    public Transform origin; //get postition off of this
+    /*[SerializeField]*/ public Vector3 attackEnd;//if length needed (capsule collider)
+    public float radius; //capsules and spheres
+    public float rangeLength; //for capsules
+    /*[SerializeField]*/ private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
 
-    public float _attackDamage;
+    public float damageDealt;
 }
 
 
@@ -40,7 +45,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     [SerializeField] private float jumpHeight = 3f;
 
     private bool _canAttack = true;
-    [SerializeField] private Transform[] _attackColliderLocations;
+    [SerializeField] private bool drawDebugAttacks = false;
 
     GameObject _owner;
     public void SetOwner(GameObject owner) { _owner = owner; } //player will pass this in on spawn
@@ -116,4 +121,16 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     {
         Destroy(gameObject);
     }
+    private void OnDrawGizmos() 
+    {
+        if (drawDebugAttacks == true)
+        {
+            OnDrawAttacks();
+        }    
+    }
+    public virtual void OnDrawAttacks() 
+    {
+        
+    }
+    
 }
