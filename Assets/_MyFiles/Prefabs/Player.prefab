@@ -92,6 +92,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e0e582be-5417-4397-9fcb-74d04e416aea
     m_ActionName: 'Player/Jump[/Keyboard/space,/Keyboard/upArrow,/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1370688239859767808}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Attack1Action
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8f30ba75-4ced-44fd-b3bd-fc927ff7e898
+    m_ActionName: 'Player/Attack1[/Keyboard/r,/Keyboard/numpad1]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1370688239859767808}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: Attack2Action
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2aa3ff3e-3554-486d-9032-36135fa2fa7f
+    m_ActionName: 'Player/Attack2[/Keyboard/t,/Keyboard/numpad2]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: KeyboardFull
   m_DefaultActionMap: Player

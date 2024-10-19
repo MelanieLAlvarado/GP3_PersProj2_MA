@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 216dd83b40d64504f9524d748e2f53d8, type: 3}
-  m_Name: Character1
+  m_Name: MutantCharacter
   m_EditorClassIdentifier: 
-  characterName: Character One #1
-  characterSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
-  characterPrefab: {fileID: 1348709271056387002, guid: bbab069acb74ce844a2e04e1a8e77b7e, type: 3}
+  characterName: Mutant
+  characterSprite: {fileID: 21300000, guid: 4595a1bd2d170904fbcf2ef0e80dca16, type: 3}
+  characterPrefab: {fileID: 139008178425204011, guid: 575263d3292c73a4f9519dc336ee49af, type: 3}

@@ -2,6 +2,7 @@ using System;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private float _moveSpeed = 3f;//will probably have it changed in CharacterChild class
     private float _jumpHeight = 3f;
 
+    private Vector3 _prevPosition;
     private Vector3 _playerVelocity;
     private bool _isGrounded;
     private float _gravity = -9.81f;
@@ -22,7 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         _characterBase = characterBase;
         _characterController = _characterBase.GetComponent<CharacterController>();
-        _moveSpeed = characterBase.GetSpeed();
+        _moveSpeed = characterBase.GetMaxSpeed();
         _moveSpeed = characterBase.GetJumpHeight();
     }
     private void Start()
@@ -51,7 +53,9 @@ public class PlayerController : MonoBehaviour
         Vector3 movementVal = new Vector3(/*_moveInput.x*/ rawInput.x, 0, 0);
         Vector3 moveInDir= transform.TransformDirection(movementVal);
 
-        Debug.Log($"process movement: {moveInDir * (_moveSpeed * Time.deltaTime)}");
+        _characterBase.SetFaceDirection(moveInDir.normalized);
+
+        //Debug.Log($"process movement: {moveInDir * (_moveSpeed * Time.deltaTime)}");
 
         _characterController.Move(moveInDir * (_moveSpeed * Time.deltaTime));
 
@@ -69,21 +73,21 @@ public class PlayerController : MonoBehaviour
     }
     public void JumpAction(InputAction.CallbackContext context) 
     {
-        if (_isGrounded) 
+        if (context.started && _isGrounded) 
         {
             _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
         }
     }
     public void Attack1Action(InputAction.CallbackContext context)
     {
-        if (_characterBase) 
+        if (context.started && _characterBase) 
         {
             _characterBase.Attack1();
         }
     }
     public void Attack2Action(InputAction.CallbackContext context)
     {
-        if (_characterBase)
+        if (context.started && _characterBase)
         {
             _characterBase.Attack2();
         }
