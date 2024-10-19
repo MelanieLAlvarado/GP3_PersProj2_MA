@@ -82,14 +82,14 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started && _characterBase) 
         {
-            _characterBase.Attack1();
+            _characterBase.gameObject.GetComponent<IAttackInterface>().Attack1();
         }
     }
     public void Attack2Action(InputAction.CallbackContext context)
     {
         if (context.started && _characterBase)
-        {
-            _characterBase.Attack2();
+        {//may need to change _characterBase to the gameobject of the player when creating classes
+            _characterBase.gameObject.GetComponent<IAttackInterface>().Attack2();
         }
     }
 }

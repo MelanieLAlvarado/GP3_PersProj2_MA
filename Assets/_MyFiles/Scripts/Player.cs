@@ -40,6 +40,5 @@ public class Player : MonoBehaviour
 
         PlayerController playerCtrl = GetComponent<PlayerController>();
         playerCtrl.SetCharacter(charBase);
-        //currentCharacter.transform.SetParent(gameObject.transform);
     }
 }

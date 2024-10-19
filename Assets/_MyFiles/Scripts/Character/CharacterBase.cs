@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-public class CharacterBase : MonoBehaviour
+public class CharacterBase : MonoBehaviour, IAttackInterface
 {
     PlayerController _playerController;
     Animator _animator;
