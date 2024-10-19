@@ -52,8 +52,10 @@ public class PlayerController : MonoBehaviour
         
         Vector3 movementVal = new Vector3(/*_moveInput.x*/ rawInput.x, 0, 0);
         Vector3 moveInDir= transform.TransformDirection(movementVal);
-
-        _characterBase.SetFaceDirection(moveInDir.normalized);
+        if (moveInDir.normalized.x != 0)
+        { 
+            _characterBase.SetFaceDirection(moveInDir.normalized);
+        }
 
         //Debug.Log($"process movement: {moveInDir * (_moveSpeed * Time.deltaTime)}");
 
@@ -82,14 +84,14 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started && _characterBase) 
         {
-            _characterBase.gameObject.GetComponent<IAttackInterface>().Attack1();
+            _characterBase.gameObject.GetComponent<IAttackInterface>().StartAttack1();
         }
     }
     public void Attack2Action(InputAction.CallbackContext context)
     {
         if (context.started && _characterBase)
         {//may need to change _characterBase to the gameobject of the player when creating classes
-            _characterBase.gameObject.GetComponent<IAttackInterface>().Attack2();
+            _characterBase.gameObject.GetComponent<IAttackInterface>().StartAttack2();
         }
     }
 }

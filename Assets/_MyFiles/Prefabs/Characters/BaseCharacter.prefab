@@ -180,4 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b480f1a84229549a7b8cccb2d22435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterTurnSpeed: 10
+  animSpeedChangeRate: 2
+  maxSpeed: 3
+  jumpHeight: 3
   _attackColliderLocations: []

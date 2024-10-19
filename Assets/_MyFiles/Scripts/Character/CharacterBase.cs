@@ -1,22 +1,38 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+public struct AttackOptions 
+{
+    public Vector3 _attackOrigin;
+    public Vector3 _attackEnd;//if length needed (capsule collider)
+    public Quaternion _attackDirection; //if dir needed (capsule & box colliders)
+
+    public float _attackDamage;
+}
+
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(DamageColliderComponent))]
 public class CharacterBase : MonoBehaviour, IAttackInterface
 {
+    private DamageColliderComponent _damageColliderComponent;
     PlayerController _playerController;
     Animator _animator;
     private static readonly int _speedId = Animator.StringToHash("Speed");
-    private static readonly int _attack1Id = Animator.StringToHash("Attack1");
-    private static readonly int _attack2Id = Animator.StringToHash("Attack2");
+    protected static readonly int _attack1Id = Animator.StringToHash("Attack1");
+    protected static readonly int _attack2Id = Animator.StringToHash("Attack2");
 
-    private static readonly int _deadId = Animator.StringToHash("Dead");
+    protected static readonly int _deadId = Animator.StringToHash("Dead");
 
+    protected int _currentAttackId;
+
+    [Header("Base Character Options")]
     private Vector3 _prevPosition;
     private Vector3 _faceDirection;
 
-    [SerializeField] private float characterTurnSpeed = 3f;
+    [SerializeField] private float characterTurnSpeed = 10f;
     [SerializeField] private float animSpeedChangeRate = 0.4f;
     private float _animMoveSpeed = 0f;
     private float _currentSpeed = 0f;
@@ -28,6 +44,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
 
     GameObject _owner;
     public void SetOwner(GameObject owner) { _owner = owner; } //player will pass this in on spawn
+    public DamageColliderComponent GetDamageColliderComponent() { return _damageColliderComponent; }
     public void SetFaceDirection(Vector3 directionToSet) { _faceDirection = directionToSet; }
     public float GetMaxSpeed() { return maxSpeed; }
     public float GetJumpHeight() {  return jumpHeight; }
@@ -35,8 +52,13 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        Debug.Log($"animator is: {_animator}");
+        _damageColliderComponent = GetComponent<DamageColliderComponent>();
         _prevPosition = transform.position;
+
+        if (_faceDirection == new Vector3(0, 0, 0)) 
+        {
+            _faceDirection = new Vector3(90, 0, 0);
+        }
     }
     private void FixedUpdate()
     {
@@ -45,12 +67,8 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
         _prevPosition = transform.position;
 
         //Rotating whole character based on movement direction
-        if (_currentSpeed != 0)
-        {
-            Quaternion goalRot = Quaternion.LookRotation(_faceDirection, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, goalRot, Time.deltaTime * characterTurnSpeed);
-        }
-        
+        Quaternion goalRot = Quaternion.LookRotation(_faceDirection, Vector3.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, goalRot, Time.deltaTime * characterTurnSpeed);
         //updating animating speed through a lerped value
         if (_animator)
         {
@@ -60,22 +78,29 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     }
 
     //Different Attack inputs (will be overridden in child classes)
-    public virtual void Attack1() //attacks will be overridden to deal damage in child class
+    public void StartAttack1() 
+    {
+        PlayAnimation(_attack1Id);
+    }
+    public void StartAttack2() 
+    {
+        PlayAnimation(_attack2Id);
+    }
+
+    public virtual void Attack1()//attacks will be overridden to deal damage in child class. Called in Animation Events
     {
         Debug.Log($"Attack1 '{_attack1Id}' Called");
-        PlayAnimation(_attack1Id);
     }
     public virtual void Attack2()
     {
         Debug.Log($"Attack2 '{_attack2Id}' Called");
-        PlayAnimation(_attack2Id);
     }
     protected void PlayAnimation(int animationId) 
     {
-        //Debug.Log($"anim param: {_animator.GetParameter(animationId)}");
         if (_animator && _canAttack == true)
         {
             _canAttack = false;
+            _currentAttackId = animationId;
             _animator.SetTrigger(animationId);
         }
     }
