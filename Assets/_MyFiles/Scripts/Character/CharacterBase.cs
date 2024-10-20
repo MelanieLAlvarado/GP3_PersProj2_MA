@@ -1,21 +1,10 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
-[Serializable]
-public struct AttackInfo 
-{
-    public Transform origin; //get postition off of this
-    /*[SerializeField]*/ public Vector3 attackEnd;//if length needed (capsule collider)
-    public float radius; //capsules and spheres
-    public float rangeLength; //for capsules
-    /*[SerializeField]*/ private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
-
-    public float damageDealt;
-}
-
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
@@ -44,8 +33,12 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     [SerializeField] private float maxSpeed = 3f;//will probably have it changed in CharacterChild class
     [SerializeField] private float jumpHeight = 3f;
 
+    [Header("Attack Options")]
     private bool _canAttack = true;
     [SerializeField] private bool drawDebugAttacks = false;
+    AttackInfo _currentAttack;
+    [SerializeField] AttackInfo attack1;
+    [SerializeField] AttackInfo attack2;
 
     GameObject _owner;
     public void SetOwner(GameObject owner) { _owner = owner; } //player will pass this in on spawn
@@ -65,6 +58,11 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
             _faceDirection = new Vector3(90, 0, 0);
         }
     }
+    private void Start()
+    {
+        attack1.isAttackActive = false;
+        attack2.isAttackActive = false;
+    }
     private void FixedUpdate()
     {
         Vector3 curMove = transform.position - _prevPosition;
@@ -80,6 +78,11 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
             _animMoveSpeed = Mathf.Lerp(_animMoveSpeed, _currentSpeed, Time.deltaTime * animSpeedChangeRate);
             _animator.SetFloat(_speedId, _animMoveSpeed);
         }
+
+        if (_currentAttack.isAttackActive == true)
+        {
+            GetDamageColliderComponent().ProcessAttackType(_currentAttack);
+        }
     }
 
     //Different Attack inputs (will be overridden in child classes)
@@ -92,13 +95,17 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
         PlayAnimation(_attack2Id);
     }
 
-    public virtual void Attack1()//attacks will be overridden to deal damage in child class. Called in Animation Events
+    public virtual void Attack1()//attacks will be called in Animation Events
     {
         Debug.Log($"Attack1 '{_attack1Id}' Called");
+        _currentAttack = attack1;
+        _currentAttack.isAttackActive = true;
     }
     public virtual void Attack2()
     {
         Debug.Log($"Attack2 '{_attack2Id}' Called");
+        _currentAttack = attack2;
+        _currentAttack.isAttackActive = true;
     }
     protected void PlayAnimation(int animationId) 
     {
@@ -109,7 +116,11 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
             _animator.SetTrigger(animationId);
         }
     }
-    public void ResetAttack() 
+    public void EndAttack() //attack physics wont spawn anymore (in Animation Events)
+    {
+        _currentAttack.isAttackActive = false;
+    }
+    public void ResetAttack() //attack ability is reinstated (in Animation Events)
     {
         _canAttack = true;
     }
@@ -130,7 +141,25 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     }
     public virtual void OnDrawAttacks() 
     {
-        
+        if (!_currentAttack.isAttackActive)
+        {
+            return;
+        }
+        switch (_currentAttack.attackShape)
+        {
+            case EAttackShapeType.Sphere:
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(_currentAttack.origin.position, _currentAttack.radius);
+                break;
+            case EAttackShapeType.Capsule:
+                Gizmos.color = Color.cyan;
+                _currentAttack.attackEnd = _currentAttack.origin.position + (_currentAttack.origin.forward * _currentAttack.rangeLength);
+                Gizmos.DrawWireSphere(_currentAttack.origin.position, _currentAttack.radius);//start point of capsule collider
+                Gizmos.DrawWireSphere(_currentAttack.attackEnd, _currentAttack.radius);      //end point of capsule collider
+                break;
+            case EAttackShapeType.Box:
+                Debug.Log("Still need to program this one in case it gets used");
+                break;
+        }
     }
-    
 }

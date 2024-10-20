@@ -79,13 +79,18 @@ public class GameManager : MonoBehaviour
 
     private void AddRequiredManagers() //WIP
     {
-        int currentSceneInt = _sceneLoader.GetCurrentSceneIndex();
+        /*int currentSceneInt = _sceneLoader.GetCurrentSceneIndex();
         int mainSceneInt = _sceneLoader.GetMainMenuSceneIndex();
+        int selectionSceneInt = _sceneLoader.GetSelectionSceneIndex();
+        int fightSceneInt = _sceneLoader.GetFightSceneIndex();
 
-
-        /*switch (currentSceneInt) 
+        switch (currentSceneInt) 
         {
             case mainSceneInt:
+                break;
+            case selectionSceneInt:
+                break;
+            case fightSceneInt:
                 break;
         }*/
     }

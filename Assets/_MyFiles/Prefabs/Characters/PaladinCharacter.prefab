@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7192910272355868156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5179392970013144172}
+  m_Layer: 0
+  m_Name: SwordCollider_StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5179392970013144172
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7192910272355868156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.026094908, y: 0.1315463, z: -0.004136785, w: 0.99095786}
+  m_LocalPosition: {x: 0.029000105, y: -0.011999872, z: 0.12299966}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6323597745278384718}
+  m_LocalEulerAnglesHint: {x: 3.027, y: 15.121, z: -0.077}
 --- !u!1001 &2924410914419546536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54,12 +85,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9175088765034030054, guid: fc132f56e5b6e47478a1ae5c36a084fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5179392970013144172}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc132f56e5b6e47478a1ae5c36a084fb, type: 3}
 --- !u!4 &3395469232853352003 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fc132f56e5b6e47478a1ae5c36a084fb, type: 3}
+  m_PrefabInstance: {fileID: 2924410914419546536}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6323597745278384718 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9175088765034030054, guid: fc132f56e5b6e47478a1ae5c36a084fb, type: 3}
   m_PrefabInstance: {fileID: 2924410914419546536}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8182293330879964851
@@ -146,15 +185,57 @@ PrefabInstance:
       propertyPath: animSpeedChangeRate
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7153038980964478836, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
     m_RemovedGameObjects:
     - {fileID: 2048786332602709894, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 180852504756031113, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3395469232853352003}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7150251115021495561, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1846572069535683822}
   m_SourcePrefab: {fileID: 100100000, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+--- !u!1 &1348709271056387002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7150251115021495561, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+  m_PrefabInstance: {fileID: 8182293330879964851}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1846572069535683822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348709271056387002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b480f1a84229549a7b8cccb2d22435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterTurnSpeed: 10
+  animSpeedChangeRate: 2
+  maxSpeed: 3
+  jumpHeight: 3
+  attack1:
+    attackShape: 1
+    origin: {fileID: 5179392970013144172}
+    attackEnd: {x: 0, y: 0, z: 0}
+    radius: 0.2
+    rangeLength: 0.7
+    damageDealt: 0
+    isAttackActive: 0
+  attack2:
+    attackShape: 1
+    origin: {fileID: 5179392970013144172}
+    attackEnd: {x: 0, y: 0, z: 0}
+    radius: 0.2
+    rangeLength: 0.7
+    damageDealt: 0
+    isAttackActive: 0
+  drawDebugAttacks: 1
 --- !u!4 &8291087382533171258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 180852504756031113, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}

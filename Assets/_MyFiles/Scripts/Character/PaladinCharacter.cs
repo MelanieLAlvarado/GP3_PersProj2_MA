@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PaladinCharacter : CharacterBase
 {
-    [Header("Paladin Attack Options")]
+    /*[Header("Attack Options")]
+    AttackInfo _currentAttack;
     [SerializeField] AttackInfo attack1;
     [SerializeField] AttackInfo attack2;
 
@@ -10,20 +11,24 @@ public class PaladinCharacter : CharacterBase
 
     /*Vector3 origin, float radius, float damageToDeal
         Vector3 beginPoint, Vector3 endPoint, float radius, float damageToDeal
-        Vector3 origin, Vector3 halfExtents, Quaternion rotation, float damageToDeal*/
-
-    Vector3 _attackEnd;//debug rip
+        Vector3 origin, Vector3 halfExtents, Quaternion rotation, float damageToDeal
 
     private void Start()
     {
-        Debug.Log($"DEBUG... start: {attack2.origin},end: {_attackEnd}");
-        attack2.attackEnd = attack2.origin.forward * attack2.rangeLength;
+        attack2.attackEnd = attack2.origin.position + (attack2.origin.forward * attack2.rangeLength);
+
+        attack1.isAttackActive = false;
+        attack2.isAttackActive = false;
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        /*if (Input.GetKeyDown(KeyCode.E))
         {
             this.Attack2();
+        }
+        if (_currentAttack.isAttackActive == true) 
+        {
+            GetDamageColliderComponent().ProcessAttackType(_currentAttack);
         }
     }
     public override void Attack1()
@@ -33,25 +38,36 @@ public class PaladinCharacter : CharacterBase
             Debug.LogError("No Origin point! please check attack info...");
             return;
         }
-        GetDamageColliderComponent().HitColliderSphere(attack1.origin.position, attack1.radius, attack1.damageDealt);
+
+        _currentAttack = attack1;
+        _currentAttack.isAttackActive = true;
     }
     public override void Attack2()
     {
-        //capsule collider is not workign... use other colliders for now.
-        attack2.attackEnd = attack2.origin.forward * attack2.rangeLength;
+        if (!attack2.origin)
+        {
+            Debug.LogError("No Origin point! please check attack info...");
+            return;
+        }
+        _currentAttack = attack2;
+        _currentAttack.isAttackActive = true;
+        /*attack2.attackEnd = attack2.origin.position + (attack2.origin.forward * attack2.rangeLength);
         GetDamageColliderComponent().HitColliderCapsule(attack2.origin.position, attack2.attackEnd, attack2.radius, attack2.damageDealt);
+    
     }
     public override void OnDrawAttacks()
     {
         if (attack1.origin)
         { 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(attack1.origin.position, attack1.radius);
+            Gizmos.DrawWireSphere(attack2.origin.position, attack2.radius);//start point of capsule collider
+            Gizmos.DrawWireSphere(attack2.attackEnd, attack2.radius);      //end point of capsule collider
         }
-       /* if (attack2.origin)
+        if (attack2.origin)
         {
             Gizmos.color = Color.cyan;
-            GetDamageColliderComponent().DrawWireCapsule(attack2.origin.position, attack2.attackEnd, attack2.radius);
-        }*/
-    }
+            Gizmos.DrawWireSphere(attack2.origin.position, attack2.radius);//start point of capsule collider
+            Gizmos.DrawWireSphere(attack2.attackEnd, attack2.radius);      //end point of capsule collider
+        }
+    }*/
 }
