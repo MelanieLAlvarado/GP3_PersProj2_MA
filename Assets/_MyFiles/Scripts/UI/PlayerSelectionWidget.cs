@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHandler
 {
+    [Header("Player Selection Options")]
+    private string _playerName;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (GetCharacterProfile() == null) 
@@ -27,4 +30,17 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
             GetOwner().GetComponent<Player>().SetCharacter(charScriptObj);
         }
     }
+    public void ReadPlayerName(string name) 
+    {
+        _playerName = name;
+        Player player = GetOwner().GetComponent<Player>();
+        if (!player) { return; }
+        if (_playerName != string.Empty)
+        {
+            player.SetPlayerName(_playerName);
+            return;
+        }
+        player.SetPlayerName("player");//may update this later
+    }
+
 }

@@ -26,5 +26,4 @@ public abstract class CharacterSlot : MonoBehaviour
         characterText.text = "";
         characterProfile = null;
     }
-
 }

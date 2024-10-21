@@ -9,9 +9,12 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(DamageColliderComponent))]
+[RequireComponent(typeof(HealthComponent))]
 public class CharacterBase : MonoBehaviour, IAttackInterface
 {
     private DamageColliderComponent _damageColliderComponent;
+    private HealthComponent _healthComponent;
+
     PlayerController _playerController;
     Animator _animator;
     private static readonly int _speedId = Animator.StringToHash("Speed");
@@ -49,6 +52,8 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
 
     private void Awake()
     {
+        _healthComponent = GetComponent<HealthComponent>();
+        _healthComponent.OnDead += StartDeath;
         _animator = GetComponent<Animator>();
         _damageColliderComponent = GetComponent<DamageColliderComponent>();
         _prevPosition = transform.position;
@@ -81,7 +86,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
 
         if (_currentAttack.isAttackActive == true)
         {
-            GetDamageColliderComponent().ProcessAttackType(_currentAttack);
+            _damageColliderComponent.ProcessAttackType(_currentAttack);
         }
     }
 
@@ -119,6 +124,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     public void EndAttack() //attack physics wont spawn anymore (in Animation Events)
     {
         _currentAttack.isAttackActive = false;
+        _damageColliderComponent.ClearHitTargets();
     }
     public void ResetAttack() //attack ability is reinstated (in Animation Events)
     {
@@ -130,6 +136,19 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     }
     public void EndDeath()
     {
+        Player player = _owner.GetComponent<Player>();
+        if (!player)
+        {
+            
+        }
+        player.RemoveLife();
+
+        FightManager fightManager = GameManager.m_Instance.GetFightManager();
+        if (!fightManager)
+        {
+            return;
+        }
+        fightManager.StartRespawnDelay(player);
         Destroy(gameObject);
     }
     private void OnDrawGizmos() 

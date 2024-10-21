@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,8 @@ using Random = UnityEngine.Random;
 public class FightManager : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPositions;
+    [SerializeField] private Transform respawnPosition;
+    [SerializeField] private float respawnWait = 1.5f;
 
     private void Awake()
     {
@@ -36,9 +39,9 @@ public class FightManager : MonoBehaviour
             player.GetComponent<Player>().SpawnCharacter(randomSpawnPos);
 
             spawnPosList.RemoveAt(randomSpawnIndex);
+            GameManager.m_Instance.GetGameplayUIManager().SpawnPlayerGameplaySlot(player);
         }
     }
-
     private void RemoveDuplicateSpawnPositions()
     {
         List<Transform> tempSpawnPositions = new List<Transform>();
@@ -54,5 +57,18 @@ public class FightManager : MonoBehaviour
         Array.Clear(spawnPositions, 0, spawnPositions.Length);
         spawnPositions = tempSpawnPositions.ToArray();
 
+    }
+    public void StartRespawnDelay(Player player) 
+    {
+        StartCoroutine(RespawnDelay(player));
+    }
+    private IEnumerator RespawnDelay(Player player) 
+    {
+        yield return new WaitForSeconds(respawnWait);
+        if (respawnPosition && player.GetPlayerLifes() > 0)
+        { 
+            player.SpawnCharacter(respawnPosition);
+        }
+        StopCoroutine(RespawnDelay(player));
     }
 }

@@ -48,11 +48,16 @@ public class SelectionUIManager : MonoBehaviour
             _selectCharacterSlots.Add(charSlot);
 
         }
+        //GameManager.m_Instance.OnPlayerCountChanged += UpdateFightButton;
     }
     private void Update() //change to delegates?
     {
         //update player here instead of start (or through delegate events)
         //check if players all have their pick, then reveal fight button.
+        UpdateFightButton();
+    }
+    private void UpdateFightButton() 
+    {
         if (_playerSelections.Count < 0) { return; }
 
         foreach (PlayerSelectionWidget playerSelection in _playerSelections)
