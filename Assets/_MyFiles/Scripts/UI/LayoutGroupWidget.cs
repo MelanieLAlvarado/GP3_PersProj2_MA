@@ -48,23 +48,7 @@ public class LayoutGroupWidget : MonoBehaviour
     }
     public virtual void InitializeWidget(GameObject connectedObj, Widget widget) 
     {
-        /*//GAMEPLAY UI MANAGER
-        Player player = connectedObj.GetComponent<Player>();
-        CharacterScriptable character = connectedObj.GetComponent<>().GetCharacter();
-
-        
-        GameplayCharacterSlotWidget gameSlotUI = widget.GetComponent<GameplayCharacterSlotWidget>();
-        gameSlotUI.SetCharacterInSlot(character);
-
-        gameSlotUI.SetPlayerNameText(player.GetPlayerName());
-
-         GameObject currentChar = player.GetCurrentFightingCharacter();
-        if (!currentChar.GetComponent<HealthComponent>())
-        {
-            return;
-        }
-        currentChar.GetComponent<HealthComponent>().OnHealthChanged += gameSlotUI.UpdateHealthText;
-         */
+        //overridden in child class if all widgets need something additional
     }
 
 }

@@ -16,7 +16,7 @@ public struct AttackInfo
     private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
 
     public float damageDealt;
-    public bool isAttackActive;
+    public bool bIsAttackActive;
 }
 
 public enum EAttackShapeType { Sphere, Capsule, Box}

@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 _prevPosition;
     private Vector3 _playerVelocity;
-    private bool _isGrounded;
+    private bool _bIsGrounded;
     private float _gravity = -9.81f;
     public float GetCurrentSpeed() { return _currentSpeed; }
     public void SetCharacter(CharacterBase characterBase) 
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!_characterController) { return; }
 
-        _isGrounded = _characterController.isGrounded;
+        _bIsGrounded = _characterController.isGrounded;
     }
     private void FixedUpdate()
     {
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
     private void ProcessGravity()
     {
         _playerVelocity.y += Time.deltaTime * _gravity;
-        if (_isGrounded && _playerVelocity.y < 0)
+        if (_bIsGrounded && _playerVelocity.y < 0)
         {
             _playerVelocity.y = -2f;
         }
@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
     }
     public void JumpAction(InputAction.CallbackContext context) 
     {
-        if (context.started && _isGrounded) 
+        if (context.started && _bIsGrounded) 
         {
             _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
         }

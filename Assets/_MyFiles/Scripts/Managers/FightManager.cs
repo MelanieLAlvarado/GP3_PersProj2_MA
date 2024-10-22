@@ -15,7 +15,7 @@ public class FightManager : MonoBehaviour
 
     [Header("GameplayUI Info (test)")]
     [SerializeField] private Transform canvasTransform;
-    private LayoutGroupWidget _gameplayUI;
+    private GameplayUIManager _gameplayUI;
     [SerializeField] private GameObject gameplayUILayoutPrefab;
 
     private void Awake()
@@ -41,7 +41,7 @@ public class FightManager : MonoBehaviour
         {
             int randomSpawnIndex = Random.Range(0, spawnPosList.Count);
             Transform randomSpawnPos = spawnPosList[randomSpawnIndex];
-            player.GetComponent<Player>().SpawnCharacter(randomSpawnPos);
+            player.GetComponent<Player>().SpawnCharacter(randomSpawnPos, _gameplayUI);
 
             spawnPosList.RemoveAt(randomSpawnIndex);
             //GameManager.m_Instance.GetGameplayUIManager().SpawnPlayerGameplaySlot(player);
@@ -50,7 +50,7 @@ public class FightManager : MonoBehaviour
 
         //GameManager.m_Instance.GetUIManager().SpawnGameplayUI();
         //GameManager.m_Instance.GetUIManager().InitializeWidgetsForGameobjects(playerList);
-        _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
+        _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
         _gameplayUI.InitializeWidgetsForGameobjects(playerList);
     }
     private void RemoveDuplicateSpawnPositions()
@@ -78,7 +78,7 @@ public class FightManager : MonoBehaviour
         yield return new WaitForSeconds(respawnWait);
         if (respawnPosition && player.GetPlayerLifes() > 0)
         { 
-            player.SpawnCharacter(respawnPosition);
+            player.SpawnCharacter(respawnPosition, _gameplayUI);
         }
         StopCoroutine(RespawnDelay(player));
     }

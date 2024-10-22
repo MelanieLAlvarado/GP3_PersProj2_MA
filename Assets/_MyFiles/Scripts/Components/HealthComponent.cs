@@ -12,8 +12,8 @@ public class HealthComponent : MonoBehaviour
     public event OnHealthChangedDelegate OnHealthChanged;
 
     public event Action OnDead;
-     
 
+     
     [SerializeField] private float maxHealth = 100;
     private float _health;
 

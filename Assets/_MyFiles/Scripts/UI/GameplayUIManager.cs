@@ -3,11 +3,33 @@ using UnityEngine;
 
 public class GameplayUIManager : LayoutGroupWidget
 {
-    [Header("Player Selection Info")]
-    /*[SerializeField] private Transform playerGameplayWidgetGroup;
-    [SerializeField] private GameObject playerGameplayUIPrefab;*/
-    private List<GameplayCharacterSlotWidget> _playerGamePlayWidgets = new List<GameplayCharacterSlotWidget>();
+    private Dictionary<Player, Widget> _gameplaySlots = new Dictionary<Player, Widget>();
 
+    public void DisconnectPlayerFromWidget(Player player) 
+    {
+        player.OnPlayerDead -= DisconnectPlayerFromWidget;
+
+        Widget widget = _gameplaySlots[player];
+        GameplayCharacterSlotWidget gameSlotUI = widget.GetComponent<GameplayCharacterSlotWidget>();
+        GameObject currentChar = player.GetCurrentFightingCharacter();
+        
+        currentChar.GetComponent<HealthComponent>().OnHealthChanged -= gameSlotUI.UpdateHealthText;
+    }
+    public void AttachPlayerToWidget(Player player)
+    {
+        Widget widget = _gameplaySlots[player];
+        GameplayCharacterSlotWidget gameSlotUI = widget.GetComponent<GameplayCharacterSlotWidget>();
+
+        GameObject currentChar = player.GetCurrentFightingCharacter();
+
+        HealthComponent healthComponent = currentChar.GetComponent<HealthComponent>();
+        if (healthComponent)
+        {
+            gameSlotUI.UpdateHealthText(healthComponent.GetHealth());
+            healthComponent.OnHealthChanged += gameSlotUI.UpdateHealthText;
+            player.OnPlayerDead += DisconnectPlayerFromWidget;
+        }
+    }
     public override void InitializeWidget(GameObject connectedObj, Widget widget) 
     {
         Player player = connectedObj.GetComponent<Player>();
@@ -24,6 +46,13 @@ public class GameplayUIManager : LayoutGroupWidget
         {
             return;
         }
-        currentChar.GetComponent<HealthComponent>().OnHealthChanged += gameSlotUI.UpdateHealthText;
+        _gameplaySlots.Add(player, widget);
+
+        HealthComponent healthComponent = currentChar.GetComponent<HealthComponent>();
+        if (healthComponent)
+        {
+            healthComponent.OnHealthChanged += gameSlotUI.UpdateHealthText;
+            //healthComponent.OnDead += DisconnectPlayerFromWidget;
+        }
     }
 }

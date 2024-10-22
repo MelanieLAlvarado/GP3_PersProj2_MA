@@ -2,23 +2,23 @@ using UnityEngine;
 
 public class DebugEnemyAI : MonoBehaviour
 {
-    private CharacterBase _character;
+    private IAttackInterface _attackInterface;
 
-    [SerializeField] private bool _attack1 = false;
-    [SerializeField] private bool _attack2 = false;
+    [SerializeField] private bool _bAttack1 = false;
+    [SerializeField] private bool _bAttack2 = false;
     private void Start()
     {
-        _character = GetComponent<CharacterBase>();
+        _attackInterface = GetComponent<IAttackInterface>();
     }
     private void Update()
     {
-        if (_attack1)
+        if (_bAttack1)
         {
-            _character.StartAttack1();
+            _attackInterface.StartAttack1();
         }
-        else if(_attack2)
+        else if(_bAttack2)
         {
-            _character.StartAttack2();
+            _attackInterface.StartAttack2();
         }
     }
 }

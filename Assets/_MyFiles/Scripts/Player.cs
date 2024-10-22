@@ -6,6 +6,9 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 [RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
 {
+    public delegate void OnPlayerChangedDelegate(Player player);
+    public event OnPlayerChangedDelegate OnPlayerDead;
+
     [Header("Player Info")]
     private string _playerName;
     private int _playerLifes = 3;
@@ -39,7 +42,7 @@ public class Player : MonoBehaviour
     {
         _characterScriptable = null;
     }
-    public void SpawnCharacter(Transform spawnPosition) 
+    public void SpawnCharacter(Transform spawnPosition, GameplayUIManager gameplayUI = null) 
     {
         Debug.Log($"Spawning Character... for {_playerName}");
         _currentCharacter = Instantiate(_characterScriptable.GetCharacterPrefab(), spawnPosition.position, spawnPosition.rotation);
@@ -48,5 +51,10 @@ public class Player : MonoBehaviour
 
         PlayerController playerCtrl = GetComponent<PlayerController>();
         playerCtrl.SetCharacter(charBase);
+
+        if (gameplayUI)
+        {
+            gameplayUI.AttachPlayerToWidget(this);
+        }
     }
 }
