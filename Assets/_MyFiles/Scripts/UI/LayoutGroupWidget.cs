@@ -12,7 +12,7 @@ public class LayoutGroupWidget : MonoBehaviour
     List<Widget> _layoutWidgets = new List<Widget>();
     private List<CharacterScriptable> _charactersInSlots = new List<CharacterScriptable>();
 
-    public Transform GetLayoutGroup() { return this.transform; }
+    public List<Widget> GetLayoutWidgets() { return _layoutWidgets; }
     public void InitializeWidgetsForGameobjects(List<GameObject> connectedObjects)
     {
         if (!widgetPrefab)
@@ -42,8 +42,7 @@ public class LayoutGroupWidget : MonoBehaviour
     }
     public Widget SpawnWidget() 
     {
-        Widget widget = Instantiate(widgetPrefab).GetComponent<Widget>();
-        widget.transform.SetParent(this.transform);
+        Widget widget = Instantiate(widgetPrefab, this.transform).GetComponent<Widget>();
         _layoutWidgets.Add(widget);
         return widget;
     }

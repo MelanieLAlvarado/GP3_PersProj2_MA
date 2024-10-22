@@ -110,7 +110,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
         Debug.Log($"Attack2 '{_attack2Id}' Called");
         _currentAttack.isAttackActive = true;
     }
-    public void Attack() 
+    public void Attack() //attack physics will spawn (in Animation Events)
     {
         _currentAttack.isAttackActive = true;
     }
@@ -148,7 +148,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
         {
             
         }
-        player.RemoveLife();
+        player.RemoveLife();//probably move into health component or something?
 
         FightManager fightManager = GameManager.m_Instance.GetFightManager();
         if (!fightManager)
