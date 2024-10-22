@@ -21,7 +21,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     protected static readonly int _attack1Id = Animator.StringToHash("Attack1");
     protected static readonly int _attack2Id = Animator.StringToHash("Attack2");
 
-    protected static readonly int _deadId = Animator.StringToHash("Dead");
+    protected static readonly int _deathId = Animator.StringToHash("Death");
 
     protected int _currentAttackId;
 
@@ -93,33 +93,40 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     //Different Attack inputs (will be overridden in child classes)
     public void StartAttack1() 
     {
-        PlayAnimation(_attack1Id);
+        AssignAttack(attack1, _attack1Id);
     }
     public void StartAttack2() 
     {
-        PlayAnimation(_attack2Id);
+        AssignAttack(attack2, _attack2Id);
     }
 
-    public virtual void Attack1()//attacks will be called in Animation Events
+    public virtual void Attack1()//attacks will be called in Animation Events (Change to "Attack" instead)
     {
         Debug.Log($"Attack1 '{_attack1Id}' Called");
-        _currentAttack = attack1;
         _currentAttack.isAttackActive = true;
     }
     public virtual void Attack2()
     {
         Debug.Log($"Attack2 '{_attack2Id}' Called");
-        _currentAttack = attack2;
         _currentAttack.isAttackActive = true;
     }
-    protected void PlayAnimation(int animationId) 
+    public void Attack() 
+    {
+        _currentAttack.isAttackActive = true;
+    }
+    private void AssignAttack(AttackInfo attack, int animationId) 
     {
         if (_animator && _canAttack == true)
         {
             _canAttack = false;
-            _currentAttackId = animationId;
-            _animator.SetTrigger(animationId);
+            _currentAttack = attack;
+            PlayAnimation(animationId);
         }
+    }
+    protected void PlayAnimation(int animationId) 
+    {
+        _currentAttackId = animationId;
+        _animator.SetTrigger(_currentAttackId);
     }
     public void EndAttack() //attack physics wont spawn anymore (in Animation Events)
     {
@@ -132,7 +139,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     }
     private void StartDeath() 
     {
-        PlayAnimation(_deadId);
+        PlayAnimation(_deathId);
     }
     public void EndDeath()
     {

@@ -4,15 +4,20 @@ using UnityEngine;
 public class SelectionUIManager : MonoBehaviour
 {
     [Header("Character Selection Info")]
+    //LayoutGroupWidget selectionUIPrefab;
+
     [SerializeField] private Transform characterSelectionGroup;
     [SerializeField] private GameObject selectionSlotPrefab;
 
     private List<SelectCharacterSlotWidget> _selectCharacterSlots = new List<SelectCharacterSlotWidget>();
-    private List<CharacterScriptable> _charactersInSlots = new List<CharacterScriptable>();
+
+    private List<CharacterScriptable> _charactersInSlots = new List<CharacterScriptable>();//remove once proper ui is implemented
 
     [SerializeField] private CharacterScriptable[] Characters;
 
     [Header("Player Selection Info")]
+    //LayoutGroupWidget playerSelectionUIPrefab;
+
     [SerializeField] private Transform playerSelectionGroup;
     [SerializeField] private GameObject playerSelectionUIPrefab;
     private List<PlayerSelectionWidget> _playerSelections = new List<PlayerSelectionWidget>();
@@ -28,12 +33,19 @@ public class SelectionUIManager : MonoBehaviour
 
         playerSelectUI.transform.SetParent(playerSelectionGroup);
         _playerSelections.Add(playerSelectUI);
+        //GameObject _playerSelectionUI;
+        // _playerSelectionUI = Instantiate(playerSelectionUIPrefab);
+        // _playerSelectionUI.transform.SetParent(Canvas); //save ref for canvas
+        // _playerSelectionUI.GetComponent<LayoutGroupWidget>().SpawnWidget().SetOwner(player);
     }
     private void Awake()
     {
         if (characterSelectionGroup == null || selectionSlotPrefab == null)
         { return; }
-
+        //GameObject _selectionUI;
+        // _selectionUI = Instantiate(selectionUIPrefab);
+        // _selectionUI.transform.SetParent(Canvas); //save ref for canvas
+        // _selectionUI.GetComponent<LayoutGroupWidget>().InitializeWidgetsForCharacters(Characters);
         foreach (CharacterScriptable character in Characters)
         {
             if (_charactersInSlots.Contains(character))

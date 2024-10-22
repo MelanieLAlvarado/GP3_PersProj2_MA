@@ -41,6 +41,8 @@ public class FightManager : MonoBehaviour
             spawnPosList.RemoveAt(randomSpawnIndex);
             GameManager.m_Instance.GetGameplayUIManager().SpawnPlayerGameplaySlot(player);
         }
+        //GameManager.m_Instance.GetUIManager().SpawnGameplayUI();
+        //GameManager.m_Instance.GetUIManager().InitializeWidgetsForGameobjects(playerList);
     }
     private void RemoveDuplicateSpawnPositions()
     {
