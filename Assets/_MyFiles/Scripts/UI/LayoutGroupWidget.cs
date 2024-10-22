@@ -24,7 +24,7 @@ public class LayoutGroupWidget : MonoBehaviour
             InitializeWidget(connectedObj, widget);
         }
     }
-    public void InitializeWidgetsForCharacters(List<CharacterScriptable> characters)
+    public void InitializeWidgetsForCharacters(CharacterScriptable[] characters)
     {
         if (!widgetPrefab)
         { return; }

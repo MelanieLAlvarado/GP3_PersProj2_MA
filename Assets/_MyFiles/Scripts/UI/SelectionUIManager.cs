@@ -1,10 +1,16 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SelectionUIManager : MonoBehaviour
 {
+    [SerializeField] private Transform canvasTransform;
+    [SerializeField] private GameObject selectionLayoutUIPrefab;
+    private LayoutGroupWidget _selectionUI;
+    [SerializeField] private GameObject playerSelectionLayoutUIPrefab;
+    private LayoutGroupWidget _playerSelectionUI;
+
     [Header("Character Selection Info")]
-    //LayoutGroupWidget selectionUIPrefab;
 
     [SerializeField] private Transform characterSelectionGroup;
     [SerializeField] private GameObject selectionSlotPrefab;
@@ -12,16 +18,15 @@ public class SelectionUIManager : MonoBehaviour
     private List<SelectCharacterSlotWidget> _selectCharacterSlots = new List<SelectCharacterSlotWidget>();
 
     private List<CharacterScriptable> _charactersInSlots = new List<CharacterScriptable>();//remove once proper ui is implemented
+    
 
     [SerializeField] private CharacterScriptable[] Characters;
 
     [Header("Player Selection Info")]
-    //LayoutGroupWidget playerSelectionUIPrefab;
-
     [SerializeField] private Transform playerSelectionGroup;
     [SerializeField] private GameObject playerSelectionUIPrefab;
-    private List<PlayerSelectionWidget> _playerSelections = new List<PlayerSelectionWidget>();
 
+    private List<PlayerSelectionWidget> _playerSelections = new List<PlayerSelectionWidget>();
     [SerializeField] private GameObject fightButton;
     public void SpawnPlayerSelectionUI(GameObject player) 
     {
@@ -33,19 +38,33 @@ public class SelectionUIManager : MonoBehaviour
 
         playerSelectUI.transform.SetParent(playerSelectionGroup);
         _playerSelections.Add(playerSelectUI);
-        //GameObject _playerSelectionUI;
-        // _playerSelectionUI = Instantiate(playerSelectionUIPrefab);
-        // _playerSelectionUI.transform.SetParent(Canvas); //save ref for canvas
-        // _playerSelectionUI.GetComponent<LayoutGroupWidget>().SpawnWidget().SetOwner(player);
+
+        /*if (!playerSelectionUIPrefab) { return; }
+
+        if (!_playerSelectionUI)
+        {
+            _playerSelectionUI = Instantiate(playerSelectionUIPrefab).GetComponent<LayoutGroupWidget>();
+            _playerSelectionUI.transform.SetParent(canvasTransform); //save ref for canvas
+        }
+        /*Widget widget = _playerSelectionUI.SpawnWidget();
+        widget.SetOwner(player);
+
+        PlayerSelectionWidget playerSelection = widget.GetComponent<PlayerSelectionWidget>();
+        if (playerSelection)
+        { 
+            _playerSelections.Add(playerSelection);
+        }*/
     }
     private void Awake()
     {
+        /*if (!selectionLayoutUIPrefab) { return; }
+
+        _selectionUI = Instantiate(selectionLayoutUIPrefab).GetComponent<LayoutGroupWidget>();
+        _selectionUI.transform.SetParent(canvasTransform); //save ref for canvas
+        _selectionUI.GetComponent<LayoutGroupWidget>().InitializeWidgetsForCharacters(Characters);*/
+
         if (characterSelectionGroup == null || selectionSlotPrefab == null)
         { return; }
-        //GameObject _selectionUI;
-        // _selectionUI = Instantiate(selectionUIPrefab);
-        // _selectionUI.transform.SetParent(Canvas); //save ref for canvas
-        // _selectionUI.GetComponent<LayoutGroupWidget>().InitializeWidgetsForCharacters(Characters);
         foreach (CharacterScriptable character in Characters)
         {
             if (_charactersInSlots.Contains(character))
