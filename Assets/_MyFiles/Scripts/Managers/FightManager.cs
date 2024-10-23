@@ -19,6 +19,9 @@ public class FightManager : MonoBehaviour
     private GameplayUIManager _gameplayUI;
     [SerializeField] private GameObject gameplayUILayoutPrefab;
 
+    [SerializeField] private GameObject pauseMenuUI;//may spawn later
+    private bool _isPaused = false;
+
     [Header("Camera Info")]
     [SerializeField] private Transform battleCamSpawnPos;
     [SerializeField] private GameObject battleCamPrefab;
@@ -29,6 +32,10 @@ public class FightManager : MonoBehaviour
 
     private void Awake()
     {
+        if (pauseMenuUI)
+        { 
+            ResumeGame();
+        }
         if (spawnPositions.Length > 0)
         {
             RemoveDuplicateSpawnPositions();
@@ -53,6 +60,8 @@ public class FightManager : MonoBehaviour
             Transform randomSpawnPos = spawnPosList[randomSpawnIndex];
             player.GetComponent<Player>().SpawnCharacter(randomSpawnPos, _gameplayUI);
             spawnPosList.RemoveAt(randomSpawnIndex);
+
+            player.GetComponent<PlayerController>().OnPauseTriggered += OnPauseAction;
         }
     }
     private void RemoveDuplicateSpawnPositions()
@@ -83,5 +92,38 @@ public class FightManager : MonoBehaviour
             player.SpawnCharacter(respawnPosition, _gameplayUI);
         }
         StopCoroutine(RespawnDelay(player));
+    }
+
+    public void OnPauseAction()
+    {
+        if (!pauseMenuUI)
+        {
+            return;
+        }
+
+
+        if (_isPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+        _isPaused = !_isPaused;
+    }
+    private void PauseGame()
+    { 
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+    private void ResumeGame() 
+    {
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }

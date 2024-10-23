@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static FightManager;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(PlayerInput))]

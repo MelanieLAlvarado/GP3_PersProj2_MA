@@ -6,6 +6,9 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class PlayerController : MonoBehaviour
 {
+    public delegate void TriggerPauseDelegate();
+    public event TriggerPauseDelegate OnPauseTriggered;
+
     private CharacterBase _characterBase;
     private PlayerInputActions _playerInputActions;
     private CharacterController _characterController;
@@ -30,7 +33,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _playerInputActions = new PlayerInputActions();
-        //_playerInputActions = GetComponent<PlayerInput>().actions;
         _playerInputActions.Enable();
     }
     private void Update()
@@ -80,6 +82,18 @@ public class PlayerController : MonoBehaviour
             _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
         }
     }
+    public void PauseAction(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            FightManager fightManager = GameManager.m_Instance.GetFightManager();
+            if (fightManager)
+            { 
+                OnPauseTriggered?.Invoke();
+            }
+        }
+    }
+
     public void Attack1Action(InputAction.CallbackContext context)
     {
         if (context.started && _characterBase) 

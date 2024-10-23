@@ -41,6 +41,18 @@ public class SelectionUIManager : MonoBehaviour
         _selectionUI = Instantiate(selectionLayoutUIPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
         _selectionUI.GetComponent<LayoutGroupWidget>().InitializeWidgetsForCharacters(Characters);
         //GameManager.m_Instance.OnPlayerCountChanged += UpdateFightButton;
+
+    }
+    private void Start()
+    {
+        if (!_playerSelectionUI || _playerSelections.Count <= 0)
+        {
+            List<GameObject> playersAvailable = GameManager.m_Instance.GetPlayers();
+            foreach (GameObject player in playersAvailable)
+            {
+                SpawnPlayerSelectionUI(player);
+            }
+        }
     }
     private void Update() //change to delegates?
     {
