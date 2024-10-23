@@ -5,9 +5,9 @@ using UnityEngine;
 public class BattleCamera : MonoBehaviour
 {
     Vector3 _followPosition;
-    List<GameObject> followObjects = new List<GameObject>();
-    public void AddToFollowObjects(GameObject posToAdd) { followObjects.Add(posToAdd); }
-    public void RemoveFromFollowObjects(GameObject posToRemove) { followObjects.Remove(posToRemove); }
+    List<GameObject> _followObjects = new List<GameObject>();
+    public void AddToFollowObjects(GameObject posToAdd) { _followObjects.Add(posToAdd); }
+    public void RemoveFromFollowObjects(GameObject posToRemove) { _followObjects.Remove(posToRemove); }
     private void Awake()
     {
         _followPosition = transform.position;
@@ -24,13 +24,13 @@ public class BattleCamera : MonoBehaviour
         Vector3 center = Vector3.zero;
 
 
-        foreach (GameObject followObject in followObjects)
+        foreach (GameObject followObject in _followObjects)
         {
             center += followObject.transform.position;
         }
-        if (followObjects.Count > 0)
+        if (_followObjects.Count > 0)
         { 
-            center /= followObjects.Count;
+            center /= _followObjects.Count;
         }
         return center;
     }
