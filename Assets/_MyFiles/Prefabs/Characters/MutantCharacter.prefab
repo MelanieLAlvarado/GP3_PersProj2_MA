@@ -175,6 +175,42 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.43
       objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack1.origin
+      value: 
+      objectReference: {fileID: 1951703361884172695}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack1.radius
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack2.origin
+      value: 
+      objectReference: {fileID: 4256156718761887852}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack2.radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: bDrawDebugAttacks
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack1.damageDealt
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack2.attackShape
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack2.damageDealt
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack2.rangeLength
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7128980942825362674, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: m_Avatar
       value: 

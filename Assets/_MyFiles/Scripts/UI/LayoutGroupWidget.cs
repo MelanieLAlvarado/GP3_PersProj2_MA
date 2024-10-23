@@ -19,11 +19,17 @@ public class LayoutGroupWidget : MonoBehaviour
         { return; }
         foreach (GameObject connectedObj in connectedObjects)
         {
-            Widget widget = SpawnWidget();
-            widget.SetOwner(connectedObj);
-            InitializeWidget(connectedObj, widget);
+            InitializeWidgetForSingleGameObj(connectedObj);
         }
     }
+    public void InitializeWidgetForSingleGameObj(GameObject connectedObj) 
+    {
+        Widget widget = SpawnWidget();
+        widget.SetOwner(connectedObj);
+        Debug.Log($"Obj = {connectedObj.name}; widget = {widget.name}");
+        InitializeWidget(connectedObj, widget);
+    }
+
     public void InitializeWidgetsForCharacters(CharacterScriptable[] characters)
     {
         if (!widgetPrefab)

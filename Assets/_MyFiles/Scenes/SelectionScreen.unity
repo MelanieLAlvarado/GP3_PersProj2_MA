@@ -1385,6 +1385,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PaladinPosed
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a6438ca927b28ab439a7623fd9288d8c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3099756089343826349, guid: a6438ca927b28ab439a7623fd9288d8c, type: 3}
       propertyPath: m_CastShadows
       value: 0
@@ -1449,6 +1453,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9a656b20a213d1541837d798c47d0b4d, type: 3}
       propertyPath: m_Name
       value: MutantPosed
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9a656b20a213d1541837d798c47d0b4d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5613815499662603714, guid: 9a656b20a213d1541837d798c47d0b4d, type: 3}
       propertyPath: m_CastShadows
@@ -1639,13 +1647,14 @@ GameObject:
   - component: {fileID: 2138608515}
   - component: {fileID: 2138608514}
   - component: {fileID: 2138608518}
+  - component: {fileID: 2138608519}
   m_Layer: 0
   m_Name: DebugPaladin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &2138608510
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1752,23 +1761,6 @@ MonoBehaviour:
   animSpeedChangeRate: 0.4
   maxSpeed: 3
   jumpHeight: 3
-  drawDebugAttacks: 1
-  attack1:
-    attackShape: 0
-    origin: {fileID: 0}
-    attackEnd: {x: 0, y: 0, z: 0}
-    radius: 0
-    rangeLength: 0
-    damageDealt: 0
-    isAttackActive: 0
-  attack2:
-    attackShape: 0
-    origin: {fileID: 1822088341}
-    attackEnd: {x: 0, y: 0, z: 0}
-    radius: 1.5
-    rangeLength: 3
-    damageDealt: 0
-    isAttackActive: 0
 --- !u!114 &2138608515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1841,6 +1833,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!114 &2138608519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138608509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da50e8e5d2984b4d9d8f81e4b2ae558, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bDrawDebugAttacks: 0
+  attack1:
+    attackShape: 0
+    origin: {fileID: 0}
+    attackEnd: {x: 0, y: 0, z: 0}
+    radius: 0
+    rangeLength: 0
+    damageDealt: 0
+    bIsAttackActive: 0
+  attack2:
+    attackShape: 0
+    origin: {fileID: 0}
+    attackEnd: {x: 0, y: 0, z: 0}
+    radius: 0
+    rangeLength: 0
+    damageDealt: 0
+    bIsAttackActive: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

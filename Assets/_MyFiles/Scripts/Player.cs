@@ -27,10 +27,11 @@ public class Player : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
         GameManager.m_Instance.AddPlayer(this.gameObject);
-        GameManager.m_Instance.GetSelectUIManager().SpawnPlayerSelectionUI(this.gameObject);
-
-        GameObject playerHolder = GameManager.m_Instance.GetPlayerHolder();
-        transform.SetParent(playerHolder.transform);
+        SelectionUIManager selectUIManager = GameManager.m_Instance.GetSelectUIManager();
+        if (selectUIManager)
+        { 
+            selectUIManager.SpawnPlayerSelectionUI(this.gameObject);
+        }
     }
     public GameObject GetCurrentFightingCharacter() { return _currentCharacter; }
     public CharacterScriptable GetCharacter() { return _characterScriptable; }
@@ -42,9 +43,16 @@ public class Player : MonoBehaviour
     {
         _characterScriptable = null;
     }
-    public void SpawnCharacter(Transform spawnPosition, GameplayUIManager gameplayUI = null) 
+    public void SpawnCharacter(Transform spawnPosition, GameplayUIManager gameplayUI)
     {
         Debug.Log($"Spawning Character... for {_playerName}");
+        Debug.Log($"Widget spawning on {gameplayUI.name}");
+        if (!_characterScriptable)
+        {
+            Debug.LogError($"There is no CharacterScriptable on the player {this.gameObject.name}");
+            return;
+        }
+
         _currentCharacter = Instantiate(_characterScriptable.GetCharacterPrefab(), spawnPosition.position, spawnPosition.rotation);
         CharacterBase charBase = _currentCharacter.GetComponent<CharacterBase>();
         charBase.SetOwner(gameObject);
@@ -52,9 +60,10 @@ public class Player : MonoBehaviour
         PlayerController playerCtrl = GetComponent<PlayerController>();
         playerCtrl.SetCharacter(charBase);
 
-        if (gameplayUI)
+        if (gameplayUI.CanAddGameplayWidget(this))
         {
-            gameplayUI.AttachPlayerToWidget(this);
+            gameplayUI.InitializeWidgetForSingleGameObj(this.gameObject);
         }
+        gameplayUI.AttachPlayerToWidget(this);
     }
 }

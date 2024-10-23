@@ -9,14 +9,23 @@ using Random = UnityEngine.Random;
 
 public class FightManager : MonoBehaviour
 {
+    [Header("Spawn Info")]
     [SerializeField] private Transform[] spawnPositions;
     [SerializeField] private Transform respawnPosition;
     [SerializeField] private float respawnWait = 1.5f;
 
-    [Header("GameplayUI Info (test)")]
+    [Header("GameplayUI Info")]
     [SerializeField] private Transform canvasTransform;
     private GameplayUIManager _gameplayUI;
     [SerializeField] private GameObject gameplayUILayoutPrefab;
+
+    [Header("Camera Info")]
+    [SerializeField] private Transform battleCamSpawnPos;
+    [SerializeField] private GameObject battleCamPrefab;
+    private GameObject _battleCamObj;
+    private BattleCamera _battleCam;
+
+    public BattleCamera GetBattleCam() { return _battleCam; }
 
     private void Awake()
     {
@@ -24,10 +33,11 @@ public class FightManager : MonoBehaviour
         {
             RemoveDuplicateSpawnPositions();
         }
+        _battleCamObj = Instantiate(battleCamPrefab, battleCamSpawnPos.position, battleCamSpawnPos.rotation);
+        _battleCam = _battleCamObj.GetComponent<BattleCamera>();
     }
     private void Start()
     {
-        Debug.Log($"Spawn Positions Length: {spawnPositions.Length}");
         if (spawnPositions.Length < 0)
         {
             return;
@@ -35,23 +45,15 @@ public class FightManager : MonoBehaviour
         
         List<GameObject> playerList = GameManager.m_Instance.GetPlayers();
         List<Transform> spawnPosList = spawnPositions.ToList();
-        Debug.Log($"Player List Count: {playerList.Count}");
 
+        _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
         foreach (GameObject player in playerList) 
         {
             int randomSpawnIndex = Random.Range(0, spawnPosList.Count);
             Transform randomSpawnPos = spawnPosList[randomSpawnIndex];
             player.GetComponent<Player>().SpawnCharacter(randomSpawnPos, _gameplayUI);
-
             spawnPosList.RemoveAt(randomSpawnIndex);
-            //GameManager.m_Instance.GetGameplayUIManager().SpawnPlayerGameplaySlot(player);
         }
-        //GameManager.m_Instance.GetGameplayUIManager().InitializeGamePlayWidgets(playerList);
-
-        //GameManager.m_Instance.GetUIManager().SpawnGameplayUI();
-        //GameManager.m_Instance.GetUIManager().InitializeWidgetsForGameobjects(playerList);
-        _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
-        _gameplayUI.InitializeWidgetsForGameobjects(playerList);
     }
     private void RemoveDuplicateSpawnPositions()
     {

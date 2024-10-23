@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(DamageColliderComponent))]
 [RequireComponent(typeof(HealthComponent))]
 [RequireComponent(typeof(AttackComponent))]
-public class CharacterBase : MonoBehaviour, IAttackInterface
+public class CharacterBase : MonoBehaviour
 {
     private AttackComponent _attackComponent;
     private HealthComponent _healthComponent;
@@ -19,9 +19,8 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     PlayerController _playerController;
     Animator _animator;
     private static readonly int _speedId = Animator.StringToHash("Speed");
-    protected static readonly int _attack1Id = Animator.StringToHash("Attack1");
-    protected static readonly int _attack2Id = Animator.StringToHash("Attack2");
 
+    protected static readonly int _hitId = Animator.StringToHash("Hit");
     protected static readonly int _deathId = Animator.StringToHash("Death");
 
 
@@ -35,10 +34,6 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
     private float _currentSpeed = 0f;
     [SerializeField] private float maxSpeed = 3f;//will probably have it changed in CharacterChild class
     [SerializeField] private float jumpHeight = 3f;
-
-    [Header("Attack Options")]
-    [SerializeField] AttackInfo attack1;
-    [SerializeField] AttackInfo attack2;
 
     GameObject _owner;
     public void SetOwner(GameObject owner) { _owner = owner; } //player will pass this in on spawn
@@ -58,11 +53,15 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
         {
             _faceDirection = new Vector3(90, 0, 0);
         }
+        
     }
     private void Start()
     {
-        attack1.bIsAttackActive = false;
-        attack2.bIsAttackActive = false;
+        FightManager fightManager = GameManager.m_Instance.GetFightManager();
+        if (fightManager != null)
+        {
+            fightManager.GetBattleCam().AddToFollowObjects(this.gameObject);
+        }
     }
     private void FixedUpdate()
     {
@@ -81,14 +80,11 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
         }
     }
 
-    public void StartAttack1() 
+    public void HitReaction() 
     {
-        _attackComponent.AssignAttack(attack1, _attack1Id);
+        _animator.SetTrigger(_hitId);
     }
-    public void StartAttack2() 
-    {
-        _attackComponent.AssignAttack(attack2, _attack2Id);
-    }
+
     private void StartDeath() 
     {
         _animator.SetTrigger(_deathId);
@@ -98,7 +94,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
         Player player = _owner.GetComponent<Player>();
         if (!player)
         {
-            
+            return;
         }
         player.RemoveLife();//probably move into health component or something?
 
@@ -108,6 +104,7 @@ public class CharacterBase : MonoBehaviour, IAttackInterface
             return;
         }
         fightManager.StartRespawnDelay(player);
+        fightManager.GetBattleCam().RemoveFromFollowObjects(this.gameObject);
         Destroy(gameObject);
     }
 }

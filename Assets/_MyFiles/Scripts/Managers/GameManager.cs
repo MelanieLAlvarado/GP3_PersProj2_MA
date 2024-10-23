@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public void AddPlayer(GameObject player)
     {
         _players.Add(player);
+        Debug.Log($"Player, {player.name}");
         //OnPlayerCountChanged?.Invoke();
     }
     public GameObject GetPlayerHolder() { return _playerHolder; }
@@ -81,10 +82,9 @@ public class GameManager : MonoBehaviour
             }
             _players = playersInHolder;
         }
-        if (_players.Count <= 0 && playerPrefab) //if there are no players in the scene (players have DontDestroyOnLoad)
+        if (_players.Count <= 0 && playerPrefab != null) //if there are no players in the scene (players have DontDestroyOnLoad)
         {
             GameObject player1 = Instantiate(playerPrefab);
-            _players.Add(player1);
             player1.transform.SetParent(_playerHolder.transform);
         }
     }

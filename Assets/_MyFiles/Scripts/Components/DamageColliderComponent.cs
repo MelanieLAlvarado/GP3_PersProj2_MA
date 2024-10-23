@@ -3,21 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
-[Serializable]
-public struct AttackInfo
-{
-    public EAttackShapeType attackShape;
-    public Transform origin; //get postition off of this
-    /*[SerializeField]*/
-    public Vector3 attackEnd;//attack end
-    public float radius; //capsules and spheres
-    public float rangeLength; //for capsules
-    /*[SerializeField]*/
-    private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
 
-    public float damageDealt;
-    public bool bIsAttackActive;
-}
 
 public enum EAttackShapeType { Sphere, Capsule, Box}
 

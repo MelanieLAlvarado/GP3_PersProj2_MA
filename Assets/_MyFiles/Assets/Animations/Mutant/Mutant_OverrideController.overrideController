@@ -7,7 +7,7 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mutant_OverrideController
-  m_Controller: {fileID: 9100000, guid: 3f466e3250cbd714292a3f16569fd0ee, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1e3346949824e914e826420a1306c7df, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: -203655887218126122, guid: 32d52ad587a392144bb6bd1e19bf8574, type: 3}
     m_OverrideClip: {fileID: -203655887218126122, guid: 41d883b003771b54b91cfc2afc4dadad, type: 3}
@@ -21,3 +21,5 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: -203655887218126122, guid: 145b8046422f545478cb1adce8bf338e, type: 3}
   - m_OriginalClip: {fileID: -203655887218126122, guid: e42ef0f9f2c1b224882c1c319290f5a4, type: 3}
     m_OverrideClip: {fileID: -203655887218126122, guid: 32aa4a3bf9761ba4795651705f915d89, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: a7bb2053ef755de4fb02ffa537517226, type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: b31c3f4dd19c49c43b160364f8899617, type: 3}

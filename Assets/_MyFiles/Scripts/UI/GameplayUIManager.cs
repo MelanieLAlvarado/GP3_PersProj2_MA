@@ -5,6 +5,7 @@ public class GameplayUIManager : LayoutGroupWidget
 {
     private Dictionary<Player, Widget> _gameplaySlots = new Dictionary<Player, Widget>();
 
+    public bool CanAddGameplayWidget(Player player) { return !_gameplaySlots.ContainsKey(player); }
     public void DisconnectPlayerFromWidget(Player player) 
     {
         player.OnPlayerDead -= DisconnectPlayerFromWidget;
@@ -33,20 +34,34 @@ public class GameplayUIManager : LayoutGroupWidget
     public override void InitializeWidget(GameObject connectedObj, Widget widget) 
     {
         Player player = connectedObj.GetComponent<Player>();
+        if (!player)
+        {
+            Debug.LogError("There is no Player Scripts on this Object!");
+            return;
+        }    
+
         CharacterScriptable character = player.GetCharacter();
-
-
         GameplayCharacterSlotWidget gameSlotUI = widget.GetComponent<GameplayCharacterSlotWidget>();
-        gameSlotUI.SetCharacterInSlot(character);
+        if (!gameSlotUI || !character)
+        {
+            Debug.LogError("There is no CharacterScriptable on this Object (or) a widget!");
 
+            return;
+        }
+
+        gameSlotUI.SetCharacterInSlot(character);
         gameSlotUI.SetPlayerNameText(player.GetPlayerName());
 
         GameObject currentChar = player.GetCurrentFightingCharacter();
-        if (!currentChar.GetComponent<HealthComponent>())
+        if (!currentChar)
         {
+            Debug.LogError("There is no character GameObjcet on this Object!");
             return;
         }
-        _gameplaySlots.Add(player, widget);
+        if (!_gameplaySlots.ContainsKey(player)) 
+        {
+            _gameplaySlots.Add(player, widget);
+        }
 
         HealthComponent healthComponent = currentChar.GetComponent<HealthComponent>();
         if (healthComponent)

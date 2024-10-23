@@ -18,5 +18,10 @@ public class DamageComponent : MonoBehaviour
         {
             _healthComponent.ChangeHealth(-damageToDeal, this.gameObject);
         }
+        CharacterBase charBase = target.GetComponent<CharacterBase>();
+        if (charBase) 
+        {
+            charBase.HitReaction();
+        }
     }
 }
