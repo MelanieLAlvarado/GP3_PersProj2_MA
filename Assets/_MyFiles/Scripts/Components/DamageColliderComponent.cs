@@ -18,7 +18,7 @@ public class DamageColliderComponent : DamageComponent
             Debug.LogError("No Origin point! please check attack info...");
             return;
         }
-
+        //Physics.SphereCast()
         switch (attack.attackShape) 
         {
             case EAttackShapeType.Sphere:

@@ -13,7 +13,7 @@ public class LayoutGroupWidget : MonoBehaviour
     private List<CharacterScriptable> _charactersInSlots = new List<CharacterScriptable>();
 
     public List<Widget> GetLayoutWidgets() { return _layoutWidgets; }
-    public void InitializeWidgetsForGameobjects(List<GameObject> connectedObjects)
+    /*public void InitializeWidgetsForGameobjects(List<GameObject> connectedObjects)
     {
         if (!widgetPrefab)
         { return; }
@@ -21,7 +21,7 @@ public class LayoutGroupWidget : MonoBehaviour
         {
             InitializeWidgetForSingleGameObj(connectedObj);
         }
-    }
+    }*/
     public void InitializeWidgetForSingleGameObj(GameObject connectedObj) 
     {
         Widget widget = SpawnWidget();

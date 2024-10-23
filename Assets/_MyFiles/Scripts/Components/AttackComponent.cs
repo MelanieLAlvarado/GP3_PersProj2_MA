@@ -34,6 +34,12 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     protected static readonly int _attack1Id = Animator.StringToHash("Attack1");
     protected static readonly int _attack2Id = Animator.StringToHash("Attack2");
 
+    //DEbug
+    [Header("DEbug CAst")]
+    private RaycastHit _raycastHit;
+    [SerializeField] private float sphereCastRadius = 12.0f;
+    Vector3 _castPos;
+
     private void Awake()
     {
         _damageColliderComponent = GetComponent<DamageColliderComponent>();
@@ -64,7 +70,35 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     public void Attack() //attack physics will spawn (in Animation Events)
     {
         _currentAttack.bIsAttackActive = true;
+
+        //DEbug
+        /*Ray ray = new Ray(_currentAttack.origin.position, _currentAttack.origin.forward);
+        if (Physics.SphereCast(ray, sphereCastRadius, out _raycastHit))
+        {
+            GameObject sphereGameObj = _raycastHit.transform.gameObject;
+            _castPos = sphereGameObj.transform.position;
+            Debug.Log($"{_castPos.x}, {_castPos.y}, {_castPos.z}");
+        }
+        Debug.Log("CastDone");*/
+
+        /*SphereCollider sphereCollider = this.gameObject.AddComponent<SphereCollider>();
+        sphereCollider.isTrigger = true;
+        Collider collider = sphereCollider;*/
+
+        // IN DAMAGE COLLIDER
+        /* SetCollider(Collider colliderToSet)
+         * private void OnTriggerEnter(Collider other)
+         * {
+         *      if (other.GetComponent<BaseCharacter>())
+         *      {
+         *          _damageColliderComponent.ProcessAttackType(_currentAttack);
+         *      }
+         * }*/
+        /* 
+            ProcessHitObjects(other);
+         */
     }
+
     public void AssignAttack(AttackInfo attack, int animationId)
     {
         if (_animator && _bCanAttack == true)
@@ -101,6 +135,15 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
         {
             return;
         }
+
+        //DEbug
+        /*Gizmos.color = Color.red;
+        
+        Gizmos.DrawWireSphere(_castPos, sphereCastRadius);*/
+        //Gizmos.DrawWireSphere(_castPos, sphereCastRadius);
+
+
+
         switch (_currentAttack.attackShape)
         {
             case EAttackShapeType.Sphere:
