@@ -140,6 +140,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0bad31a2-1b94-44b4-a82d-19a9d7056964
     m_ActionName: 'Player/Pause[/Keyboard/escape,/Keyboard/p]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1370688239859767808}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: TriggerHalfKeyboardAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 45f4988a-aa73-46a5-90c4-653317cc12fb
+    m_ActionName: 'Player/ToggleSecondPlayer[/Keyboard/enter,/Keyboard/numpadEnter]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: KeyboardFull
   m_DefaultActionMap: Player

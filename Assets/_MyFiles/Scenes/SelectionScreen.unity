@@ -1862,6 +1862,7 @@ MonoBehaviour:
     rangeLength: 0
     damageDealt: 0
     bIsAttackActive: 0
+  sphereCastRadius: 12
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -37,6 +37,16 @@ public class SceneLoader : MonoBehaviour
     public int GetSelectionSceneIndex() {  return selectionSceneInt; }
     public int GetFightSceneIndex() { return fightSceneInt; }
 
+    public bool IsSelectionScreenScene() 
+    {
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        if (currentScene == selectionSceneInt)
+        { 
+            return true;
+        }
+        return false;
+    }
+
     public void OpenMainMenu()
     {
         OpenScene(mainMenuSceneInt);

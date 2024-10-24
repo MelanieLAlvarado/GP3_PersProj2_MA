@@ -5,11 +5,12 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class LayoutGroupWidget : MonoBehaviour
+public class LayoutGroupWidget : Widget
 {
     [Header("LayoutGroup Info")]
     [SerializeField] private GameObject widgetPrefab;
     List<Widget> _layoutWidgets = new List<Widget>();
+    protected Dictionary<Player, Widget> _widgetDictionary = new Dictionary<Player, Widget>();
     private List<CharacterScriptable> _charactersInSlots = new List<CharacterScriptable>();
 
     public List<Widget> GetLayoutWidgets() { return _layoutWidgets; }
@@ -22,12 +23,16 @@ public class LayoutGroupWidget : MonoBehaviour
             InitializeWidgetForSingleGameObj(connectedObj);
         }
     }*/
-    public void InitializeWidgetForSingleGameObj(GameObject connectedObj) 
+    public void InitializeWidgetForPlayer(Player player) 
     {
         Widget widget = SpawnWidget();
-        widget.SetOwner(connectedObj);
-        Debug.Log($"Obj = {connectedObj.name}; widget = {widget.name}");
-        InitializeWidget(connectedObj, widget);
+        widget.SetOwner(player.gameObject);
+
+        _widgetDictionary.Add(player, widget);
+        player.OnPlayerRemoved += DisconnectPlayerFromWidget;
+
+        Debug.Log($"Obj = {player.name}; widget = {widget.name}");
+        InitializeWidget(player.gameObject, widget);
     }
 
     public void InitializeWidgetsForCharacters(CharacterScriptable[] characters)
@@ -56,5 +61,23 @@ public class LayoutGroupWidget : MonoBehaviour
     {
         //overridden in child class if all widgets need something additional
     }
+    public void DisconnectPlayerFromWidget(Player player)
+    {
+        Debug.Log("Removing Player from widget");
+        Widget widget = _widgetDictionary[player];
+        if (!widget)
+        { return; }
+        _layoutWidgets.Remove(widget);
+        _widgetDictionary.Remove(player);
 
+        GameplayCharacterSlotWidget gameSlotUI = widget.GetComponent<GameplayCharacterSlotWidget>();
+        GameObject currentChar = player.GetCurrentFightingCharacter();
+        if (gameSlotUI != null && currentChar != null)
+        { 
+            currentChar.GetComponent<HealthComponent>().OnHealthChanged -= gameSlotUI.UpdateHealthText;
+        }
+
+        //player.OnPlayerRemoved -= DisconnectPlayerFromWidget;
+        Destroy(widget.gameObject);
+    }
 }

@@ -3,12 +3,11 @@ using UnityEngine.InputSystem;
 using static FightManager;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-[RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
 {
     public delegate void OnPlayerChangedDelegate(Player player);
-    public event OnPlayerChangedDelegate OnPlayerDead;
+    public event OnPlayerChangedDelegate OnPlayerRemoved;
 
     [Header("Player Info")]
     private string _playerName;
@@ -46,8 +45,8 @@ public class Player : MonoBehaviour
     }
     public void SpawnCharacter(Transform spawnPosition, GameplayUIManager gameplayUI)
     {
-        Debug.Log($"Spawning Character... for {_playerName}");
-        Debug.Log($"Widget spawning on {gameplayUI.name}");
+        /*Debug.Log($"Spawning Character... for {_playerName}");
+        Debug.Log($"Widget spawning on {gameplayUI.name}");*/
         if (!_characterScriptable)
         {
             Debug.LogError($"There is no CharacterScriptable on the player {this.gameObject.name}");
@@ -59,12 +58,22 @@ public class Player : MonoBehaviour
         charBase.SetOwner(gameObject);
 
         PlayerController playerCtrl = GetComponent<PlayerController>();
-        playerCtrl.SetCharacter(charBase);
+        playerCtrl.SetControlledCharacter(charBase);
 
         if (gameplayUI.CanAddGameplayWidget(this))
         {
-            gameplayUI.InitializeWidgetForSingleGameObj(this.gameObject);
+            gameplayUI.InitializeWidgetForPlayer(this);
         }
         gameplayUI.AttachPlayerToWidget(this);
+    }
+
+    public void RemoveFromGame() 
+    {
+        OnPlayerRemoved?.Invoke(this);
+        if (_currentCharacter)
+        {
+            Destroy(_currentCharacter);
+        }
+        Destroy(gameObject);
     }
 }

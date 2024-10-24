@@ -15,8 +15,6 @@ public class SelectionUIManager : MonoBehaviour
     [Header("Character Selections Info")]
     [SerializeField] private CharacterScriptable[] Characters;
 
-    [Header("Player Selection Info")]//should not be shown in inspector
-    private List<PlayerSelectionWidget> _playerSelections = new List<PlayerSelectionWidget>();
     public void SpawnPlayerSelectionUI(GameObject player) 
     {
         if (!playerSelectionLayoutUIPrefab) { return; }
@@ -24,28 +22,23 @@ public class SelectionUIManager : MonoBehaviour
         if (!_playerSelectionUI)
         {
             _playerSelectionUI = Instantiate(playerSelectionLayoutUIPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
+            _playerSelectionUI.SetOwner(gameObject);
         }
-        Widget widget = _playerSelectionUI.SpawnWidget();
-        widget.SetOwner(player);
-
-        PlayerSelectionWidget playerSelection = widget.GetComponent<PlayerSelectionWidget>();
-        if (playerSelection)
-        { 
-            _playerSelections.Add(playerSelection);
-        }
+        _playerSelectionUI.InitializeWidgetForPlayer(player.GetComponent<Player>());//change later
     }
     private void Awake()
     {
         if (!selectionLayoutUIPrefab) { return; }
 
         _selectionUI = Instantiate(selectionLayoutUIPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
-        _selectionUI.GetComponent<LayoutGroupWidget>().InitializeWidgetsForCharacters(Characters);
+        _selectionUI.InitializeWidgetsForCharacters(Characters);
+        _selectionUI.SetOwner(gameObject);
         //GameManager.m_Instance.OnPlayerCountChanged += UpdateFightButton;
 
     }
     private void Start()
     {
-        if (!_playerSelectionUI || _playerSelections.Count <= 0)
+        if (!_playerSelectionUI || _playerSelectionUI.GetLayoutWidgets().Count <= 0)
         {
             List<GameObject> playersAvailable = GameManager.m_Instance.GetPlayers();
             foreach (GameObject player in playersAvailable)

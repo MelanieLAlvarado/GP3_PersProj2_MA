@@ -54,6 +54,7 @@ public class FightManager : MonoBehaviour
         List<Transform> spawnPosList = spawnPositions.ToList();
 
         _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
+        _gameplayUI.SetOwner(gameObject);
         foreach (GameObject player in playerList) 
         {
             int randomSpawnIndex = Random.Range(0, spawnPosList.Count);

@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
@@ -22,7 +24,8 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Player Info")]
-    
+    private bool _keyboardSoloPlayer = true;
+
     [SerializeField] private string playerHolderName = "PlayerHolder";
     GameObject _playerHolder;
     [SerializeField] private GameObject playerPrefab;
@@ -82,13 +85,38 @@ public class GameManager : MonoBehaviour
             }
             _players = playersInHolder;
         }
-        if (_players.Count <= 0 && playerPrefab != null) //if there are no players in the scene (players have DontDestroyOnLoad)
+        if (_players.Count <= 0 && playerPrefab != null) ///if there are no players in the scene (players have DontDestroyOnLoad)
         {
             GameObject player1 = Instantiate(playerPrefab);
             player1.transform.SetParent(_playerHolder.transform);
         }
+        Debug.Log(_players.Count);
     }
+    public void ProcessKeyboardPlayers(PlayerInput triggeredPlayerInput, string leftScheme, string rightScheme)
+    {
+        if (!_sceneLoader.IsSelectionScreenScene()) { return; } 
 
+        if (_keyboardSoloPlayer)
+        {
+            GameObject player = Instantiate(playerPrefab);
+            player.transform.SetParent(_playerHolder.transform);
+            PlayerInput spawnPlayerInput = player.GetComponent<PlayerInput>();
+
+
+            InputUser.PerformPairingWithDevice(Keyboard.current, triggeredPlayerInput.user);
+            triggeredPlayerInput.user.ActivateControlScheme(leftScheme);
+
+            InputUser.PerformPairingWithDevice(Keyboard.current, spawnPlayerInput.user);
+            spawnPlayerInput.user.ActivateControlScheme(rightScheme);
+            _keyboardSoloPlayer = !_keyboardSoloPlayer;
+        }
+        else if (triggeredPlayerInput.currentControlScheme == rightScheme)
+        {
+            Player player = triggeredPlayerInput.GetComponent<Player>();
+            player.RemoveFromGame();
+            _keyboardSoloPlayer = !_keyboardSoloPlayer;
+        }
+    }
     /*private void AddRequiredManagers() //WIP - Dependent on build index
     {
         int currentSceneInt = _sceneLoader.GetCurrentSceneIndex();

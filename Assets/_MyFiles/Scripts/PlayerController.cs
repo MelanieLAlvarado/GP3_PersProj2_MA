@@ -1,13 +1,21 @@
 using System;
+using Unity.VisualScripting;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.UI.GridLayoutGroup;
 
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
     public delegate void TriggerPauseDelegate();
     public event TriggerPauseDelegate OnPauseTriggered;
+
+    PlayerInput _inputAction;
+    protected static string _keyboardFullScheme = "KeyboardFull";
+    protected static string _keyboardLeftScheme = "KeyboardLeft";
+    protected static string _keyboardRightScheme = "KeyboardRight";
+    protected static string _controllerScheme = "Controller";
 
     private CharacterBase _characterBase;
     private PlayerInputActions _playerInputActions;
@@ -23,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private bool _bIsGrounded;
     private float _gravity = -9.81f;
     public float GetCurrentSpeed() { return _currentSpeed; }
-    public void SetCharacter(CharacterBase characterBase) 
+    public void SetControlledCharacter(CharacterBase characterBase) 
     {
         _characterBase = characterBase;
         _characterController = _characterBase.GetComponent<CharacterController>();
@@ -34,6 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Enable();
+        _inputAction = GetComponent<PlayerInput>();
     }
     private void Update()
     {
@@ -75,6 +84,7 @@ public class PlayerController : MonoBehaviour
         }
         _characterController.Move(Time.deltaTime * _playerVelocity);
     }
+
     public void JumpAction(InputAction.CallbackContext context) 
     {
         if (context.started && _bIsGrounded) 
@@ -91,6 +101,14 @@ public class PlayerController : MonoBehaviour
             { 
                 OnPauseTriggered?.Invoke();
             }
+        }
+    }
+    public void TriggerHalfKeyboardAction(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            //determine when to change the schen through a bool
+            GameManager.m_Instance.ProcessKeyboardPlayers(_inputAction, _keyboardLeftScheme, _keyboardRightScheme);
         }
     }
 
