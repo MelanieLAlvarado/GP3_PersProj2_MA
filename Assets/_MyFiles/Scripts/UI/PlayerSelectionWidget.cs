@@ -29,6 +29,13 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
             SetCharacterInSlot(charScriptObj);
             GetOwner().GetComponent<Player>().SetCharacter(charScriptObj);
         }
+
+        SelectionUIManager selectManager = GetOwner().GetComponent<SelectionUIManager>();
+        if (selectManager)
+        {
+            selectManager.GetDragCursor().SetDragIcon(null);
+            selectManager.GetDragCursor().SetIconVisibility(false);
+        }
     }
     public void ReadPlayerName(string name) 
     {

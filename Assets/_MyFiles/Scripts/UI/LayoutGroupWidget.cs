@@ -48,6 +48,7 @@ public class LayoutGroupWidget : Widget
             _charactersInSlots.Add(character);
 
             SelectCharacterSlotWidget charSlot = SpawnWidget().GetComponent<SelectCharacterSlotWidget>();
+            SetOwner(gameObject);
             charSlot.SetCharacterInSlot(character);
         }
     }

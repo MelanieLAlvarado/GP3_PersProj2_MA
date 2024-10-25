@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public delegate void TriggerPauseDelegate();
     public event TriggerPauseDelegate OnPauseTriggered;
 
-    PlayerInput _inputAction;
+    PlayerInput _playerInput;
     protected static string _keyboardFullScheme = "KeyboardFull";
     protected static string _keyboardLeftScheme = "KeyboardLeft";
     protected static string _keyboardRightScheme = "KeyboardRight";
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Enable();
-        _inputAction = GetComponent<PlayerInput>();
+        _playerInput = GetComponent<PlayerInput>();
     }
     private void Update()
     {
@@ -58,9 +58,14 @@ public class PlayerController : MonoBehaviour
     private void ProcessMovement() 
     {
         if (!_characterController) { return; }
+        //Debug This (Won't swap control scheme, is checking all schemes)
+        /*if (_playerInput.currentControlScheme == _keyboardRightScheme)
+        { 
+            
+        }*/
 
-        Vector2 rawInput = _playerInputActions.Player.Move.ReadValue<Vector2>(); //will change later to be more optimized
-        
+        Vector2 rawInput = _playerInputActions.Player.Move.ReadValue<Vector2>(); //Debug; will read all schemes!!
+
         Vector3 movementVal = new Vector3(/*_moveInput.x*/ rawInput.x, 0, 0);
         Vector3 moveInDir= transform.TransformDirection(movementVal);
         if (moveInDir.normalized.x != 0)
@@ -108,7 +113,7 @@ public class PlayerController : MonoBehaviour
         if (context.started)
         {
             //determine when to change the schen through a bool
-            GameManager.m_Instance.ProcessKeyboardPlayers(_inputAction, _keyboardLeftScheme, _keyboardRightScheme);
+            GameManager.m_Instance.ProcessKeyboardPlayers(_playerInput, _keyboardLeftScheme, _keyboardRightScheme);
         }
     }
 

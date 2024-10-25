@@ -1553,6 +1553,7 @@ MonoBehaviour:
   selectionLayoutUIPrefab: {fileID: 3912181883896904524, guid: 9bf11e25ff8848b448a2ec13a2c4fca3, type: 3}
   playerSelectionLayoutUIPrefab: {fileID: 3344104798295737248, guid: 7e51fc826fac65240a77f56c92bc58ab, type: 3}
   fightButton: {fileID: 635464870}
+  dragCursorPrefab: {fileID: 4777789389970086389, guid: 0981c480882577f49bf7732f7bf959e9, type: 3}
   Characters:
   - {fileID: 11400000, guid: 18a7ab3f7fd468f4d9058f98474168c2, type: 2}
   - {fileID: 11400000, guid: 18a7ab3f7fd468f4d9058f98474168c2, type: 2}

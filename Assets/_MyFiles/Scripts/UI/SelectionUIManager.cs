@@ -12,9 +12,13 @@ public class SelectionUIManager : MonoBehaviour
     private LayoutGroupWidget _playerSelectionUI;
     [SerializeField] private GameObject fightButton;
 
+    [SerializeField] private GameObject dragCursorPrefab;
+    private CanvasCursor _dragCursor;
+
     [Header("Character Selections Info")]
     [SerializeField] private CharacterScriptable[] Characters;
 
+    public CanvasCursor GetDragCursor() { return _dragCursor; }
     public void SpawnPlayerSelectionUI(GameObject player) 
     {
         if (!playerSelectionLayoutUIPrefab) { return; }
@@ -34,7 +38,7 @@ public class SelectionUIManager : MonoBehaviour
         _selectionUI.InitializeWidgetsForCharacters(Characters);
         _selectionUI.SetOwner(gameObject);
         //GameManager.m_Instance.OnPlayerCountChanged += UpdateFightButton;
-
+        _dragCursor = Instantiate(dragCursorPrefab, canvasTransform).GetComponent<CanvasCursor>();
     }
     private void Start()
     {
