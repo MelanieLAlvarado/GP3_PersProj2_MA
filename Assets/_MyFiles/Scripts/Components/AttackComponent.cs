@@ -71,6 +71,7 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         _currentAttack.bIsAttackActive = true;
 
+        //_damageColliderComponent.AssignShape(_currentAttack);
         //DEbug
         /*Ray ray = new Ray(_currentAttack.origin.position, _currentAttack.origin.forward);
         if (Physics.SphereCast(ray, sphereCastRadius, out _raycastHit))
@@ -80,6 +81,7 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
             Debug.Log($"{_castPos.x}, {_castPos.y}, {_castPos.z}");
         }
         Debug.Log("CastDone");*/
+
 
         /*SphereCollider sphereCollider = this.gameObject.AddComponent<SphereCollider>();
         sphereCollider.isTrigger = true;
@@ -117,6 +119,7 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         _currentAttack.bIsAttackActive = false;
         _damageColliderComponent.ClearHitTargets();
+        //_damageColliderComponent.ClearAttack();
     }
     public void ResetAttack() //attack ability is reinstated (in Animation Events)
     {

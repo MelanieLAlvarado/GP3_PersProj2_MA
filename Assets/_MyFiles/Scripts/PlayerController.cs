@@ -38,6 +38,10 @@ public class PlayerController : MonoBehaviour
         _moveSpeed = characterBase.GetMaxSpeed();
         _moveSpeed = characterBase.GetJumpHeight();
     }
+    public void DisablePlayerInputActions() 
+    { 
+        _playerInputActions.Disable(); 
+    }
     private void Start()
     {
         _playerInputActions = new PlayerInputActions();

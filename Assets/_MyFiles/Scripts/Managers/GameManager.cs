@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Player Info")]
-    private bool _keyboardSoloPlayer = true;
+    private bool _keyboardSoloPlayer = true; //need to debug this because gamemanager is currently destroying itself!!
 
     [SerializeField] private string playerHolderName = "PlayerHolder";
     GameObject _playerHolder;

@@ -78,7 +78,7 @@ public class LayoutGroupWidget : Widget
             currentChar.GetComponent<HealthComponent>().OnHealthChanged -= gameSlotUI.UpdateHealthText;
         }
 
-        //player.OnPlayerRemoved -= DisconnectPlayerFromWidget;
+        player.OnPlayerRemoved -= DisconnectPlayerFromWidget;
         Destroy(widget.gameObject);
     }
 }

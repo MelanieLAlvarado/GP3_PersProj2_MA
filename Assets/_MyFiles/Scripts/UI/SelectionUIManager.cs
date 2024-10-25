@@ -38,7 +38,6 @@ public class SelectionUIManager : MonoBehaviour
         _selectionUI.InitializeWidgetsForCharacters(Characters);
         _selectionUI.SetOwner(gameObject);
         //GameManager.m_Instance.OnPlayerCountChanged += UpdateFightButton;
-        _dragCursor = Instantiate(dragCursorPrefab, canvasTransform).GetComponent<CanvasCursor>();
     }
     private void Start()
     {
@@ -50,6 +49,7 @@ public class SelectionUIManager : MonoBehaviour
                 SpawnPlayerSelectionUI(player);
             }
         }
+        _dragCursor = Instantiate(dragCursorPrefab, canvasTransform).GetComponent<CanvasCursor>();
     }
     private void Update() //change to delegates?
     {
