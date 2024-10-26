@@ -81,8 +81,8 @@ public class DamageColliderComponent : DamageComponent
             sphereAttack.radius = attack.radius;
             sphereAttack.isTrigger = true;
             _attackCollider = sphereAttack;
-
             
+                //Physics.SphereCast
         }
         else if (attack.attackShape == EAttackShapeType.Capsule)
         {

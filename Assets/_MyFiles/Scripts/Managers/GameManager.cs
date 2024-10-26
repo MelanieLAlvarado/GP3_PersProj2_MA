@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
@@ -39,12 +41,14 @@ public class GameManager : MonoBehaviour
     }
     public GameObject GetPlayerHolder() { return _playerHolder; }
     public Camera GetMainCamera() { return _mainCamera; }
-
+    public SceneLoader GetSceneLoader() { return _sceneLoader; }
     public SelectionUIManager GetSelectUIManager() { return _selectionUIManager; }
     public FightManager GetFightManager() { return _fightManager; }
     public GameplayUIManager GetGameplayUIManager() { return _gameplayUIManager; }
     private void Awake()
     {
+        SceneManager.sceneLoaded += ProcessLoadedScene;
+        
         if (m_Instance != null && m_Instance != this)
         {
             Debug.LogError("Multiple GameManagers found. Deleting Copy...");
@@ -57,6 +61,12 @@ public class GameManager : MonoBehaviour
         GatherManagers();
         CheckPresentPlayers();
     }
+
+    private void ProcessLoadedScene(Scene scene, LoadSceneMode sceneMode)
+    {
+        Debug.Log(scene.buildIndex);
+    }
+
     private void Start()
     {
         _mainCamera = Camera.main;

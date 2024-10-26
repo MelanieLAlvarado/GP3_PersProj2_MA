@@ -19,7 +19,8 @@ public class FightManager : MonoBehaviour
     private GameplayUIManager _gameplayUI;
     [SerializeField] private GameObject gameplayUILayoutPrefab;
 
-    [SerializeField] private GameObject pauseMenuUI;//may spawn later
+    [SerializeField] private GameObject pauseMenuPrefab;//may spawn later
+    private GameObject pauseMenuUI;//may spawn later
     private bool _isPaused = false;
 
     [Header("Camera Info")]
@@ -32,6 +33,7 @@ public class FightManager : MonoBehaviour
 
     private void Awake()
     {
+        pauseMenuUI = Instantiate(pauseMenuPrefab, canvasTransform);
         if (pauseMenuUI)
         { 
             ResumeGame();

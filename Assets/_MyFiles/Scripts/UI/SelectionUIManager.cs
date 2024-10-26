@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectionUIManager : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class SelectionUIManager : MonoBehaviour
     private LayoutGroupWidget _selectionUI;
     [SerializeField] private GameObject playerSelectionLayoutUIPrefab;
     private LayoutGroupWidget _playerSelectionUI;
-    [SerializeField] private GameObject fightButton;
+    [SerializeField] private GameObject fightButtonPrefab;
+    private Button _fightButton;
 
     [SerializeField] private GameObject dragCursorPrefab;
     private CanvasCursor _dragCursor;
@@ -49,6 +51,9 @@ public class SelectionUIManager : MonoBehaviour
                 SpawnPlayerSelectionUI(player);
             }
         }
+        //m_OnClick.m_PersistentCalls.m_Calls
+        CreateFightButton();
+
         _dragCursor = Instantiate(dragCursorPrefab, canvasTransform).GetComponent<CanvasCursor>();
     }
     private void Update() //change to delegates?
@@ -57,6 +62,17 @@ public class SelectionUIManager : MonoBehaviour
         //check if players all have their pick, then reveal fight button.
         UpdateFightButton();
     }
+    private void CreateFightButton() 
+    {
+        _fightButton = Instantiate(fightButtonPrefab, canvasTransform).GetComponent<Button>();
+
+        SceneLoader sceneLoader = GameManager.m_Instance.GetSceneLoader();
+
+        Button fightbtn = _fightButton;
+        fightbtn.onClick.AddListener(delegate { sceneLoader.OpenFightScene(); });
+        _fightButton.gameObject.SetActive(false);
+    }
+
     private void UpdateFightButton() 
     {
         if (_playerSelectionUI.GetLayoutWidgets().Count < 0) { return; }
@@ -66,10 +82,10 @@ public class SelectionUIManager : MonoBehaviour
             PlayerSelectionWidget playerSelection = widget.GetComponent<PlayerSelectionWidget>();
             if (playerSelection && playerSelection.GetCharacterProfile() == null)
             {
-                fightButton.SetActive(false);
+                _fightButton.gameObject.SetActive(false);
                 return;
             }
         }
-        fightButton.SetActive(true);
+        _fightButton.gameObject.SetActive(true);
     }
 }

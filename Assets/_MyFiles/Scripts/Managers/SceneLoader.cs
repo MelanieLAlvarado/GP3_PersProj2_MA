@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -66,6 +67,7 @@ public class SceneLoader : MonoBehaviour
     }
     public void Quit() 
     {
+        Debug.Log("Quit");
         Application.Quit();
     }
 }
