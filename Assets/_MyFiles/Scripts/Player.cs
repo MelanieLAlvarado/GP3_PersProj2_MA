@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
         SelectionUIManager selectUIManager = GameManager.m_Instance.GetSelectUIManager();
         if (selectUIManager)
         { 
-            selectUIManager.SpawnPlayerSelectionUI(this.gameObject);
+            selectUIManager.SpawnPlayerSelectionWidget(this.gameObject);
         }
     }
     public GameObject GetCurrentFightingCharacter() { return _currentCharacter; }

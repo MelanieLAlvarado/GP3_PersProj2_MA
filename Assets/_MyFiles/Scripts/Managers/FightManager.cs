@@ -33,9 +33,18 @@ public class FightManager : MonoBehaviour
 
     private void Awake()
     {
+        PrepareFightNecessities();
+    }
+    private void Start()
+    {
+        SetUpFight();
+    }
+
+    private void PrepareFightNecessities()
+    {
         pauseMenuUI = Instantiate(pauseMenuPrefab, canvasTransform);
         if (pauseMenuUI)
-        { 
+        {
             ResumeGame();
         }
         if (spawnPositions.Length > 0)
@@ -45,19 +54,20 @@ public class FightManager : MonoBehaviour
         _battleCamObj = Instantiate(battleCamPrefab, battleCamSpawnPos.position, battleCamSpawnPos.rotation);
         _battleCam = _battleCamObj.GetComponent<BattleCamera>();
     }
-    private void Start()
+
+    private void SetUpFight() 
     {
         if (spawnPositions.Length < 0)
         {
             return;
         }
-        
+
         List<GameObject> playerList = GameManager.m_Instance.GetPlayers();
         List<Transform> spawnPosList = spawnPositions.ToList();
 
         _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
         _gameplayUI.SetOwner(gameObject);
-        foreach (GameObject player in playerList) 
+        foreach (GameObject player in playerList)
         {
             int randomSpawnIndex = Random.Range(0, spawnPosList.Count);
             Transform randomSpawnPos = spawnPosList[randomSpawnIndex];

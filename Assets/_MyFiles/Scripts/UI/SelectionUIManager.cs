@@ -21,7 +21,7 @@ public class SelectionUIManager : MonoBehaviour
     [SerializeField] private CharacterScriptable[] Characters;
 
     public CanvasCursor GetDragCursor() { return _dragCursor; }
-    public void SpawnPlayerSelectionUI(GameObject player) 
+    public void SpawnPlayerSelectionWidget(GameObject player) 
     {
         if (!playerSelectionLayoutUIPrefab) { return; }
 
@@ -43,14 +43,7 @@ public class SelectionUIManager : MonoBehaviour
     }
     private void Start()
     {
-        if (!_playerSelectionUI || _playerSelectionUI.GetLayoutWidgets().Count <= 0)
-        {
-            List<GameObject> playersAvailable = GameManager.m_Instance.GetPlayers();
-            foreach (GameObject player in playersAvailable)
-            {
-                SpawnPlayerSelectionUI(player);
-            }
-        }
+        SpawnPlayerSelectionLayout();
         //m_OnClick.m_PersistentCalls.m_Calls
         CreateFightButton();
 
@@ -60,7 +53,21 @@ public class SelectionUIManager : MonoBehaviour
     {
         //update player here instead of start (or through delegate events)
         //check if players all have their pick, then reveal fight button.
-        UpdateFightButton();
+        if (_fightButton)
+        { 
+            UpdateFightButton();
+        }
+    }
+    public void SpawnPlayerSelectionLayout() 
+    {
+        if (!_playerSelectionUI || _playerSelectionUI.GetLayoutWidgets().Count <= 0)
+        {
+            List<GameObject> playersAvailable = GameManager.m_Instance.GetPlayers();
+            foreach (GameObject player in playersAvailable)
+            {
+                SpawnPlayerSelectionWidget(player);
+            }
+        }
     }
     private void CreateFightButton() 
     {

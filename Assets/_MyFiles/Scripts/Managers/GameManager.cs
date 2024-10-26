@@ -26,7 +26,9 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Player Info")]
-    private bool _keyboardSoloPlayer = true; //need to debug this because gamemanager is currently destroying itself!!
+    DataHolder _dataHolder;
+    private string _dataHolderName = "DataHolder";
+    private bool _keyboardSoloPlayer; //need to debug this because gamemanager is currently destroying itself!!
 
     [SerializeField] private string playerHolderName = "PlayerHolder";
     GameObject _playerHolder;
@@ -48,7 +50,11 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         SceneManager.sceneLoaded += ProcessLoadedScene;
+        _dataHolder = GameObject.FindGameObjectWithTag(_dataHolderName).GetComponent<DataHolder>();
+        _keyboardSoloPlayer = _dataHolder.GetKeyboardSoloPlayer();
         
+        Debug.Log("AWAKE");
+
         if (m_Instance != null && m_Instance != this)
         {
             Debug.LogError("Multiple GameManagers found. Deleting Copy...");
@@ -64,12 +70,30 @@ public class GameManager : MonoBehaviour
 
     private void ProcessLoadedScene(Scene scene, LoadSceneMode sceneMode)
     {
-        Debug.Log(scene.buildIndex);
+        Debug.Log("Process Loaded Scene:" + scene.buildIndex);
+        /*if (scene.buildIndex == _sceneLoader.GetMainMenuSceneIndex())
+        { 
+            ///Main Menu Stuff Here...
+        }*/
+        if (scene.buildIndex == _sceneLoader.GetSelectionSceneIndex())
+        {
+            //_selectionUIManager.InitializeSelectionNecesities();
+        }
+        else if (scene.buildIndex == _sceneLoader.GetFightSceneIndex())
+        {
+            /*_fightManager.PrepareFightNecessities();
+            _fightManager.SetUpFight();*/
+        }
     }
 
     private void Start()
     {
+        Debug.Log("START");
         _mainCamera = Camera.main;
+    }
+    private void GatherGameNecesities() 
+    {
+        
     }
     private void GatherManagers() 
     {
@@ -126,6 +150,7 @@ public class GameManager : MonoBehaviour
             player.RemoveFromGame();
             _keyboardSoloPlayer = !_keyboardSoloPlayer;
         }
+        _dataHolder.SetKeyboardSoloPlayer(_keyboardSoloPlayer);
     }
     /*private void AddRequiredManagers() //WIP - Dependent on build index
     {
