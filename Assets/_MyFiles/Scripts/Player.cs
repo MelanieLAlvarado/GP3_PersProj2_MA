@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public delegate void OnPlayerChangedDelegate(Player player);
     public event OnPlayerChangedDelegate OnPlayerRemoved;
 
+    PlayerController _playerController;
     [Header("Player Info")]
     private string _playerName;
     private int _playerLifes = 3;
@@ -27,10 +28,11 @@ public class Player : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
         GameManager.m_Instance.AddPlayer(this.gameObject);
+        _playerController = GetComponent<PlayerController>();
         SelectionUIManager selectUIManager = GameManager.m_Instance.GetSelectUIManager();
         if (selectUIManager)
         { 
-            selectUIManager.SpawnPlayerSelectionUI(this.gameObject);
+            selectUIManager.SpawnPlayerSelectionWidget(this.gameObject);
         }
     }
     public GameObject GetCurrentFightingCharacter() { return _currentCharacter; }
@@ -57,8 +59,7 @@ public class Player : MonoBehaviour
         CharacterBase charBase = _currentCharacter.GetComponent<CharacterBase>();
         charBase.SetOwner(gameObject);
 
-        PlayerController playerCtrl = GetComponent<PlayerController>();
-        playerCtrl.SetControlledCharacter(charBase);
+        _playerController.SetControlledCharacter(charBase);
 
         if (gameplayUI.CanAddGameplayWidget(this))
         {
@@ -70,9 +71,13 @@ public class Player : MonoBehaviour
     public void RemoveFromGame() 
     {
         OnPlayerRemoved?.Invoke(this);
-        if (_currentCharacter)
+        if(_currentCharacter)
         {
             Destroy(_currentCharacter);
+        }
+        if (_playerController) 
+        {
+            _playerController.DisablePlayerInputActions();
         }
         Destroy(gameObject);
     }

@@ -331,7 +331,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";KeyboardFull;KeyboardLeft;KeyboardRight"",
+                    ""groups"": "";KeyboardFull;KeyboardLeft"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -342,7 +342,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";KeyboardFull;KeyboardRight;KeyboardLeft"",
+                    ""groups"": "";KeyboardFull;KeyboardLeft"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

@@ -10,6 +10,9 @@ public enum EAttackShapeType { Sphere, Capsule, Box}
 public class DamageColliderComponent : DamageComponent
 {
     private HashSet<GameObject> _hitTargets = new HashSet<GameObject>();
+    private Collider _attackCollider;
+
+
     public void ClearHitTargets() { _hitTargets.Clear(); }
     public void ProcessAttackType(AttackInfo attack) 
     {
@@ -68,4 +71,40 @@ public class DamageColliderComponent : DamageComponent
             }
         }
     }
+
+    //~~~D E B U G~~~
+    public void AssignShape(AttackInfo attack)
+    {
+        if (attack.attackShape == EAttackShapeType.Sphere)
+        { 
+            SphereCollider sphereAttack = attack.origin.gameObject.AddComponent<SphereCollider>();
+            sphereAttack.radius = attack.radius;
+            sphereAttack.isTrigger = true;
+            _attackCollider = sphereAttack;
+            
+                //Physics.SphereCast
+        }
+        else if (attack.attackShape == EAttackShapeType.Capsule)
+        {
+
+        }
+        else if (attack.attackShape == EAttackShapeType.Box)
+        { 
+            
+        }
+    }
+    public void ClearAttack() 
+    {
+        Destroy(_attackCollider);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        CharacterBase charBase = other.GetComponent<CharacterBase>();
+        if (charBase)
+        {
+            Debug.Log($"Hit {charBase.gameObject.name}");
+        }
+    }
+
 }

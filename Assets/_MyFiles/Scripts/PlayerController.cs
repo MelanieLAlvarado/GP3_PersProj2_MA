@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInputActions _playerInputActions;
     private CharacterController _characterController;
 
+    Vector2 _rawInput;
     private float _currentSpeed;
     private float _moveInput; //change to a Vector2 later???
     private float _moveSpeed = 3f;//will probably have it changed in CharacterChild class
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _playerVelocity;
     private bool _bIsGrounded;
     private float _gravity = -9.81f;
+
     public float GetCurrentSpeed() { return _currentSpeed; }
     public void SetControlledCharacter(CharacterBase characterBase) 
     {
@@ -37,6 +39,10 @@ public class PlayerController : MonoBehaviour
         _characterController = _characterBase.GetComponent<CharacterController>();
         _moveSpeed = characterBase.GetMaxSpeed();
         _moveSpeed = characterBase.GetJumpHeight();
+    }
+    public void DisablePlayerInputActions() 
+    { 
+        _playerInputActions.Disable(); 
     }
     private void Start()
     {
@@ -55,18 +61,18 @@ public class PlayerController : MonoBehaviour
         //Vector3 moveDirection = GameManager.m_Instance.GetMainCamera().InputToWorldDir();
         ProcessMovement();
     }
-    private void ProcessMovement() 
+    public void MovementAction(InputAction.CallbackContext context) //successfully sorts out control list... but no movement
+    {
+        if (context.started || context.canceled)
+        { 
+            _rawInput = context.ReadValue<Vector2>();
+        }
+    }
+    public void ProcessMovement() 
     {
         if (!_characterController) { return; }
-        //Debug This (Won't swap control scheme, is checking all schemes)
-        /*if (_playerInput.currentControlScheme == _keyboardRightScheme)
-        { 
-            
-        }*/
 
-        Vector2 rawInput = _playerInputActions.Player.Move.ReadValue<Vector2>(); //Debug; will read all schemes!!
-
-        Vector3 movementVal = new Vector3(/*_moveInput.x*/ rawInput.x, 0, 0);
+        Vector3 movementVal = new Vector3(/*_moveInput.x*/ _rawInput.x, 0, 0);
         Vector3 moveInDir= transform.TransformDirection(movementVal);
         if (moveInDir.normalized.x != 0)
         { 
@@ -82,6 +88,8 @@ public class PlayerController : MonoBehaviour
 
     private void ProcessGravity()
     {
+        if (!_characterController) { return; }
+
         _playerVelocity.y += Time.deltaTime * _gravity;
         if (_bIsGrounded && _playerVelocity.y < 0)
         {

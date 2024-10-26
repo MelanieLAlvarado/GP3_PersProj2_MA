@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
@@ -24,7 +26,9 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Player Info")]
-    private bool _keyboardSoloPlayer = true;
+    DataHolder _dataHolder;
+    private string _dataHolderName = "DataHolder";
+    private bool _keyboardSoloPlayer; //need to debug this because gamemanager is currently destroying itself!!
 
     [SerializeField] private string playerHolderName = "PlayerHolder";
     GameObject _playerHolder;
@@ -39,12 +43,18 @@ public class GameManager : MonoBehaviour
     }
     public GameObject GetPlayerHolder() { return _playerHolder; }
     public Camera GetMainCamera() { return _mainCamera; }
-
+    public SceneLoader GetSceneLoader() { return _sceneLoader; }
     public SelectionUIManager GetSelectUIManager() { return _selectionUIManager; }
     public FightManager GetFightManager() { return _fightManager; }
     public GameplayUIManager GetGameplayUIManager() { return _gameplayUIManager; }
     private void Awake()
     {
+        SceneManager.sceneLoaded += ProcessLoadedScene;
+        _dataHolder = GameObject.FindGameObjectWithTag(_dataHolderName).GetComponent<DataHolder>();
+        _keyboardSoloPlayer = _dataHolder.GetKeyboardSoloPlayer();
+        
+        Debug.Log("AWAKE");
+
         if (m_Instance != null && m_Instance != this)
         {
             Debug.LogError("Multiple GameManagers found. Deleting Copy...");
@@ -57,9 +67,33 @@ public class GameManager : MonoBehaviour
         GatherManagers();
         CheckPresentPlayers();
     }
+
+    private void ProcessLoadedScene(Scene scene, LoadSceneMode sceneMode)
+    {
+        Debug.Log("Process Loaded Scene:" + scene.buildIndex);
+        /*if (scene.buildIndex == _sceneLoader.GetMainMenuSceneIndex())
+        { 
+            ///Main Menu Stuff Here...
+        }*/
+        if (scene.buildIndex == _sceneLoader.GetSelectionSceneIndex())
+        {
+            //_selectionUIManager.InitializeSelectionNecesities();
+        }
+        else if (scene.buildIndex == _sceneLoader.GetFightSceneIndex())
+        {
+            /*_fightManager.PrepareFightNecessities();
+            _fightManager.SetUpFight();*/
+        }
+    }
+
     private void Start()
     {
+        Debug.Log("START");
         _mainCamera = Camera.main;
+    }
+    private void GatherGameNecesities() 
+    {
+        
     }
     private void GatherManagers() 
     {
@@ -116,6 +150,7 @@ public class GameManager : MonoBehaviour
             player.RemoveFromGame();
             _keyboardSoloPlayer = !_keyboardSoloPlayer;
         }
+        _dataHolder.SetKeyboardSoloPlayer(_keyboardSoloPlayer);
     }
     /*private void AddRequiredManagers() //WIP - Dependent on build index
     {

@@ -3,13 +3,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class CanvasCursor : MonoBehaviour, IEndDragHandler
+public class CanvasCursor : MonoBehaviour
 {
+    public delegate void OnCursorDragDragDelagate();
+    public OnCursorDragDragDelagate OnCursorDragEnded;
+
     [SerializeField] private Image _dragIcon;
 
     private void Start()
     {
         InputSystem.onAfterUpdate += MoveCursor;
+        OnCursorDragEnded += CursorDragEnded;
         SetIconVisibility(false);
     }
 
@@ -28,8 +32,7 @@ public class CanvasCursor : MonoBehaviour, IEndDragHandler
             _dragIcon.transform.position = Input.mousePosition;
         }
     }
-
-    public void OnEndDrag(PointerEventData eventData)
+    private void CursorDragEnded()
     {
         SetDragIcon(null);
         SetIconVisibility(false);

@@ -1,8 +1,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SelectCharacterSlotWidget : CharacterSlot, IBeginDragHandler, IDragHandler //,IEndDragHandler
+public class SelectCharacterSlotWidget : CharacterSlot, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private CanvasCursor _dragCursor;
+    private void Start()
+    {
+        SelectionUIManager selectManager = GameManager.m_Instance.GetSelectUIManager();
+        if (selectManager)
+        {
+            _dragCursor = selectManager.GetDragCursor();
+        }
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         //CharacterScriptable charProfile = GetCharacterProfile();
@@ -17,17 +26,21 @@ public class SelectCharacterSlotWidget : CharacterSlot, IBeginDragHandler, IDrag
             return;
         }
 
-        Debug.Log(iconSprite.name);
-        SelectionUIManager selectManager = GameManager.m_Instance.GetSelectUIManager();
-        if (selectManager)
+        if (_dragCursor)
         {
-            selectManager.GetDragCursor().SetDragIcon(iconSprite);
-            selectManager.GetDragCursor().SetIconVisibility(true);
+            _dragCursor.SetDragIcon(iconSprite);
+            _dragCursor.SetIconVisibility(true);
         }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         //Debug.Log("Drag");
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (!_dragCursor) { return; }
+        _dragCursor.OnCursorDragEnded?.Invoke();
     }
 }
