@@ -28,14 +28,14 @@ public class GameManager : MonoBehaviour
     [Header("Player Info")]
     DataHolder _dataHolder;
     private string _dataHolderName = "DataHolder";
-    private bool _keyboardSoloPlayer; //need to debug this because gamemanager is currently destroying itself!!
+    private bool _keyboardSoloPlayer; 
 
     [SerializeField] private string playerHolderName = "PlayerHolder";
     GameObject _playerHolder;
-    [SerializeField] private GameObject playerPrefab;
-    private List<GameObject> _players = new List<GameObject>();
-    public List<GameObject> GetPlayers() { return _players; }
-    public void AddPlayer(GameObject player)
+    [SerializeField] private Player playerPrefab;
+    private List<Player> _players = new List<Player>();
+    public List<Player> GetPlayers() { return _players; }
+    public void AddPlayer(Player player)
     {
         _players.Add(player);
         Debug.Log($"Player, {player.name}");
@@ -112,16 +112,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            List<GameObject> playersInHolder = new List<GameObject>();
+            List<Player> playersInHolder = new List<Player>();
             foreach (Transform child in _playerHolder.transform)
             {
-                playersInHolder.Add(child.gameObject);
+                Player player = child.gameObject.GetComponent<Player>();
+                playersInHolder.Add(player);
             }
             _players = playersInHolder;
         }
         if (_players.Count <= 0 && playerPrefab != null) ///if there are no players in the scene (players have DontDestroyOnLoad)
         {
-            GameObject player1 = Instantiate(playerPrefab);
+            Player player1 = Instantiate(playerPrefab);
             player1.transform.SetParent(_playerHolder.transform);
         }
         Debug.Log(_players.Count);
@@ -132,7 +133,7 @@ public class GameManager : MonoBehaviour
 
         if (_keyboardSoloPlayer)
         {
-            GameObject player = Instantiate(playerPrefab);
+            Player player = Instantiate(playerPrefab);
             player.transform.SetParent(_playerHolder.transform);
             PlayerInput spawnPlayerInput = player.GetComponent<PlayerInput>();
 

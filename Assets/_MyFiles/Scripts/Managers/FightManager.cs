@@ -62,16 +62,18 @@ public class FightManager : MonoBehaviour
             return;
         }
 
-        List<GameObject> playerList = GameManager.m_Instance.GetPlayers();
+        List<Player> playerList = GameManager.m_Instance.GetPlayers();
         List<Transform> spawnPosList = spawnPositions.ToList();
 
         _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
         _gameplayUI.SetOwner(gameObject);
-        foreach (GameObject player in playerList)
+        foreach (Player player in playerList)
         {
+            player.ResetPlayerLifes();
+
             int randomSpawnIndex = Random.Range(0, spawnPosList.Count);
             Transform randomSpawnPos = spawnPosList[randomSpawnIndex];
-            player.GetComponent<Player>().SpawnCharacter(randomSpawnPos, _gameplayUI);
+            player.SpawnCharacter(randomSpawnPos, _gameplayUI);
             spawnPosList.RemoveAt(randomSpawnIndex);
 
             player.GetComponent<PlayerController>().OnPauseTriggered += OnPauseAction;

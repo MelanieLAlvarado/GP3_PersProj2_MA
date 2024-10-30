@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     PlayerController _playerController;
     [Header("Player Info")]
     private string _playerName;
-    private int _playerLifes = 3;
+    [SerializeField] private int playerLifes = 3;
+    private int _currentLifes = 3;
 
     [Header("Character Info")]
     [SerializeField] private CharacterScriptable _characterScriptable;
@@ -24,21 +25,27 @@ public class Player : MonoBehaviour
     public void SetPlayerName(string nameToSet) { _playerName = nameToSet; }
     public string GetPlayerName() { return _playerName; }
 
-    public int GetPlayerLifes() { return _playerLifes; }
+    public int GetPlayerLifes() { return _currentLifes; }
+    public void ResetPlayerLifes()
+    {
+        _currentLifes = playerLifes;
+    }
     public void RemoveLife() 
     {
-        _playerLifes--;
-        OnLivesChanged?.Invoke(_playerLifes);
+        _currentLifes--;
+        OnLivesChanged?.Invoke(_currentLifes);
     }
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-        GameManager.m_Instance.AddPlayer(this.gameObject);
+        ResetPlayerLifes();
+
+        GameManager.m_Instance.AddPlayer(this);
         _playerController = GetComponent<PlayerController>();
         SelectionUIManager selectUIManager = GameManager.m_Instance.GetSelectUIManager();
         if (selectUIManager)
         { 
-            selectUIManager.SpawnPlayerSelectionWidget(this.gameObject);
+            selectUIManager.SpawnPlayerSelectionWidget(this);
         }
     }
     public GameObject GetCurrentFightingCharacter() { return _currentCharacter; }
@@ -55,6 +62,7 @@ public class Player : MonoBehaviour
     {
         /*Debug.Log($"Spawning Character... for {_playerName}");
         Debug.Log($"Widget spawning on {gameplayUI.name}");*/
+
         if (!_characterScriptable)
         {
             Debug.LogError($"There is no CharacterScriptable on the player {this.gameObject.name}");

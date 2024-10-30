@@ -21,7 +21,7 @@ public class SelectionUIManager : MonoBehaviour
     [SerializeField] private CharacterScriptable[] Characters;
 
     public CanvasCursor GetDragCursor() { return _dragCursor; }
-    public void SpawnPlayerSelectionWidget(GameObject player) 
+    public void SpawnPlayerSelectionWidget(Player player) 
     {
         if (!playerSelectionLayoutUIPrefab) { return; }
 
@@ -30,7 +30,7 @@ public class SelectionUIManager : MonoBehaviour
             _playerSelectionUI = Instantiate(playerSelectionLayoutUIPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
             _playerSelectionUI.SetOwner(gameObject);
         }
-        _playerSelectionUI.InitializeWidgetForPlayer(player.GetComponent<Player>());//change later
+        _playerSelectionUI.InitializeWidgetForPlayer(player);//change later
     }
     private void Awake()
     {
@@ -53,8 +53,8 @@ public class SelectionUIManager : MonoBehaviour
     {
         if (!_playerSelectionUI || _playerSelectionUI.GetLayoutWidgets().Count <= 0)
         {
-            List<GameObject> playersAvailable = GameManager.m_Instance.GetPlayers();
-            foreach (GameObject player in playersAvailable)
+            List<Player> playersAvailable = GameManager.m_Instance.GetPlayers();
+            foreach (Player player in playersAvailable)
             {
                 SpawnPlayerSelectionWidget(player);
             }

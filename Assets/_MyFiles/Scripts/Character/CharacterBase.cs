@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Android.Gradle.Manifest;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -79,6 +80,10 @@ public class CharacterBase : MonoBehaviour
             _animator.SetFloat(_speedId, _animMoveSpeed);
         }
     }
+    /*public void CharacterJump() 
+    {
+        _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
+    }*/
 
     public void HitReaction() 
     {
