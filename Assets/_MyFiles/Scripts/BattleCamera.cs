@@ -6,6 +6,8 @@ public class BattleCamera : MonoBehaviour
 {
     Vector3 _followPosition;
     List<GameObject> _followObjects = new List<GameObject>();
+    [SerializeField] float yOffset = 2f;
+    [SerializeField] float followRate = 2f;
     public void AddToFollowObjects(GameObject posToAdd) { _followObjects.Add(posToAdd); }
     public void RemoveFromFollowObjects(GameObject posToRemove) { _followObjects.Remove(posToRemove); }
     private void Awake()
@@ -16,7 +18,7 @@ public class BattleCamera : MonoBehaviour
     private void Update()
     {
         _followPosition = CalculateCenter();
-        this.transform.position = new Vector3(_followPosition.x, _followPosition.y + 2f, transform.position.z);
+        this.transform.position = Vector3.Lerp(this.transform.position, _followPosition, Time.deltaTime * followRate);
     }
 
     private Vector3 CalculateCenter() 
@@ -32,6 +34,9 @@ public class BattleCamera : MonoBehaviour
         { 
             center /= _followObjects.Count;
         }
+
+        center = new Vector3(center.x, center.y + yOffset, transform.position.z);
+
         return center;
     }
 }
