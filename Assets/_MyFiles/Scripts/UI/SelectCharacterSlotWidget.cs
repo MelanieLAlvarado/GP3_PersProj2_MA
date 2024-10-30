@@ -40,7 +40,7 @@ public class SelectCharacterSlotWidget : CharacterSlot, IBeginDragHandler, IDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!_dragCursor) { return; }
+        if (eventData.pointerDrag == null || !_dragCursor) { return; }
         _dragCursor.OnCursorDragEnded?.Invoke();
     }
 }

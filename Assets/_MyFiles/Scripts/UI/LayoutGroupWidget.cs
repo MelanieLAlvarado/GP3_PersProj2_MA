@@ -78,6 +78,19 @@ public class LayoutGroupWidget : Widget
             currentChar.GetComponent<HealthComponent>().OnHealthChanged -= gameSlotUI.UpdateHealthText;
         }
 
+        /*PlayerSelectionWidget playerSelectUI = widget.GetComponent<PlayerSelectionWidget>();
+        if (playerSelectUI)
+        { 
+            playerSelectUI.ClearCharacterInSlot();
+            playerSelectUI.OnPlayerSelectionChanged -= GameManager.m_Instance.GetSelectUIManager().UpdateFightButton;
+        }
+
+        SelectionUIManager selectionUIManager = GetOwner().GetComponent<SelectionUIManager>();
+        if (selectionUIManager) ///ensures that fight button is updated player is removed.
+        {
+            selectionUIManager.UpdateFightButton();
+        }*/
+
         player.OnPlayerRemoved -= DisconnectPlayerFromWidget;
         Destroy(widget.gameObject);
     }

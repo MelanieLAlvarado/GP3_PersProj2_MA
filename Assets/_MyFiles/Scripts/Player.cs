@@ -9,21 +9,27 @@ public class Player : MonoBehaviour
     public delegate void OnPlayerChangedDelegate(Player player);
     public event OnPlayerChangedDelegate OnPlayerRemoved;
 
+    public delegate void OnLivesChangedDelgate(int lives);
+    public event OnLivesChangedDelgate OnLivesChanged;
+
     PlayerController _playerController;
     [Header("Player Info")]
     private string _playerName;
     private int _playerLifes = 3;
-    private float _playerHealth = 100; //may change to damage later and/or move into separate component
 
     [Header("Character Info")]
     [SerializeField] private CharacterScriptable _characterScriptable;
     private GameObject _currentCharacter;
 
     public void SetPlayerName(string nameToSet) { _playerName = nameToSet; }
-    public string GetPlayerName() { return _playerName; }//<-- dont think is needed.
+    public string GetPlayerName() { return _playerName; }
 
     public int GetPlayerLifes() { return _playerLifes; }
-    public void RemoveLife() { _playerLifes--; }
+    public void RemoveLife() 
+    {
+        _playerLifes--;
+        OnLivesChanged?.Invoke(_playerLifes);
+    }
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);

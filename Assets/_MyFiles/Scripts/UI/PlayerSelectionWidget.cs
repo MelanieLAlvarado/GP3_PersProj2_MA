@@ -4,30 +4,45 @@ using UnityEngine.EventSystems;
 
 public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHandler
 {
+    public delegate void OnPlayerSelectionChangedDelegate();
+    public event OnPlayerSelectionChangedDelegate OnPlayerSelectionChanged;
+
     [Header("Player Selection Options")]
     private string _playerName;
 
+    private void Awake()
+    {
+        OnPlayerSelectionChanged += GameManager.m_Instance.GetSelectUIManager().UpdateFightButton;
+    }
+    private void Start()
+    {
+        OnPlayerSelectionChanged?.Invoke();
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (eventData.pointerPress == null) 
+        {
+            return;
+        }
+
         if (GetCharacterProfile() == null) 
         {
             return;
         }
         ClearCharacterInSlot();
         GetOwner().GetComponent<Player>().ClearCharacter();
+        OnPlayerSelectionChanged?.Invoke();
     }
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
-        {
-            return;
-        }
         SelectCharacterSlotWidget charSelectSlot = eventData.pointerDrag.GetComponent<SelectCharacterSlotWidget>();
         if (charSelectSlot && charSelectSlot.GetCharacterProfile())
         {
             CharacterScriptable charScriptObj = charSelectSlot.GetCharacterProfile();
             SetCharacterInSlot(charScriptObj);
             GetOwner().GetComponent<Player>().SetCharacter(charScriptObj);
+            OnPlayerSelectionChanged?.Invoke();
         }
 
         SelectionUIManager selectManager = GetOwner().GetComponent<SelectionUIManager>();

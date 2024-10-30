@@ -18,6 +18,8 @@ public class GameplayUIManager : LayoutGroupWidget
             gameSlotUI.UpdateHealthText(healthComponent.GetHealth());
             healthComponent.OnHealthChanged += gameSlotUI.UpdateHealthText;
         }
+
+        player.OnLivesChanged += gameSlotUI.UpdateLifeText;
     }
     public override void InitializeWidget(GameObject connectedObj, Widget widget) 
     {

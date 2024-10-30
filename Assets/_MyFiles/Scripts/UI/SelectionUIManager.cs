@@ -49,15 +49,6 @@ public class SelectionUIManager : MonoBehaviour
 
         _dragCursor = Instantiate(dragCursorPrefab, canvasTransform).GetComponent<CanvasCursor>();
     }
-    private void Update() //change to delegates?
-    {
-        //update player here instead of start (or through delegate events)
-        //check if players all have their pick, then reveal fight button.
-        if (_fightButton)
-        { 
-            UpdateFightButton();
-        }
-    }
     public void SpawnPlayerSelectionLayout() 
     {
         if (!_playerSelectionUI || _playerSelectionUI.GetLayoutWidgets().Count <= 0)
@@ -80,8 +71,10 @@ public class SelectionUIManager : MonoBehaviour
         _fightButton.gameObject.SetActive(false);
     }
 
-    private void UpdateFightButton() 
+    public void UpdateFightButton() 
     {
+        if (!_fightButton) { return; }
+
         if (_playerSelectionUI.GetLayoutWidgets().Count < 0) { return; }
 
         foreach (Widget widget in _playerSelectionUI.GetLayoutWidgets())

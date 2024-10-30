@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
-
-
 public enum EAttackShapeType { Sphere, Capsule, Box}
 
 public class DamageColliderComponent : DamageComponent
