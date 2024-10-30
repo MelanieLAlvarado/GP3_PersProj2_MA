@@ -16,8 +16,11 @@ public class MenuScript : MonoBehaviour
 
     private void Start()
     {
-        _sceneLoader = GameManager.m_Instance.GetSceneLoader();
-        _fightManager = GameManager.m_Instance.GetFightManager();
+        if (GameManager.m_Instance)
+        { 
+            _sceneLoader = GameManager.m_Instance.GetSceneLoader();
+            _fightManager = GameManager.m_Instance.GetFightManager();
+        }
         ConnectAllMenuButtons();
     }
     public void ConnectAllMenuButtons() 
@@ -36,7 +39,6 @@ public class MenuScript : MonoBehaviour
             resumeButton.onClick.AddListener(delegate { _fightManager.OnPauseAction(); });
         }
     }
-
     private void ConnectSelectionButton()
     {
         if (selectionButton && _sceneLoader)

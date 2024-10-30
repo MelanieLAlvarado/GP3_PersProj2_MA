@@ -1182,7 +1182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHolderName: PlayerHolder
-  playerPrefab: {fileID: 2223266631229536292, guid: 1385b9a5c6b1f7d41b28db2b15f76b6f, type: 3}
+  playerPrefab: {fileID: 1948080812841961776, guid: 1385b9a5c6b1f7d41b28db2b15f76b6f, type: 3}
 --- !u!114 &2101225945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1196,8 +1196,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuSceneInt: 0
-  selectionSceneInt: 0
-  fightSceneInt: 0
+  selectionSceneInt: 1
+  fightSceneInt: 2
 --- !u!4 &2101225946
 Transform:
   m_ObjectHideFlags: 0
