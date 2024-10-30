@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,15 +7,19 @@ public class BattleCamera : MonoBehaviour
 {
     Vector3 _followPosition;
     List<GameObject> _followObjects = new List<GameObject>();
-    [Header("Offset Settings")]
+    [Header("Move Offset Settings")]
     [SerializeField] float yOffset = 2f;
-    [SerializeField] float zZoomOffset = 2f;
     [SerializeField] float minDistance = 4f;
     [SerializeField] float maxDistance = 15f;
 
-    [Header("follow Settings")]
+    [Header("Zoom Offset Settings")]
+    [SerializeField] float xZoomOffset = 2f;
+    [SerializeField] float yZoomThreshold = 2f;
+    [SerializeField] float yZoomOffset = 1.5f;
+
+    [Header("Follow Settings")]
     [SerializeField] float followRate = 2f;
-    [SerializeField] float distFromOriginThreshold = 10f;
+    [SerializeField] float distFromOriginThreshold = 10f;//may remove or work on further
     [SerializeField] int cameraYDirection = -1;
     public void AddToFollowObjects(GameObject posToAdd) { _followObjects.Add(posToAdd); }
     public void RemoveFromFollowObjects(GameObject posToRemove) { _followObjects.Remove(posToRemove); }
@@ -48,9 +53,9 @@ public class BattleCamera : MonoBehaviour
         center /= _followObjects.Count;
         Debug.Log($"center: {center.x},{center.y},{center.z}");
 
-        float dist = CalculateZoomDistance(center);
+        float zDist = CalculateZoomDistance(center);
 
-        center = new Vector3(center.x, center.y + yOffset, dist);
+        center = new Vector3(center.x, center.y + yOffset, zDist);
         //center = new Vector3(center.x, center.y + yOffset, transform.position.z);
         return center;
     }
@@ -59,7 +64,13 @@ public class BattleCamera : MonoBehaviour
         float dist = Vector3.Distance(_followObjects[0].transform.position, center);
 
         Debug.Log("distance from center:" + dist);
-        dist = Mathf.Abs(dist) + zZoomOffset;
+        dist = Mathf.Abs(dist) + xZoomOffset;
+
+        if (Mathf.Abs(center.y) > yZoomThreshold)//in case player jumped or fell too close to edge of screen.
+        {
+            dist += yZoomOffset;
+        }
+
         dist = Mathf.Clamp(dist, minDistance, maxDistance);
 
         //center.x = Mathf.Clamp(center.x, -distFromOriginThreshold, distFromOriginThreshold);
