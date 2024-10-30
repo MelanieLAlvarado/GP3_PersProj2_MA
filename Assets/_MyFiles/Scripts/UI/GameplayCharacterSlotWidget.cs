@@ -22,5 +22,10 @@ public class GameplayCharacterSlotWidget : CharacterSlot
     public void UpdateLifeText(int livesToSet)
     { 
         lifeText.text = livesToSet.ToString();
+        if (livesToSet <= 0)
+        {
+            healthText.text = "";
+            lifeText.text = "DEAD";
+        }
     }
 }

@@ -609,6 +609,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MutantCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 139008178425204011, guid: 575263d3292c73a4f9519dc336ee49af, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6941618055372074667, guid: 575263d3292c73a4f9519dc336ee49af, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1181,6 +1185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036dd9691a614a54e8b095f26a0270cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataHolderPrefab: {fileID: 0}
   playerHolderName: PlayerHolder
   playerPrefab: {fileID: 1948080812841961776, guid: 1385b9a5c6b1f7d41b28db2b15f76b6f, type: 3}
 --- !u!114 &2101225945
