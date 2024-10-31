@@ -42,11 +42,6 @@ public class FightManager : MonoBehaviour
 
     private void PrepareFightNecessities()
     {
-        pauseMenuUI = Instantiate(pauseMenuPrefab, canvasTransform);
-        if (pauseMenuUI)
-        {
-            ResumeGame();
-        }
         if (spawnPositions.Length > 0)
         {
             RemoveDuplicateSpawnPositions();
@@ -67,6 +62,8 @@ public class FightManager : MonoBehaviour
 
         _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
         _gameplayUI.SetOwner(gameObject);
+
+        PreparePauseMenu();
         foreach (Player player in playerList)
         {
             player.ResetPlayerLifes();
@@ -77,6 +74,14 @@ public class FightManager : MonoBehaviour
             spawnPosList.RemoveAt(randomSpawnIndex);
 
             player.GetComponent<PlayerController>().OnPauseTriggered += OnPauseAction;
+        }
+    }
+    private void PreparePauseMenu() 
+    {
+        pauseMenuUI = Instantiate(pauseMenuPrefab, canvasTransform);
+        if (pauseMenuUI)
+        {
+            ResumeGame();
         }
     }
     private void RemoveDuplicateSpawnPositions()

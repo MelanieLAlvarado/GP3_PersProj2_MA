@@ -150,3 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed4fdf03d135ec9419731de079faaccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  yOffset: 1.25
+  zZoomOffset: 2.5
+  yZoomThreshold: 2
+  minDistance: 5
+  maxDistance: 15
+  followRate: 4
+  distFromOriginThreshold: 7
+  cameraYDirection: -1

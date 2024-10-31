@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Player Info")]
+    [SerializeField] DataHolder dataHolderPrefab;
     DataHolder _dataHolder;
     private string _dataHolderName = "DataHolder";
     private bool _keyboardSoloPlayer; 
@@ -49,8 +50,20 @@ public class GameManager : MonoBehaviour
     public GameplayUIManager GetGameplayUIManager() { return _gameplayUIManager; }
     private void Awake()
     {
-        SceneManager.sceneLoaded += ProcessLoadedScene;
-        _dataHolder = GameObject.FindGameObjectWithTag(_dataHolderName).GetComponent<DataHolder>();
+        //SceneManager.sceneLoaded += ProcessLoadedScene;
+        GameObject dataHolderObject = GameObject.FindGameObjectWithTag(_dataHolderName);
+
+        if (dataHolderObject)
+        {
+            //dataHolderObject = new GameObject(_dataHolderName);
+            _dataHolder = dataHolderObject.GetComponent<DataHolder>();
+        } 
+        else if (dataHolderPrefab)
+        { 
+            _dataHolder = Instantiate(dataHolderPrefab);
+        }
+
+
         _keyboardSoloPlayer = _dataHolder.GetKeyboardSoloPlayer();
         
         Debug.Log("AWAKE");
