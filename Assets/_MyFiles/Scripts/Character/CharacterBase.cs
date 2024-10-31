@@ -36,8 +36,9 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] private float maxSpeed = 3f;//will probably have it changed in CharacterChild class
     [SerializeField] private float jumpHeight = 3f;
 
-    GameObject _owner;
-    public void SetOwner(GameObject owner) { _owner = owner; } //player will pass this in on spawn
+    Player _ownerPlayer;
+    public Player GetOwnerPlayer() { return _ownerPlayer; }
+    public void SetOwnerPlayer(Player owner) { _ownerPlayer = owner; } //player will pass this in on spawn
     public void SetFaceDirection(Vector3 directionToSet) { _faceDirection = directionToSet; }
     public float GetMaxSpeed() { return maxSpeed; }
     public float GetJumpHeight() {  return jumpHeight; }
@@ -54,7 +55,6 @@ public class CharacterBase : MonoBehaviour
         {
             _faceDirection = new Vector3(90, 0, 0);
         }
-        
     }
     private void Start()
     {
@@ -62,6 +62,11 @@ public class CharacterBase : MonoBehaviour
         if (fightManager != null)
         {
             fightManager.GetBattleCam().AddToFollowObjects(this.gameObject);
+        }
+
+        if (_ownerPlayer)
+        {
+            _healthComponent.OnDead += _ownerPlayer.GetComponent<PlayerController>().ClearController;
         }
     }
     private void FixedUpdate()
@@ -96,7 +101,7 @@ public class CharacterBase : MonoBehaviour
     }
     public void EndDeath()
     {
-        Player player = _owner.GetComponent<Player>();
+        Player player = _ownerPlayer.GetComponent<Player>();
         if (!player)
         {
             return;

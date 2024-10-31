@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
 
     PlayerController _playerController;
     [Header("Player Info")]
-    private string _playerName;
+    private string _playerName = "";
     [SerializeField] private int playerLifes = 3;
     private int _currentLifes = 3;
 
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         ResetPlayerLifes();
 
-        GameManager.m_Instance.AddPlayer(this);
+        DataHolder.m_Instance.AddPlayer(this);
         _playerController = GetComponent<PlayerController>();
         SelectionUIManager selectUIManager = GameManager.m_Instance.GetSelectUIManager();
         if (selectUIManager)
@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
 
         _currentCharacter = Instantiate(_characterScriptable.GetCharacterPrefab(), spawnPosition.position, spawnPosition.rotation);
         CharacterBase charBase = _currentCharacter.GetComponent<CharacterBase>();
-        charBase.SetOwner(gameObject);
+        charBase.SetOwnerPlayer(this);
 
         _playerController.SetControlledCharacter(charBase);
 
@@ -85,7 +85,8 @@ public class Player : MonoBehaviour
     public void RemoveFromGame() 
     {
         OnPlayerRemoved?.Invoke(this);
-        if(_currentCharacter)
+        DataHolder.m_Instance.RemovePlayer(this);
+        if (_currentCharacter)
         {
             Destroy(_currentCharacter);
         }

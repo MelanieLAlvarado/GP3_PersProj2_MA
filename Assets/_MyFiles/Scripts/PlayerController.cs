@@ -8,8 +8,11 @@ using static UnityEngine.UI.GridLayoutGroup;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    public delegate void TriggerPauseDelegate();
-    public event TriggerPauseDelegate OnPauseTriggered;
+    public delegate void OnTriggerPauseDelegate();
+    public event OnTriggerPauseDelegate OnPauseTriggered;
+
+    public delegate void OnMovementUpdatedDelegate();
+    public event OnMovementUpdatedDelegate OnMovementUpdated;
 
     PlayerInput _playerInput;
     protected static string _keyboardFullScheme = "KeyboardFull";
@@ -23,11 +26,9 @@ public class PlayerController : MonoBehaviour
 
     Vector2 _rawInput;
     private float _currentSpeed;
-    private float _moveInput; //change to a Vector2 later???
     private float _moveSpeed = 3f;//will probably have it changed in CharacterChild class
     private float _jumpHeight = 3f;
 
-    private Vector3 _prevPosition;
     private Vector3 _playerVelocity;
     private bool _bIsGrounded;
     private float _gravity = -9.81f;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
         _moveSpeed = characterBase.GetMaxSpeed();
         _moveSpeed = characterBase.GetJumpHeight();
     }
+    public void ClearController() { _characterController = null; }
     public void DisablePlayerInputActions() 
     { 
         _playerInputActions.Disable(); 
@@ -58,10 +60,9 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        //Vector3 moveDirection = GameManager.m_Instance.GetMainCamera().InputToWorldDir();
         ProcessMovement();
     }
-    public void MovementAction(InputAction.CallbackContext context) //successfully sorts out control list... but no movement
+    public void MovementAction(InputAction.CallbackContext context)
     {
         if (context.started || context.canceled)
         { 
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!_characterController) { return; }
 
-        Vector3 movementVal = new Vector3(/*_moveInput.x*/ _rawInput.x, 0, 0);
+        Vector3 movementVal = new Vector3(_rawInput.x, 0, 0);
         Vector3 moveInDir= transform.TransformDirection(movementVal);
         if (moveInDir.normalized.x != 0)
         { 

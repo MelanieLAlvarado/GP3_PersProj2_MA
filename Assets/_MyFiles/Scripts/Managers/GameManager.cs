@@ -34,14 +34,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string playerHolderName = "PlayerHolder";
     GameObject _playerHolder;
     [SerializeField] private Player playerPrefab;
-    private List<Player> _players = new List<Player>();
-    public List<Player> GetPlayers() { return _players; }
-    public void AddPlayer(Player player)
-    {
-        _players.Add(player);
-        Debug.Log($"Player, {player.name}");
-        //OnPlayerCountChanged?.Invoke();
-    }
+
     public GameObject GetPlayerHolder() { return _playerHolder; }
     public Camera GetMainCamera() { return _mainCamera; }
     public SceneLoader GetSceneLoader() { return _sceneLoader; }
@@ -123,7 +116,7 @@ public class GameManager : MonoBehaviour
             _playerHolder = new GameObject(playerHolderName);
             DontDestroyOnLoad(_playerHolder);
         }
-        else
+        /*else
         {
             List<Player> playersInHolder = new List<Player>();
             foreach (Transform child in _playerHolder.transform)
@@ -132,13 +125,13 @@ public class GameManager : MonoBehaviour
                 playersInHolder.Add(player);
             }
             _players = playersInHolder;
-        }
-        if (_players.Count <= 0 && playerPrefab != null) ///if there are no players in the scene (players have DontDestroyOnLoad)
+        }*/
+        if (_dataHolder.GetPlayers().Count <= 0 && playerPrefab != null) ///if there are no players in the scene (players have DontDestroyOnLoad)
         {
             Player player1 = Instantiate(playerPrefab);
             player1.transform.SetParent(_playerHolder.transform);
         }
-        Debug.Log(_players.Count);
+        Debug.Log(_dataHolder.GetPlayers().Count);
     }
     public void ProcessKeyboardPlayers(PlayerInput triggeredPlayerInput, string leftScheme, string rightScheme)
     {

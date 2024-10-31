@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,15 +9,29 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     public event OnPlayerSelectionChangedDelegate OnPlayerSelectionChanged;
 
     [Header("Player Selection Options")]
+    [SerializeField] TextMeshProUGUI placeHolderNameText;
     private string _playerName;
 
     private void Awake()
     {
         OnPlayerSelectionChanged += GameManager.m_Instance.GetSelectUIManager().UpdateFightButton;
+        Debug.Log("PlayerSelection Widget has spawned!!");
     }
     private void Start()
     {
         OnPlayerSelectionChanged?.Invoke();
+
+        Player player = GetOwner().GetComponent<Player>();
+        if (player)
+        {
+            string nameOnPlayer = player.GetPlayerName();
+            placeHolderNameText.text = nameOnPlayer;
+            ReadPlayerName(nameOnPlayer);
+        }
+        else
+        {
+            ReadPlayerName(string.Empty);
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -62,7 +77,10 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
             player.SetPlayerName(_playerName);
             return;
         }
-        player.SetPlayerName("player");//may update this later
+        int playerIndex = DataHolder.m_Instance.GetPlayers().IndexOf(player);
+        playerIndex += 1;
+        player.SetPlayerName("Player " + playerIndex);
+        placeHolderNameText.text = "Player " + playerIndex;
     }
 
 }

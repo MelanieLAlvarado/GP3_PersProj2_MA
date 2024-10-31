@@ -777,6 +777,7 @@ MonoBehaviour:
   characterProfile: {fileID: 0}
   characterIcon: {fileID: 7170157937160960582}
   characterText: {fileID: 2886673083998820749}
+  placeHolderNameText: {fileID: 649777744819867669}
 --- !u!1 &6715433117766307123
 GameObject:
   m_ObjectHideFlags: 0

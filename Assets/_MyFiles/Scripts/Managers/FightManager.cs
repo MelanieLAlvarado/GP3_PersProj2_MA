@@ -57,7 +57,7 @@ public class FightManager : MonoBehaviour
             return;
         }
 
-        List<Player> playerList = GameManager.m_Instance.GetPlayers();
+        List<Player> playerList = DataHolder.m_Instance.GetPlayers();
         List<Transform> spawnPosList = spawnPositions.ToList();
 
         _gameplayUI = Instantiate(gameplayUILayoutPrefab, canvasTransform).GetComponent<GameplayUIManager>();
