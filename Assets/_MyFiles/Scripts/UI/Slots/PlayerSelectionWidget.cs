@@ -82,5 +82,8 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
         player.SetPlayerName("Player " + playerIndex);
         placeHolderNameText.text = "Player " + playerIndex;
     }
-
+    private void OnDestroy()
+    {
+        OnPlayerSelectionChanged?.Invoke();
+    }
 }

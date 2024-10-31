@@ -22,6 +22,7 @@ public class CharacterBase : MonoBehaviour
     private static readonly int _speedId = Animator.StringToHash("Speed");
 
     protected static readonly int _hitId = Animator.StringToHash("Hit");
+    protected static readonly int _isGroundedId = Animator.StringToHash("IsGrounded");
     protected static readonly int _deathId = Animator.StringToHash("Death");
 
 
@@ -36,7 +37,9 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] private float maxSpeed = 3f;//will probably have it changed in CharacterChild class
     [SerializeField] private float jumpHeight = 3f;
 
+    float _gravity;
     Player _ownerPlayer;
+    public void SetGravity(float gravityToSet) { _gravity = gravityToSet; }
     public Player GetOwnerPlayer() { return _ownerPlayer; }
     public void SetOwnerPlayer(Player owner) { _ownerPlayer = owner; } //player will pass this in on spawn
     public void SetFaceDirection(Vector3 directionToSet) { _faceDirection = directionToSet; }
@@ -83,11 +86,14 @@ public class CharacterBase : MonoBehaviour
         {
             _animMoveSpeed = Mathf.Lerp(_animMoveSpeed, _currentSpeed, Time.deltaTime * animSpeedChangeRate);
             _animator.SetFloat(_speedId, _animMoveSpeed);
+
         }
     }
     /*public void CharacterJump() 
     {
-        _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
+        float jumpVelocity = Mathf.Sqrt(jumpHeight * -3.0f * _gravity);
+        _playerController.SetUpwardsVelocity(jumpVelocity);
+        _animator.SetBool(_isGroundedId, _playerController.GetIsGrounded());
     }*/
 
     public void HitReaction() 

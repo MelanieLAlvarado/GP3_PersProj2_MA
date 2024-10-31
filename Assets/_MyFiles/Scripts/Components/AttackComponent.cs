@@ -1,9 +1,14 @@
+using NUnit.Framework;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
 public struct AttackInfo
 {
+    private Attack _attack;
     public EAttackShapeType attackShape;
     public Transform origin; //get postition off of this
     /*[SerializeField]*/
@@ -11,10 +16,19 @@ public struct AttackInfo
     public float radius; //capsules and spheres
     public float rangeLength; //for capsules
     /*[SerializeField]*/
-    private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
+    //private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
 
     public float damageDealt;
     public bool bIsAttackActive;
+
+
+    public void InitializeAttack(GameObject owner) 
+    {
+        bIsAttackActive = false;
+        _attack = origin.AddComponent<Attack>();
+        _attack.SetOwner(owner);
+    }
+    public Attack GetAttack() { return _attack; }
 }
 
 public class AttackComponent : MonoBehaviour, IAttackInterface
@@ -44,18 +58,21 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         _damageColliderComponent = GetComponent<DamageColliderComponent>();
         _animator = GetComponent<Animator>();
+
     }
     private void Start()
     {
-        attack1.bIsAttackActive = false;
-        attack2.bIsAttackActive = false;
+        //attack1.bIsAttackActive = false;
+        attack1.InitializeAttack(gameObject);
+        attack2.InitializeAttack(gameObject);
     }
     private void FixedUpdate()
     {
-        if (_currentAttack.bIsAttackActive == true)
+        /*if (_currentAttack.bIsAttackActive == true)
         {
-            _damageColliderComponent.ProcessAttackType(_currentAttack);
-        }
+            //_damageColliderComponent.ProcessAttackType(_currentAttack);
+
+        }*/
     }
 
     public void StartAttack1()
@@ -70,6 +87,16 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     public void Attack() //attack physics will spawn (in Animation Events)
     {
         _currentAttack.bIsAttackActive = true;
+
+        if (!_currentAttack.GetAttack())
+        {
+            Debug.LogError("No Attack Script!");
+            return;
+        }
+
+        _currentAttack.GetAttack().SpawnAttackCollider(_currentAttack);
+
+
 
         //_damageColliderComponent.AssignShape(_currentAttack);
         //DEbug
@@ -119,6 +146,8 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         _currentAttack.bIsAttackActive = false;
         _damageColliderComponent.ClearHitTargets();
+
+        _currentAttack.GetAttack().RemoveAttackCollider();
         //_damageColliderComponent.ClearAttack();
     }
     public void ResetAttack() //attack ability is reinstated (in Animation Events)
@@ -155,8 +184,8 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
                 break;
             case EAttackShapeType.Capsule:
                 Gizmos.color = Color.cyan;
-                _currentAttack.attackEnd = _currentAttack.origin.position + (_currentAttack.origin.forward * _currentAttack.rangeLength);
                 Gizmos.DrawWireSphere(_currentAttack.origin.position, _currentAttack.radius);//start point of capsule collider
+                _currentAttack.attackEnd = _currentAttack.origin.position + (_currentAttack.origin.forward * _currentAttack.rangeLength);
                 Gizmos.DrawWireSphere(_currentAttack.attackEnd, _currentAttack.radius);      //end point of capsule collider
                 break;
             case EAttackShapeType.Box:

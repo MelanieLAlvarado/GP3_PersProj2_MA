@@ -33,14 +33,15 @@ public class PlayerController : MonoBehaviour
     private bool _bIsGrounded;
     private float _gravity = -9.81f;
 
-    public float GetCurrentSpeed() { return _currentSpeed; }
     public void SetControlledCharacter(CharacterBase characterBase) 
     {
         _characterBase = characterBase;
         _characterController = _characterBase.GetComponent<CharacterController>();
         _moveSpeed = characterBase.GetMaxSpeed();
-        _moveSpeed = characterBase.GetJumpHeight();
+        _jumpHeight = characterBase.GetJumpHeight();
     }
+    public void SetUpwardsVelocity(float velocityToSet) { _playerVelocity.y = velocityToSet; }
+    public bool GetIsGrounded() { return _bIsGrounded; }
     public void ClearController() { _characterController = null; }
     public void DisablePlayerInputActions() 
     { 
@@ -101,8 +102,10 @@ public class PlayerController : MonoBehaviour
 
     public void JumpAction(InputAction.CallbackContext context) 
     {
-        if (context.started && _bIsGrounded) 
+        if (context.started && _bIsGrounded && _characterBase) 
         {
+            /*_characterBase.SetGravity(_gravity);
+            _characterBase.CharacterJump();*/
             _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
         }
     }
