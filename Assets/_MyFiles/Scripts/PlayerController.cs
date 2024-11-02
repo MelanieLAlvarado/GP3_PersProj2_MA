@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
     private CharacterController _characterController;
 
     Vector2 _rawInput;
-    private float _currentSpeed;
     private float _moveSpeed = 3f;//will probably have it changed in CharacterChild class
     private float _jumpHeight = 3f;
 

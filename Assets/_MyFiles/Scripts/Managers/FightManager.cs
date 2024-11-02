@@ -19,8 +19,8 @@ public class FightManager : MonoBehaviour
     private GameplayUIManager _gameplayUI;
     [SerializeField] private GameObject gameplayUILayoutPrefab;
 
-    [SerializeField] private GameObject pauseMenuPrefab;//may spawn later
-    private GameObject pauseMenuUI;//may spawn later
+    [SerializeField] private GameObject pauseMenuPrefab;
+    private GameObject _pauseMenuUI;
     private bool _isPaused = false;
 
     [Header("Camera Info")]
@@ -78,8 +78,8 @@ public class FightManager : MonoBehaviour
     }
     private void PreparePauseMenu() 
     {
-        pauseMenuUI = Instantiate(pauseMenuPrefab, canvasTransform);
-        if (pauseMenuUI)
+        _pauseMenuUI = Instantiate(pauseMenuPrefab, canvasTransform);
+        if (_pauseMenuUI)
         {
             ResumeGame();
         }
@@ -116,7 +116,7 @@ public class FightManager : MonoBehaviour
 
     public void OnPauseAction()
     {
-        if (!pauseMenuUI)
+        if (!_pauseMenuUI)
         {
             return;
         }
@@ -134,14 +134,14 @@ public class FightManager : MonoBehaviour
     }
     private void PauseGame()
     { 
-        pauseMenuUI.SetActive(true);
+        _pauseMenuUI.SetActive(true);
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     private void ResumeGame() 
     {
-        pauseMenuUI.SetActive(false);
+        _pauseMenuUI.SetActive(false);
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

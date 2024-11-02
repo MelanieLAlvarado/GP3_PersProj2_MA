@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SelectionUIManager : MonoBehaviour
 {
     [Header("UI Info")]
-    [SerializeField] private Transform canvasTransform;
+    [SerializeField] private Transform canvasTransform;//change to find first obj of?
     [SerializeField] private GameObject selectionLayoutUIPrefab;
     private LayoutGroupWidget _selectionUI;
     [SerializeField] private GameObject playerSelectionLayoutUIPrefab;

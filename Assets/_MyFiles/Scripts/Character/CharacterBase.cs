@@ -33,12 +33,10 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] private float animSpeedChangeRate = 0.4f;
     private float _animMoveSpeed = 0f;
     private float _currentSpeed = 0f;
-    [SerializeField] private float maxSpeed = 3f;//will probably have it changed in CharacterChild class
+    [SerializeField] private float maxSpeed = 3f;
     [SerializeField] private float jumpHeight = 3f;
 
-    float _gravity;
     Player _ownerPlayer;
-    public void SetGravity(float gravityToSet) { _gravity = gravityToSet; }
     public Player GetOwnerPlayer() { return _ownerPlayer; }
     public void SetOwnerPlayer(Player owner) { _ownerPlayer = owner; } //player will pass this in on spawn
     public void SetFaceDirection(Vector3 directionToSet) { _faceDirection = directionToSet; }
