@@ -9,7 +9,6 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(DamageColliderComponent))]
 [RequireComponent(typeof(HealthComponent))]
 [RequireComponent(typeof(AttackComponent))]
 public class CharacterBase : MonoBehaviour
@@ -22,6 +21,7 @@ public class CharacterBase : MonoBehaviour
     private static readonly int _speedId = Animator.StringToHash("Speed");
 
     protected static readonly int _hitId = Animator.StringToHash("Hit");
+    protected static readonly int _isGroundedId = Animator.StringToHash("IsGrounded");
     protected static readonly int _deathId = Animator.StringToHash("Death");
 
 
@@ -33,7 +33,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] private float animSpeedChangeRate = 0.4f;
     private float _animMoveSpeed = 0f;
     private float _currentSpeed = 0f;
-    [SerializeField] private float maxSpeed = 3f;//will probably have it changed in CharacterChild class
+    [SerializeField] private float maxSpeed = 3f;
     [SerializeField] private float jumpHeight = 3f;
 
     Player _ownerPlayer;
@@ -83,11 +83,14 @@ public class CharacterBase : MonoBehaviour
         {
             _animMoveSpeed = Mathf.Lerp(_animMoveSpeed, _currentSpeed, Time.deltaTime * animSpeedChangeRate);
             _animator.SetFloat(_speedId, _animMoveSpeed);
+
         }
     }
     /*public void CharacterJump() 
     {
-        _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
+        float jumpVelocity = Mathf.Sqrt(jumpHeight * -3.0f * _gravity);
+        _playerController.SetUpwardsVelocity(jumpVelocity);
+        _animator.SetBool(_isGroundedId, _playerController.GetIsGrounded());
     }*/
 
     public void HitReaction() 

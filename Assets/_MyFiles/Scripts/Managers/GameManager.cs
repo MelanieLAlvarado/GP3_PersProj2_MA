@@ -59,8 +59,6 @@ public class GameManager : MonoBehaviour
 
         _keyboardSoloPlayer = _dataHolder.GetKeyboardSoloPlayer();
         
-        Debug.Log("AWAKE");
-
         if (m_Instance != null && m_Instance != this)
         {
             Debug.LogError("Multiple GameManagers found. Deleting Copy...");
@@ -94,12 +92,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("START");
+        //Debug.Log("START");
         _mainCamera = Camera.main;
-    }
-    private void GatherGameNecesities() 
-    {
-        
     }
     private void GatherManagers() 
     {
@@ -131,7 +125,7 @@ public class GameManager : MonoBehaviour
             Player player1 = Instantiate(playerPrefab);
             player1.transform.SetParent(_playerHolder.transform);
         }
-        Debug.Log(_dataHolder.GetPlayers().Count);
+        //Debug.Log(_dataHolder.GetPlayers().Count);
     }
     public void ProcessKeyboardPlayers(PlayerInput triggeredPlayerInput, string leftScheme, string rightScheme)
     {

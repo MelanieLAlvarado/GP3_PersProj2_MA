@@ -31,7 +31,7 @@ public class LayoutGroupWidget : Widget
         _widgetDictionary.Add(player, widget);
         player.OnPlayerRemoved += DisconnectPlayerFromWidget;
 
-        Debug.Log($"Obj = {player.name}; widget = {widget.name}");
+        //Debug.Log($"Obj = {player.name}; widget = {widget.name}");
         InitializeWidget(player.gameObject, widget);
     }
 

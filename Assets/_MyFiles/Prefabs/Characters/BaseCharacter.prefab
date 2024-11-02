@@ -129,7 +129,6 @@ GameObject:
   - component: {fileID: 1967924849939825433}
   - component: {fileID: 7128980942825362674}
   - component: {fileID: 7153038980964478836}
-  - component: {fileID: 8829025916280218839}
   - component: {fileID: 5410888032897496519}
   - component: {fileID: 5587890132771374398}
   - component: {fileID: 25666022276173519}
@@ -220,18 +219,6 @@ MonoBehaviour:
   animSpeedChangeRate: 2
   maxSpeed: 3
   jumpHeight: 3
---- !u!114 &8829025916280218839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7150251115021495561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d4d09b947bd1624ebb346f4990c37ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5410888032897496519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +261,6 @@ MonoBehaviour:
     rangeLength: 0
     damageDealt: 0
     bIsAttackActive: 0
-  sphereCastRadius: 12
 --- !u!114 &25666022276173519
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -42,7 +42,6 @@ public class BattleCamera : MonoBehaviour
 
         foreach (GameObject followObject in _followObjects)
         {
-            Debug.Log("In _followObjects: " + followObject.name);
             center += followObject.transform.position;
         }
         if (_followObjects.Count <= 0)
@@ -51,7 +50,7 @@ public class BattleCamera : MonoBehaviour
         }
 
         center /= _followObjects.Count;
-        Debug.Log($"center: {center.x},{center.y},{center.z}");
+        //Debug.Log($"center: {center.x},{center.y},{center.z}");
 
         float zDist = CalculateZoomDistance(center);
 
@@ -63,7 +62,7 @@ public class BattleCamera : MonoBehaviour
     {
         float dist = Vector3.Distance(_followObjects[0].transform.position, center);
 
-        Debug.Log("distance from center:" + dist);
+        //Debug.Log("distance from center:" + dist);
         dist = Mathf.Abs(dist) + xZoomOffset;
 
         if (Mathf.Abs(center.y) > yZoomThreshold)//in case player jumped or fell too close to edge of screen.
