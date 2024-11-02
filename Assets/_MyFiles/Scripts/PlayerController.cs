@@ -11,9 +11,6 @@ public class PlayerController : MonoBehaviour
     public delegate void OnTriggerPauseDelegate();
     public event OnTriggerPauseDelegate OnPauseTriggered;
 
-    public delegate void OnMovementUpdatedDelegate();
-    public event OnMovementUpdatedDelegate OnMovementUpdated;
-
     PlayerInput _playerInput;
     protected static string _keyboardFullScheme = "KeyboardFull";
     protected static string _keyboardLeftScheme = "KeyboardLeft";
@@ -139,7 +136,7 @@ public class PlayerController : MonoBehaviour
     public void Attack2Action(InputAction.CallbackContext context)
     {
         if (context.started && _characterBase)
-        {//may need to change _characterBase to the gameobject of the player when creating classes
+        {
             _characterBase.gameObject.GetComponent<IAttackInterface>().StartAttack2();
         }
     }

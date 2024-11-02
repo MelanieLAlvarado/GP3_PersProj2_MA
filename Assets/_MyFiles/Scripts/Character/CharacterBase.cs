@@ -9,7 +9,6 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(DamageColliderComponent))]
 [RequireComponent(typeof(HealthComponent))]
 [RequireComponent(typeof(AttackComponent))]
 public class CharacterBase : MonoBehaviour

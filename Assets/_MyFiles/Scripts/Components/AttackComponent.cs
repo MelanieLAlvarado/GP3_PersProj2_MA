@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
 [Serializable]
 public struct AttackInfo
 {
-    private Attack _attack;
+    private DamageColliderComponent _damageColliderComponent;
     public EAttackShapeType attackShape;
     public Transform origin; //get postition off of this
     /*[SerializeField]*/
@@ -21,20 +22,25 @@ public struct AttackInfo
     public float damageDealt;
     public bool bIsAttackActive;
 
-
     public void InitializeAttack(GameObject owner) 
     {
         bIsAttackActive = false;
-        _attack = origin.AddComponent<Attack>();
-        _attack.SetOwner(owner);
+        DamageColliderComponent attack = origin.GetComponent<DamageColliderComponent>();
+        if (attack)
+        {
+            _damageColliderComponent = attack;
+        }
+        else
+        {
+            _damageColliderComponent = origin.AddComponent<DamageColliderComponent>();
+        }
+        _damageColliderComponent.SetOwner(owner);
     }
-    public Attack GetAttack() { return _attack; }
+    public DamageColliderComponent GetAttack() { return _damageColliderComponent; }
 }
 
 public class AttackComponent : MonoBehaviour, IAttackInterface
 {
-    private DamageColliderComponent _damageColliderComponent;
-
     Animator _animator;
     AttackInfo _currentAttack;
     protected int _currentAttackId;
@@ -48,31 +54,14 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     protected static readonly int _attack1Id = Animator.StringToHash("Attack1");
     protected static readonly int _attack2Id = Animator.StringToHash("Attack2");
 
-    //DEbug
-    [Header("DEbug CAst")]
-    private RaycastHit _raycastHit;
-    [SerializeField] private float sphereCastRadius = 12.0f;
-    Vector3 _castPos;
-
     private void Awake()
     {
-        _damageColliderComponent = GetComponent<DamageColliderComponent>();
         _animator = GetComponent<Animator>();
-
     }
     private void Start()
     {
-        //attack1.bIsAttackActive = false;
         attack1.InitializeAttack(gameObject);
         attack2.InitializeAttack(gameObject);
-    }
-    private void FixedUpdate()
-    {
-        /*if (_currentAttack.bIsAttackActive == true)
-        {
-            //_damageColliderComponent.ProcessAttackType(_currentAttack);
-
-        }*/
     }
 
     public void StartAttack1()
@@ -87,47 +76,27 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     public void Attack() //attack physics will spawn (in Animation Events)
     {
         _currentAttack.bIsAttackActive = true;
-
-        if (!_currentAttack.GetAttack())
-        {
-            Debug.LogError("No Attack Script!");
-            return;
+        if (IsAttackValid())
+        { 
+            _currentAttack.GetAttack().SpawnAttackCollider(_currentAttack);
         }
-
-        _currentAttack.GetAttack().SpawnAttackCollider(_currentAttack);
-
-
-
-        //_damageColliderComponent.AssignShape(_currentAttack);
-        //DEbug
-        /*Ray ray = new Ray(_currentAttack.origin.position, _currentAttack.origin.forward);
-        if (Physics.SphereCast(ray, sphereCastRadius, out _raycastHit))
-        {
-            GameObject sphereGameObj = _raycastHit.transform.gameObject;
-            _castPos = sphereGameObj.transform.position;
-            Debug.Log($"{_castPos.x}, {_castPos.y}, {_castPos.z}");
-        }
-        Debug.Log("CastDone");*/
-
-
-        /*SphereCollider sphereCollider = this.gameObject.AddComponent<SphereCollider>();
-        sphereCollider.isTrigger = true;
-        Collider collider = sphereCollider;*/
-
-        // IN DAMAGE COLLIDER
-        /* SetCollider(Collider colliderToSet)
-         * private void OnTriggerEnter(Collider other)
-         * {
-         *      if (other.GetComponent<BaseCharacter>())
-         *      {
-         *          _damageColliderComponent.ProcessAttackType(_currentAttack);
-         *      }
-         * }*/
-        /* 
-            ProcessHitObjects(other);
-         */
     }
+    private bool IsAttackValid() 
+    {
+        if (!_currentAttack.origin)
+        {
+            Debug.LogError("There is no origin on this attack!\n Please assign an origin");
+            return false;
+        }
 
+        if (_currentAttack.GetAttack().gameObject != _currentAttack.origin.gameObject)
+        {
+            Debug.LogError("Attack Script not on origin! fixing...");
+            Destroy(_currentAttack.GetAttack());
+            _currentAttack.InitializeAttack(gameObject);
+        }
+        return true;
+    }
     public void AssignAttack(AttackInfo attack, int animationId)
     {
         if (_animator && _bCanAttack == true)
@@ -145,10 +114,8 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     public void EndAttack() //attack physics wont spawn anymore (in Animation Events)
     {
         _currentAttack.bIsAttackActive = false;
-        _damageColliderComponent.ClearHitTargets();
 
         _currentAttack.GetAttack().RemoveAttackCollider();
-        //_damageColliderComponent.ClearAttack();
     }
     public void ResetAttack() //attack ability is reinstated (in Animation Events)
     {
@@ -167,14 +134,6 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
         {
             return;
         }
-
-        //DEbug
-        /*Gizmos.color = Color.red;
-        
-        Gizmos.DrawWireSphere(_castPos, sphereCastRadius);*/
-        //Gizmos.DrawWireSphere(_castPos, sphereCastRadius);
-
-
 
         switch (_currentAttack.attackShape)
         {

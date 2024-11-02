@@ -15,7 +15,7 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     private void Awake()
     {
         OnPlayerSelectionChanged += GameManager.m_Instance.GetSelectUIManager().UpdateFightButton;
-        Debug.Log("PlayerSelection Widget has spawned!!");
+        //Debug.Log("PlayerSelection Widget has spawned!!");
     }
     private void Start()
     {
