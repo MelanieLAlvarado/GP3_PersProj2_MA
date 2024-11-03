@@ -31,9 +31,7 @@ public class DamageColliderComponent : DamageComponent
 
             capsuleAttack.direction = 2;
             capsuleAttack.height = (_attack.radius * 2) + _attack.rangeLength;
-            Vector3 center = _attack.origin.position + _attack.attackEnd;
-
-            capsuleAttack.center = new Vector3(0, 0, _attack.rangeLength / 2);//calculate here
+            capsuleAttack.center = new Vector3(0, 0, _attack.rangeLength / 2);
             _attackCollider = capsuleAttack;
 
         }

@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
         if (context.started)
         {
             FightManager fightManager = GameManager.m_Instance.GetFightManager();
-            if (fightManager)
+            if (fightManager && fightManager.GetIsFightActive())
             { 
                 OnPauseTriggered?.Invoke();
             }

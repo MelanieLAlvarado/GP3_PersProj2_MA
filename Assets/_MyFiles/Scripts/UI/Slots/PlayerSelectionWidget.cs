@@ -1,7 +1,10 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHandler
 {
@@ -16,6 +19,7 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     {
         OnPlayerSelectionChanged += GameManager.m_Instance.GetSelectUIManager().UpdateFightButton;
         //Debug.Log("PlayerSelection Widget has spawned!!");
+
     }
     private void Start()
     {
@@ -69,9 +73,14 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     }
     public void ReadPlayerName(string name) 
     {
+        //Debug.Log("text read");
+
         _playerName = name;
+        if (!GetOwner()) { return; }
+
         Player player = GetOwner().GetComponent<Player>();
         if (!player) { return; }
+        
         if (_playerName != string.Empty)
         {
             player.SetPlayerName(_playerName);
@@ -85,5 +94,6 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     private void OnDestroy()
     {
         OnPlayerSelectionChanged?.Invoke();
+        //Debug.Log("Player Selection Widget destroyed");
     }
 }

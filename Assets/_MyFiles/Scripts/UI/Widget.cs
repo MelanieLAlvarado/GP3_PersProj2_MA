@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Widget : MonoBehaviour
+public abstract class Widget : MonoBehaviour
 {
     protected GameObject _owner;
 

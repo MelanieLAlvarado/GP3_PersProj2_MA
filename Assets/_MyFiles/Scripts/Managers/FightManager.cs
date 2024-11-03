@@ -29,8 +29,15 @@ public class FightManager : MonoBehaviour
     private GameObject _battleCamObj;
     private BattleCamera _battleCam;
 
+    [Header("Fight End Info")]
+    [SerializeField] private GameEndMenu gameEndMenuPrefab;
+    private GameEndMenu _gameEndMenu;
+    private bool _bIsFightActive;
+
+
     public BattleCamera GetBattleCam() { return _battleCam; }
 
+    public bool GetIsFightActive() { return _bIsFightActive; }
     private void Awake()
     {
         PrepareFightNecessities();
@@ -67,6 +74,7 @@ public class FightManager : MonoBehaviour
         foreach (Player player in playerList)
         {
             player.ResetPlayerLifes();
+            player.OnNoPlayerLives += CheckAllPlayersInBattle;
 
             int randomSpawnIndex = Random.Range(0, spawnPosList.Count);
             Transform randomSpawnPos = spawnPosList[randomSpawnIndex];
@@ -75,6 +83,7 @@ public class FightManager : MonoBehaviour
 
             player.GetComponent<PlayerController>().OnPauseTriggered += OnPauseAction;
         }
+        _bIsFightActive = true;
     }
     private void PreparePauseMenu() 
     {
@@ -98,7 +107,6 @@ public class FightManager : MonoBehaviour
         }
         Array.Clear(spawnPositions, 0, spawnPositions.Length);
         spawnPositions = tempSpawnPositions.ToArray();
-
     }
     public void StartRespawnDelay(Player player) 
     {
@@ -145,5 +153,35 @@ public class FightManager : MonoBehaviour
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+    public void CheckAllPlayersInBattle() 
+    {
+        List<Player> players = DataHolder.m_Instance.GetPlayers();
+        List<Player> remainingPlayers = new List<Player>();
+        foreach (Player player in players)
+        {
+            if (player.GetPlayerLifes() > 0)
+            { 
+                remainingPlayers.Add(player);
+            }
+        }
+        if (remainingPlayers.Count > 1)
+        {
+            return;
+        }
+        EndGame(remainingPlayers[0]);
+    }
+    public void EndGame(Player winnerPlayer)
+    {
+        _gameEndMenu = Instantiate(gameEndMenuPrefab, canvasTransform);
+        
+        string playerName = winnerPlayer.GetPlayerName();
+        _gameEndMenu.SetCharacterWinText(playerName);
+        CharacterScriptable charScriptable = winnerPlayer.GetCharacter();
+        _gameEndMenu.GetWinnerSlot().SetCharacterInSlot(charScriptable);
+
+        Time.timeScale = 0;
+        Cursor.lockState= CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

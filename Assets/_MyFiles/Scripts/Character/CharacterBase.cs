@@ -86,12 +86,6 @@ public class CharacterBase : MonoBehaviour
 
         }
     }
-    /*public void CharacterJump() 
-    {
-        float jumpVelocity = Mathf.Sqrt(jumpHeight * -3.0f * _gravity);
-        _playerController.SetUpwardsVelocity(jumpVelocity);
-        _animator.SetBool(_isGroundedId, _playerController.GetIsGrounded());
-    }*/
 
     public void HitReaction() 
     {
@@ -102,14 +96,14 @@ public class CharacterBase : MonoBehaviour
     {
         _animator.SetTrigger(_deathId);
     }
-    public void EndDeath()
+    public void EndDeath() //triggered in animation events
     {
         Player player = _ownerPlayer.GetComponent<Player>();
         if (!player)
         {
             return;
         }
-        player.RemoveLife();//probably move into health component or something?
+        player.RemoveLife();
 
         FightManager fightManager = GameManager.m_Instance.GetFightManager();
         if (!fightManager)
@@ -118,6 +112,7 @@ public class CharacterBase : MonoBehaviour
         }
         fightManager.StartRespawnDelay(player);
         fightManager.GetBattleCam().RemoveFromFollowObjects(this.gameObject);
+
         Destroy(gameObject);
     }
 }

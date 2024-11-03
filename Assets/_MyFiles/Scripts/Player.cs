@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     public delegate void OnLivesChangedDelgate(int lives);
     public event OnLivesChangedDelgate OnLivesChanged;
 
+    public delegate void OnNoPlayerLivesDelegate();
+    public event OnNoPlayerLivesDelegate OnNoPlayerLives;
+
     PlayerController _playerController;
     [Header("Player Info")]
     private string _playerName = "";
@@ -34,6 +37,11 @@ public class Player : MonoBehaviour
     {
         _currentLifes--;
         OnLivesChanged?.Invoke(_currentLifes);
+        if (_currentLifes <= 0)
+        {
+            OnNoPlayerLives?.Invoke();
+            OnNoPlayerLives -= GameManager.m_Instance.GetFightManager().CheckAllPlayersInBattle;
+        }
     }
     private void Awake()
     {

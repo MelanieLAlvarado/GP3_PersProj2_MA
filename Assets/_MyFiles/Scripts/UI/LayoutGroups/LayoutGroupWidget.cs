@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 
 public class LayoutGroupWidget : Widget
 {
@@ -64,7 +66,7 @@ public class LayoutGroupWidget : Widget
     }
     public void DisconnectPlayerFromWidget(Player player)
     {
-        Debug.Log("Removing Player from widget");
+        //Debug.Log("Removing Player from widget");
         Widget widget = _widgetDictionary[player];
         if (!widget)
         { return; }
@@ -78,20 +80,11 @@ public class LayoutGroupWidget : Widget
             currentChar.GetComponent<HealthComponent>().OnHealthChanged -= gameSlotUI.UpdateHealthText;
         }
 
-        /*PlayerSelectionWidget playerSelectUI = widget.GetComponent<PlayerSelectionWidget>();
-        if (playerSelectUI)
-        { 
-            playerSelectUI.ClearCharacterInSlot();
-            playerSelectUI.OnPlayerSelectionChanged -= GameManager.m_Instance.GetSelectUIManager().UpdateFightButton;
-        }
-
-        SelectionUIManager selectionUIManager = GetOwner().GetComponent<SelectionUIManager>();
-        if (selectionUIManager) ///ensures that fight button is updated player is removed.
-        {
-            selectionUIManager.UpdateFightButton();
-        }*/
+        widget.gameObject.SetActive(false);
 
         player.OnPlayerRemoved -= DisconnectPlayerFromWidget;
+        Debug.Log("Removed Player from widget");
+
         Destroy(widget.gameObject);
     }
 }
