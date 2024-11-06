@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
@@ -36,13 +37,23 @@ public class PlayerController : MonoBehaviour
         _moveSpeed = characterBase.GetMaxSpeed();
         _jumpHeight = characterBase.GetJumpHeight();
     }
-    public void SetUpwardsVelocity(float velocityToSet) { _playerVelocity.y = velocityToSet; }
-    public bool GetIsGrounded() { return _bIsGrounded; }
+    public float GetGravity() { return _gravity; }
     public void ClearController() { _characterController = null; }
     public void DisablePlayerInputActions() 
     { 
         _playerInputActions.Disable(); 
     }
+    public void LaunchCharacter(Vector3 velocityToSet) 
+    {
+        _playerVelocity = velocityToSet;
+        StartCoroutine(ResetVelocity());
+    }
+    private IEnumerator ResetVelocity() 
+    {
+        yield return new WaitForSeconds(1f);
+        _playerVelocity = Vector3.zero;
+    }
+
     private void Start()
     {
         _playerInputActions = new PlayerInputActions();

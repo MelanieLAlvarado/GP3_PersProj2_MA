@@ -20,6 +20,7 @@ public struct AttackInfo
     //private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
 
     public float damageDealt;
+    public float hitForce;
     public bool bIsAttackActive;
 
     public void InitializeAttack(GameObject owner) 

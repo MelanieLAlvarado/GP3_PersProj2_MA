@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class DamageComponent : MonoBehaviour
 {
@@ -18,10 +19,21 @@ public class DamageComponent : MonoBehaviour
         {
             _healthComponent.ChangeHealth(-damageToDeal, this.gameObject);
         }
-        CharacterBase charBase = target.GetComponent<CharacterBase>();
-        if (charBase) 
+        CharacterBase targetCharBase = target.GetComponent<CharacterBase>();
+        if (targetCharBase) 
         {
-            charBase.HitReaction();
+            targetCharBase.HitReaction();
         }
+
+        //LaunchTarget(target);
     }
+    /*private void LaunchTarget(GameObject target) 
+    {
+        LaunchComponent launchComponent = target.GetComponent<LaunchComponent>();
+        if (launchComponent)
+        {
+            float hitForce = GetComponent<CharacterBase>().GetHitForce();
+            launchComponent.Launch(transform.forward, hitForce, true);
+        }
+    }*/
 }

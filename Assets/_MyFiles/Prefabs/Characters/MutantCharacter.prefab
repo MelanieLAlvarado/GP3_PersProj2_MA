@@ -192,6 +192,14 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack1.hitForce
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
+      propertyPath: attack2.hitForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: bDrawDebugAttacks
       value: 1
       objectReference: {fileID: 0}

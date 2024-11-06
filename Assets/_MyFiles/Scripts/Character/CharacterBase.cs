@@ -83,7 +83,6 @@ public class CharacterBase : MonoBehaviour
         {
             _animMoveSpeed = Mathf.Lerp(_animMoveSpeed, _currentSpeed, Time.deltaTime * animSpeedChangeRate);
             _animator.SetFloat(_speedId, _animMoveSpeed);
-
         }
     }
 

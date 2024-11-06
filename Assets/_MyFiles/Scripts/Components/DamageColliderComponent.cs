@@ -1,7 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public enum EAttackShapeType { Sphere, Capsule, Box}
 
@@ -11,6 +11,8 @@ public class DamageColliderComponent : DamageComponent
     Collider _attackCollider;
     AttackInfo _attack;
     HashSet<CharacterBase> _hitCharacters = new HashSet<CharacterBase>();
+    Dictionary<CharacterController, Coroutine> _enableControllerDict = new Dictionary<CharacterController, Coroutine>();
+    float controllerEnableTime = 1f;
 
     public void SetOwner(GameObject ownerObject) { _owner = ownerObject; }
     public void SpawnAttackCollider(AttackInfo attack)
@@ -58,12 +60,17 @@ public class DamageColliderComponent : DamageComponent
                 _hitCharacters.Add(charBase);
 
                 ApplyDamage(other.gameObject, _attack.damageDealt);
+                LaunchTarget(other.gameObject);
             }
         }
     }
 
-    private void ProcessHit(GameObject hitCharacter)
+    private void LaunchTarget(GameObject target)
     {
-
+        LaunchComponent launchComponent = target.GetComponent<LaunchComponent>();
+        if (launchComponent)
+        {
+            launchComponent.Launch(_owner.transform.forward, _attack.hitForce, true);
+        }
     }
 }
