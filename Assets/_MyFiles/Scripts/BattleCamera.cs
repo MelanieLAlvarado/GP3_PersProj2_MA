@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BattleCamera : MonoBehaviour
 {
-    Vector3 _followPosition;
+    Vector3 _followPosition; [SerializeField]
     List<GameObject> _followObjects = new List<GameObject>();
     [Header("Move Offset Settings")]
     [SerializeField] float yOffset = 2f;
@@ -31,7 +31,6 @@ public class BattleCamera : MonoBehaviour
     private void Update()
     {
         _followPosition = CalculateCenter();
-
 
         this.transform.position = Vector3.Lerp(this.transform.position, _followPosition, Time.deltaTime * followRate);
     }

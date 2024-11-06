@@ -128,7 +128,6 @@ GameObject:
   - component: {fileID: 180852504756031113}
   - component: {fileID: 1967924849939825433}
   - component: {fileID: 7128980942825362674}
-  - component: {fileID: 7153038980964478836}
   - component: {fileID: 5410888032897496519}
   - component: {fileID: 5587890132771374398}
   - component: {fileID: 25666022276173519}
@@ -204,22 +203,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7153038980964478836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7150251115021495561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32b480f1a84229549a7b8cccb2d22435, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterTurnSpeed: 10
-  animSpeedChangeRate: 2
-  maxSpeed: 3
-  jumpHeight: 3
 --- !u!114 &5410888032897496519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +239,15 @@ MonoBehaviour:
     hitForce: 0
     bIsAttackActive: 0
   attack2:
+    attackShape: 0
+    origin: {fileID: 0}
+    attackEnd: {x: 0, y: 0, z: 0}
+    radius: 0
+    rangeLength: 0
+    damageDealt: 0
+    hitForce: 0
+    bIsAttackActive: 0
+  attack3:
     attackShape: 0
     origin: {fileID: 0}
     attackEnd: {x: 0, y: 0, z: 0}

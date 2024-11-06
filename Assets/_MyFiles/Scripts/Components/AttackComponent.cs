@@ -22,9 +22,21 @@ public struct AttackInfo
     public float damageDealt;
     public float hitForce;
     public bool bIsAttackActive;
+    public bool bFreezeInputDuringAttack;
 
     public void InitializeAttack(GameObject owner) 
     {
+        if (!owner)
+        {
+            Debug.LogError("Owner of attack is missing!");
+            return;
+        }
+        if (!origin)
+        {
+            Debug.LogError("Origin Point of attack is missing!");
+            return;
+        }
+
         bIsAttackActive = false;
         DamageColliderComponent attack = origin.GetComponent<DamageColliderComponent>();
         if (attack)
@@ -42,6 +54,7 @@ public struct AttackInfo
 
 public class AttackComponent : MonoBehaviour, IAttackInterface
 {
+    CharacterBase _characterBase;
     Animator _animator;
     AttackInfo _currentAttack;
     protected int _currentAttackId;
@@ -51,18 +64,22 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     [Header("Attack Options")]
     [SerializeField] AttackInfo attack1;
     [SerializeField] AttackInfo attack2;
+    [SerializeField] AttackInfo attack3;
 
     protected static readonly int _attack1Id = Animator.StringToHash("Attack1");
     protected static readonly int _attack2Id = Animator.StringToHash("Attack2");
+    protected static readonly int _attack3Id = Animator.StringToHash("Attack3");
 
     private void Awake()
     {
+        _characterBase = GetComponent<CharacterBase>();
         _animator = GetComponent<Animator>();
     }
     private void Start()
     {
         attack1.InitializeAttack(gameObject);
         attack2.InitializeAttack(gameObject);
+        attack3.InitializeAttack(gameObject);
     }
 
     public void StartAttack1()
@@ -73,7 +90,10 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         AssignAttack(attack2, _attack2Id);
     }
-
+    public void StartAttack3()
+    {
+        AssignAttack(attack3, _attack3Id);
+    }
     public void Attack() //attack physics will spawn (in Animation Events)
     {
         _currentAttack.bIsAttackActive = true;
@@ -105,6 +125,10 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
             _bCanAttack = false;
             _currentAttack = attack;
             PlayAnimation(animationId);
+            if (_currentAttack.bFreezeInputDuringAttack)
+            {
+                _characterBase.GetOwnerController().SetCanMove(false);
+            }
         }
     }
     protected void PlayAnimation(int animationId)
@@ -121,6 +145,7 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     public void ResetAttack() //attack ability is reinstated (in Animation Events)
     {
         _bCanAttack = true;
+        _characterBase.GetOwnerController().SetCanMove(true);
     }
     private void OnDrawGizmos()
     {

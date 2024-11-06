@@ -21,6 +21,7 @@ public class CharacterBase : MonoBehaviour
     private static readonly int _speedId = Animator.StringToHash("Speed");
 
     protected static readonly int _hitId = Animator.StringToHash("Hit");
+    protected static readonly int _hasJumpedId = Animator.StringToHash("HasJumped");
     protected static readonly int _isGroundedId = Animator.StringToHash("IsGrounded");
     protected static readonly int _deathId = Animator.StringToHash("Death");
 
@@ -37,8 +38,10 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] private float jumpHeight = 3f;
 
     Player _ownerPlayer;
+    protected PlayerController _ownerController;
     public Player GetOwnerPlayer() { return _ownerPlayer; }
     public void SetOwnerPlayer(Player owner) { _ownerPlayer = owner; } //player will pass this in on spawn
+    public PlayerController GetOwnerController() { return _ownerController;}
     public void SetFaceDirection(Vector3 directionToSet) { _faceDirection = directionToSet; }
     public float GetMaxSpeed() { return maxSpeed; }
     public float GetJumpHeight() {  return jumpHeight; }
@@ -66,7 +69,8 @@ public class CharacterBase : MonoBehaviour
 
         if (_ownerPlayer)
         {
-            _healthComponent.OnDead += _ownerPlayer.GetComponent<PlayerController>().ClearController;
+            _ownerController = _ownerPlayer.GetComponent<PlayerController>();
+            _healthComponent.OnDead += _ownerController.ClearController;
         }
     }
     private void FixedUpdate()
@@ -83,6 +87,10 @@ public class CharacterBase : MonoBehaviour
         {
             _animMoveSpeed = Mathf.Lerp(_animMoveSpeed, _currentSpeed, Time.deltaTime * animSpeedChangeRate);
             _animator.SetFloat(_speedId, _animMoveSpeed);
+            if (!_ownerController)
+                _ownerController = _ownerPlayer.GetComponent<PlayerController>();
+            _animator.SetBool(_isGroundedId, _ownerController.GetIsGrounded());
+            _animator.SetBool(_hasJumpedId, _ownerController.GetHasJumped());
         }
     }
 

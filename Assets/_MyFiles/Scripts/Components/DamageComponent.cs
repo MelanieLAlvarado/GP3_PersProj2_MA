@@ -24,16 +24,5 @@ public class DamageComponent : MonoBehaviour
         {
             targetCharBase.HitReaction();
         }
-
-        //LaunchTarget(target);
     }
-    /*private void LaunchTarget(GameObject target) 
-    {
-        LaunchComponent launchComponent = target.GetComponent<LaunchComponent>();
-        if (launchComponent)
-        {
-            float hitForce = GetComponent<CharacterBase>().GetHitForce();
-            launchComponent.Launch(transform.forward, hitForce, true);
-        }
-    }*/
 }
