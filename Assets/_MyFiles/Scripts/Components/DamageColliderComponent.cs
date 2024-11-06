@@ -105,10 +105,17 @@ public class DamageColliderComponent : DamageComponent
 
         Coroutine particleCoroutine = StartCoroutine(VfxDiscardTimer(newVfx));
         _particleCoroutineDict.Add(newVfx, particleCoroutine);
+        if (_attack.overrideVfxSpawnPoint)
+        {
+            newVfx.transform.parent = _attack.overrideVfxSpawnPoint.transform;
+            return;
+        }
+        newVfx.transform.parent = _attack.origin.transform;
     }
     private IEnumerator VfxDiscardTimer(ParticleSystem vfxToRemove) 
     {
         yield return new WaitForSeconds(1.0f);
+        Destroy(vfxToRemove.gameObject);
         _particleCoroutineDict.Remove(vfxToRemove);
         Debug.Log("VFX Has been removed!");
     }
