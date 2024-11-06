@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
@@ -21,9 +22,11 @@ public class PlayerController : MonoBehaviour
     private PlayerInputActions _playerInputActions;
     private CharacterController _characterController;
 
+    bool _bCanMove = true;
     Vector2 _rawInput;
     private float _moveSpeed = 3f;//will probably have it changed in CharacterChild class
     private float _jumpHeight = 3f;
+    private bool _bHasJumped = false;
 
     private Vector3 _playerVelocity;
     private bool _bIsGrounded;
@@ -36,28 +39,45 @@ public class PlayerController : MonoBehaviour
         _moveSpeed = characterBase.GetMaxSpeed();
         _jumpHeight = characterBase.GetJumpHeight();
     }
-    public void SetUpwardsVelocity(float velocityToSet) { _playerVelocity.y = velocityToSet; }
+    public float GetGravity() { return _gravity; }
     public bool GetIsGrounded() { return _bIsGrounded; }
+    public bool GetHasJumped() { return _bHasJumped; }
     public void ClearController() { _characterController = null; }
     public void DisablePlayerInputActions() 
     { 
         _playerInputActions.Disable(); 
     }
+    public void ResetPlayerVelocity() { _playerVelocity = Vector3.zero; }
+    public void LaunchCharacter(Vector3 velocityToSet) 
+    {
+        _playerVelocity = velocityToSet;
+        StartCoroutine(ResetVelocityTimer());
+    }
+    public IEnumerator ResetVelocityTimer() 
+    {
+        yield return new WaitForSeconds(1.5f);
+        ResetPlayerVelocity();
+    }
+    public void SetCanMove(bool bCanMove) { _bCanMove = bCanMove; }
+
     private void Start()
     {
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Enable();
         _playerInput = GetComponent<PlayerInput>();
+        _bCanMove = true;
     }
     private void Update()
     {
         if (!_characterController) { return; }
 
         _bIsGrounded = _characterController.isGrounded;
+        
     }
     private void FixedUpdate()
     {
         ProcessMovement();
+        ProcessGravity();
     }
     public void MovementAction(InputAction.CallbackContext context)
     {
@@ -68,7 +88,7 @@ public class PlayerController : MonoBehaviour
     }
     public void ProcessMovement() 
     {
-        if (!_characterController) { return; }
+        if (!_characterController || !_bCanMove) { return; }
 
         Vector3 movementVal = new Vector3(_rawInput.x, 0, 0);
         Vector3 moveInDir= transform.TransformDirection(movementVal);
@@ -80,8 +100,6 @@ public class PlayerController : MonoBehaviour
         //Debug.Log($"process movement: {moveInDir * (_moveSpeed * Time.deltaTime)}");
 
         _characterController.Move(moveInDir * (_moveSpeed * Time.deltaTime));
-
-        ProcessGravity();
     }
 
     private void ProcessGravity()
@@ -98,13 +116,22 @@ public class PlayerController : MonoBehaviour
 
     public void JumpAction(InputAction.CallbackContext context) 
     {
-        if (context.started && _bIsGrounded && _characterBase) 
+        if (context.started && _bIsGrounded && _characterBase && _bCanMove) 
         {
             /*_characterBase.SetGravity(_gravity);
             _characterBase.CharacterJump();*/
+            _bHasJumped = true;
             _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
+            StartCoroutine(HasJumpedResetDelay());
         }
     }
+
+    private IEnumerator HasJumpedResetDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _bHasJumped = false;
+    }
+
     public void PauseAction(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -137,6 +164,13 @@ public class PlayerController : MonoBehaviour
         if (context.started && _characterBase)
         {
             _characterBase.gameObject.GetComponent<IAttackInterface>().StartAttack2();
+        }
+    }
+    public void Attack3Action(InputAction.CallbackContext context)
+    {
+        if (context.started && _characterBase)
+        {
+            _characterBase.gameObject.GetComponent<IAttackInterface>().StartAttack3();
         }
     }
 }

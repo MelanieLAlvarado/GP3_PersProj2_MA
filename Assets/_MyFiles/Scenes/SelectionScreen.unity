@@ -1723,6 +1723,7 @@ MonoBehaviour:
     radius: 0
     rangeLength: 0
     damageDealt: 0
+    hitForce: 0
     bIsAttackActive: 0
   attack2:
     attackShape: 0
@@ -1731,8 +1732,8 @@ MonoBehaviour:
     radius: 0
     rangeLength: 0
     damageDealt: 0
+    hitForce: 0
     bIsAttackActive: 0
-  sphereCastRadius: 12
 --- !u!224 &172702770395867614
 RectTransform:
   m_ObjectHideFlags: 0
