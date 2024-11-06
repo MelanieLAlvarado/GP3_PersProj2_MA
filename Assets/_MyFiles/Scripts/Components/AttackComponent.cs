@@ -19,6 +19,8 @@ public struct AttackInfo
     /*[SerializeField]*/
     //private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
 
+    public ParticleSystem vfx;
+    public Transform overrideVfxSpawnPoint;
     public float damageDealt;
     public float hitForce;
     public bool bIsAttackActive;

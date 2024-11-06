@@ -5,15 +5,25 @@ using UnityEngine;
 
 public enum EAttackShapeType { Sphere, Capsule, Box}
 
+[RequireComponent(typeof(Rigidbody))]
 public class DamageColliderComponent : DamageComponent
 {
+    Rigidbody _rigidBody;
     GameObject _owner;
     Collider _attackCollider;
     AttackInfo _attack;
     HashSet<CharacterBase> _hitCharacters = new HashSet<CharacterBase>();
     Dictionary<CharacterController, Coroutine> _enableControllerDict = new Dictionary<CharacterController, Coroutine>();
+    Dictionary<ParticleSystem, Coroutine> _particleCoroutineDict = new Dictionary<ParticleSystem, Coroutine>();
+    
     float controllerEnableTime = 1f;
-
+    private void Start()
+    {
+        _rigidBody = GetComponent<Rigidbody>();
+        _rigidBody.useGravity = false;
+        _rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+        _rigidBody.isKinematic = true;
+    }
     public void SetOwner(GameObject ownerObject) { _owner = ownerObject; }
     public void SpawnAttackCollider(AttackInfo attack)
     {
@@ -47,12 +57,12 @@ public class DamageColliderComponent : DamageComponent
     }
     private void OnTriggerEnter(Collider other)
     {
-        CharacterBase charBase = other.GetComponent<CharacterBase>();
-        if (!charBase || other.gameObject == _owner)
+        if (other.gameObject == _owner)
         {
             return;
         }
-        if (!_hitCharacters.Contains(charBase))
+        CharacterBase charBase = other.GetComponent<CharacterBase>();
+        if (charBase && !_hitCharacters.Contains(charBase))
         {
             Debug.Log($"Hit {charBase.gameObject.name}");
             if (ShouldDamage(other.gameObject))
@@ -63,6 +73,8 @@ public class DamageColliderComponent : DamageComponent
                 LaunchTarget(other.gameObject);
             }
         }
+        Vector3 impactPoint = other.ClosestPoint(_attack.origin.position);
+        SpawnVfx(impactPoint);
     }
 
     private void LaunchTarget(GameObject target)
@@ -72,5 +84,32 @@ public class DamageColliderComponent : DamageComponent
         {
             launchComponent.Launch(_owner.transform.forward, _attack.hitForce, true);
         }
+    }
+    private void SpawnVfx(Vector3 vfxSpawnPos)
+    {
+        if (!_attack.vfx)
+        {
+            Debug.Log("There is no vfx");
+            return;
+        }
+        ParticleSystem newVfx;
+        if (_attack.overrideVfxSpawnPoint)
+        {
+            Vector3 overridePos = _attack.overrideVfxSpawnPoint.position;
+            newVfx = Instantiate(_attack.vfx, overridePos, Quaternion.identity);
+        }
+        else
+        {
+            newVfx = Instantiate(_attack.vfx, vfxSpawnPos, Quaternion.identity);
+        }
+
+        Coroutine particleCoroutine = StartCoroutine(VfxDiscardTimer(newVfx));
+        _particleCoroutineDict.Add(newVfx, particleCoroutine);
+    }
+    private IEnumerator VfxDiscardTimer(ParticleSystem vfxToRemove) 
+    {
+        yield return new WaitForSeconds(1.0f);
+        _particleCoroutineDict.Remove(vfxToRemove);
+        Debug.Log("VFX Has been removed!");
     }
 }
