@@ -309,7 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterTurnSpeed: 10
   animSpeedChangeRate: 2
-  maxSpeed: 4
+  maxSpeed: 5
   jumpHeight: 3
 --- !u!4 &8291087382533171258 stripped
 Transform:
