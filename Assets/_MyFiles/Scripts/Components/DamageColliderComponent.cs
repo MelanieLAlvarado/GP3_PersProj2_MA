@@ -21,8 +21,8 @@ public class DamageColliderComponent : DamageComponent
     {
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.useGravity = false;
-        _rigidBody.constraints = RigidbodyConstraints.FreezeAll;
-        _rigidBody.isKinematic = true;
+        _rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        //_rigidBody.isKinematic = true;
     }
     public void SetOwner(GameObject ownerObject) { _owner = ownerObject; }
     public void SpawnAttackCollider(AttackInfo attack)
@@ -89,7 +89,6 @@ public class DamageColliderComponent : DamageComponent
     {
         if (!_attack.vfx)
         {
-            Debug.Log("There is no vfx");
             return;
         }
         ParticleSystem newVfx;
@@ -97,26 +96,25 @@ public class DamageColliderComponent : DamageComponent
         {
             Vector3 overridePos = _attack.overrideVfxSpawnPoint.position;
             newVfx = Instantiate(_attack.vfx, overridePos, Quaternion.identity);
+            newVfx.transform.parent = _attack.overrideVfxSpawnPoint.transform;
         }
         else
         {
             newVfx = Instantiate(_attack.vfx, vfxSpawnPos, Quaternion.identity);
+            newVfx.transform.parent = _attack.origin.transform;
         }
 
         Coroutine particleCoroutine = StartCoroutine(VfxDiscardTimer(newVfx));
         _particleCoroutineDict.Add(newVfx, particleCoroutine);
-        if (_attack.overrideVfxSpawnPoint)
-        {
-            newVfx.transform.parent = _attack.overrideVfxSpawnPoint.transform;
-            return;
-        }
-        newVfx.transform.parent = _attack.origin.transform;
     }
-    private IEnumerator VfxDiscardTimer(ParticleSystem vfxToRemove) 
+    private IEnumerator VfxDiscardTimer(ParticleSystem newVfx) 
     {
         yield return new WaitForSeconds(1.0f);
-        Destroy(vfxToRemove.gameObject);
-        _particleCoroutineDict.Remove(vfxToRemove);
+        if (newVfx != null)
+        { 
+            _particleCoroutineDict.Remove(newVfx);
+            Destroy(newVfx.gameObject);
+        }
         Debug.Log("VFX Has been removed!");
     }
 }

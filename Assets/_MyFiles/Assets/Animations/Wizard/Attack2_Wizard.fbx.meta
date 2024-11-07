@@ -69,7 +69,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.96567404
+      - time: 0.9246484
         functionName: ResetAttack
         data: 
         objectReferenceParameter: {instanceID: 0}
