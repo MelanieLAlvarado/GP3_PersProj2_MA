@@ -34,7 +34,7 @@ ModelImporter:
       name: JumpStart_Mutant
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 15
+      firstFrame: 55
       lastFrame: 98
       wrapMode: 0
       orientationOffsetY: 0
@@ -44,10 +44,10 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 1
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 1
@@ -93,7 +93,7 @@ ModelImporter:
       takeName: mixamo.com
       internalID: 8842878171678463616
       firstFrame: 102
-      lastFrame: 190
+      lastFrame: 167
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

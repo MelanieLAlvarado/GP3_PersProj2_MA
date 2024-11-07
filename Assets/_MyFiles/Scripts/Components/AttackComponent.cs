@@ -51,7 +51,7 @@ public struct AttackInfo
         }
         _damageColliderComponent.SetOwner(owner);
     }
-    public DamageColliderComponent GetAttack() { return _damageColliderComponent; }
+    public DamageColliderComponent GetDamageColliderComp() { return _damageColliderComponent; }
 }
 
 public class AttackComponent : MonoBehaviour, IAttackInterface
@@ -72,6 +72,7 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     protected static readonly int _attack2Id = Animator.StringToHash("Attack2");
     protected static readonly int _attack3Id = Animator.StringToHash("Attack3");
 
+    public AttackInfo GetCurrentAttackInfo() { return _currentAttack; }
     private void Awake()
     {
         _characterBase = GetComponent<CharacterBase>();
@@ -101,7 +102,7 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
         _currentAttack.bIsAttackActive = true;
         if (IsAttackValid())
         { 
-            _currentAttack.GetAttack().SpawnAttackCollider(_currentAttack);
+            _currentAttack.GetDamageColliderComp().SpawnAttackCollider(_currentAttack);
         }
     }
     private bool IsAttackValid() 
@@ -112,14 +113,15 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
             return false;
         }
 
-        if (_currentAttack.GetAttack().gameObject != _currentAttack.origin.gameObject)
+        if (_currentAttack.GetDamageColliderComp().gameObject != _currentAttack.origin.gameObject)
         {
             Debug.LogError("Attack Script not on origin! fixing...");
-            Destroy(_currentAttack.GetAttack());
+            Destroy(_currentAttack.GetDamageColliderComp());
             _currentAttack.InitializeAttack(gameObject);
         }
         return true;
     }
+
     public void AssignAttack(AttackInfo attack, int animationId)
     {
         if (_animator && _bCanAttack == true)
@@ -142,7 +144,7 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         _currentAttack.bIsAttackActive = false;
 
-        _currentAttack.GetAttack().RemoveAttackCollider();
+        _currentAttack.GetDamageColliderComp().RemoveAttackCollider();
     }
     public void ResetAttack() //attack ability is reinstated (in Animation Events)
     {

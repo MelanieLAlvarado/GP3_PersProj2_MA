@@ -6,16 +6,22 @@ public class LaunchComponent : MonoBehaviour
 {
     Rigidbody _rigidBody;
     PlayerController _playerController;
-    public void Launch(Vector3 launchDirection, float launchVelocity, bool bFlattenZ = false) 
+    public void Launch(Vector3 launchDirection, float launchVelocity, bool bFlattenZ = false, bool bFlattenY = false) 
     {
+        Debug.Log(launchDirection);
         Vector3 finalVelocity = launchDirection * launchVelocity;
         if (bFlattenZ)
         {
             finalVelocity.z = 0;
         }
+        if (bFlattenY)
+        {
+            finalVelocity.y = 0;
+        }
 
         if (CanLaunchRigidBody())
         {
+            Debug.Log($"can launch rigidbody. Final Velocity: {finalVelocity}");
             _rigidBody.AddForce(finalVelocity, ForceMode.Impulse);
             return;
         }
