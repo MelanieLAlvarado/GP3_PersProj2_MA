@@ -16,7 +16,6 @@ public class CharacterBase : MonoBehaviour
     private AttackComponent _attackComponent;
     private HealthComponent _healthComponent;
 
-    PlayerController _playerController;
     Animator _animator;
     private static readonly int _speedId = Animator.StringToHash("Speed");
 

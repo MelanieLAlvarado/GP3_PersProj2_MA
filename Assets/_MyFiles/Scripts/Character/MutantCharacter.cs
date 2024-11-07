@@ -20,12 +20,4 @@ public class MutantCharacter : CharacterBase
             _launchComponent.Launch(transform.forward, jumpVelocity, true);
         }
     }
-    /*public void ResetVelocity() 
-    {
-        if (_ownerController)
-        { 
-            _ownerController.SetCanMove(false);
-            _ownerController.ResetPlayerVelocity();
-        }
-    }*/
 }

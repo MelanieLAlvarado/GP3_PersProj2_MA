@@ -95,7 +95,7 @@ public class DamageColliderComponent : DamageComponent
         if (_attack.overrideVfxSpawnPoint)
         {
             Vector3 overridePos = _attack.overrideVfxSpawnPoint.position;
-            newVfx = Instantiate(_attack.vfx, overridePos, Quaternion.identity);
+            newVfx = Instantiate(_attack.vfx, overridePos, _attack.overrideVfxSpawnPoint.rotation);
             newVfx.transform.parent = _attack.overrideVfxSpawnPoint.transform;
         }
         else

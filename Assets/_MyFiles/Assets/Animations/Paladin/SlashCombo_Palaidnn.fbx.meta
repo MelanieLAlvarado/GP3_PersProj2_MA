@@ -55,6 +55,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.13329375
+        functionName: StartComboMove
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.17770034
         functionName: Attack
         data: 
@@ -71,6 +78,13 @@ ModelImporter:
         messageOptions: 0
       - time: 0.66550523
         functionName: Attack
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7
+        functionName: EndComboMove
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
