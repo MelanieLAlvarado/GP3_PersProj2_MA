@@ -10,16 +10,13 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(SceneLoader))]
 public class GameManager : MonoBehaviour
 {
-    /*public delegate void OnPlayerCountChangedDelegate();
-    public event OnPlayerCountChangedDelegate OnPlayerCountChanged;*/
-
     public static GameManager m_Instance;
     private Camera _mainCamera;
 
     [Header("Managers")]//shouldn't show in inspector
     private SceneLoader _sceneLoader;
 
-    /*OPTIONAL MANAGERS*/
+    /*Additional MANAGERS*/
     private SelectionUIManager _selectionUIManager;
     private FightManager _fightManager;
     private GameplayUIManager _gameplayUIManager;
@@ -43,19 +40,16 @@ public class GameManager : MonoBehaviour
     public GameplayUIManager GetGameplayUIManager() { return _gameplayUIManager; }
     private void Awake()
     {
-        //SceneManager.sceneLoaded += ProcessLoadedScene;
         GameObject dataHolderObject = GameObject.FindGameObjectWithTag(_dataHolderName);
 
         if (dataHolderObject)
         {
-            //dataHolderObject = new GameObject(_dataHolderName);
             _dataHolder = dataHolderObject.GetComponent<DataHolder>();
         } 
         else if (dataHolderPrefab)
         { 
             _dataHolder = Instantiate(dataHolderPrefab);
         }
-
 
         _keyboardSoloPlayer = _dataHolder.GetKeyboardSoloPlayer();
         
@@ -72,27 +66,8 @@ public class GameManager : MonoBehaviour
         CheckPresentPlayers();
     }
 
-    private void ProcessLoadedScene(Scene scene, LoadSceneMode sceneMode)
-    {
-        Debug.Log("Process Loaded Scene:" + scene.buildIndex);
-        /*if (scene.buildIndex == _sceneLoader.GetMainMenuSceneIndex())
-        { 
-            ///Main Menu Stuff Here...
-        }*/
-        if (scene.buildIndex == _sceneLoader.GetSelectionSceneIndex())
-        {
-            //_selectionUIManager.InitializeSelectionNecesities();
-        }
-        else if (scene.buildIndex == _sceneLoader.GetFightSceneIndex())
-        {
-            /*_fightManager.PrepareFightNecessities();
-            _fightManager.SetUpFight();*/
-        }
-    }
-
     private void Start()
     {
-        //Debug.Log("START");
         _mainCamera = Camera.main;
     }
     private void GatherManagers() 
@@ -110,22 +85,12 @@ public class GameManager : MonoBehaviour
             _playerHolder = new GameObject(playerHolderName);
             DontDestroyOnLoad(_playerHolder);
         }
-        /*else
-        {
-            List<Player> playersInHolder = new List<Player>();
-            foreach (Transform child in _playerHolder.transform)
-            {
-                Player player = child.gameObject.GetComponent<Player>();
-                playersInHolder.Add(player);
-            }
-            _players = playersInHolder;
-        }*/
+        
         if (_dataHolder.GetPlayers().Count <= 0 && playerPrefab != null) ///if there are no players in the scene (players have DontDestroyOnLoad)
         {
             Player player1 = Instantiate(playerPrefab);
             player1.transform.SetParent(_playerHolder.transform);
         }
-        //Debug.Log(_dataHolder.GetPlayers().Count);
     }
     public void ProcessKeyboardPlayers(PlayerInput triggeredPlayerInput, string leftScheme, string rightScheme)
     {
@@ -153,18 +118,4 @@ public class GameManager : MonoBehaviour
         }
         _dataHolder.SetKeyboardSoloPlayer(_keyboardSoloPlayer);
     }
-    /*private void AddRequiredManagers() //WIP - Dependent on build index
-    {
-        int currentSceneInt = _sceneLoader.GetCurrentSceneIndex();
-
-        switch (currentSceneInt) 
-        {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-        }
-    }*/
 }

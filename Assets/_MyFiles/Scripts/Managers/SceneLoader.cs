@@ -9,32 +9,6 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private int selectionSceneInt;
     [SerializeField] private int fightSceneInt;
 
-    /*private void Awake()
-    {
-        
-    }
-    private void AddRequiredManagers() //WIP - Dependent on build index
-    {
-        int currentSceneInt = SceneManager.GetActiveScene().buildIndex;
-        
-
-
-        switch (currentSceneInt)
-        {
-            case 0:
-                GameManager.m_Instance.AddMainMenuSceneManagers();
-                break;
-            case 1:
-                GameManager.m_Instance.AddSelectionSceneManagers();
-                break;
-            case 2:
-                GameManager.m_Instance.AddFightSceneManagers();
-                break;
-        }
-    }*/
-
-    public int GetCurrentSceneIndex() { return SceneManager.GetActiveScene().buildIndex; }
-    public int GetMainMenuSceneIndex() { return mainMenuSceneInt; }
     public int GetSelectionSceneIndex() {  return selectionSceneInt; }
     public int GetFightSceneIndex() { return fightSceneInt; }
 

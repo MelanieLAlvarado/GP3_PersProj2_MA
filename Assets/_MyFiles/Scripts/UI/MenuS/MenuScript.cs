@@ -13,7 +13,6 @@ public class MenuScript : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button quitButton;
 
-
     private void Start()
     {
         if (GameManager.m_Instance)

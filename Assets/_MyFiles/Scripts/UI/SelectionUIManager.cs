@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class SelectionUIManager : MonoBehaviour
 {
     [Header("UI Info")]
-    [SerializeField] private Transform canvasTransform;//change to find first obj of?
+    [SerializeField] private Transform canvasTransform;
     [SerializeField] private GameObject selectionLayoutUIPrefab;
     private LayoutGroupWidget _selectionUI;
+
     [SerializeField] private GameObject playerSelectionLayoutUIPrefab;
     private LayoutGroupWidget _playerSelectionUI;
+
     [SerializeField] private GameObject fightButtonPrefab;
     private Button _fightButton;
 
@@ -39,12 +41,10 @@ public class SelectionUIManager : MonoBehaviour
         _selectionUI = Instantiate(selectionLayoutUIPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
         _selectionUI.InitializeWidgetsForCharacters(Characters);
         _selectionUI.SetOwner(gameObject);
-        //GameManager.m_Instance.OnPlayerCountChanged += UpdateFightButton;
     }
     private void Start()
     {
         SpawnPlayerSelectionLayout();
-        //m_OnClick.m_PersistentCalls.m_Calls
         CreateFightButton();
 
         _dragCursor = Instantiate(dragCursorPrefab, canvasTransform).GetComponent<CanvasCursor>();

@@ -3,18 +3,18 @@ using UnityEngine;
 public class WizardCharacter : CharacterBase
 {
     [Header("Projectile Options")]
-    [SerializeField] GameObject _projectilePrefab;
+    [SerializeField] GameObject projectilePrefab;
     [SerializeField] float projectileVelocity = 2f;
 
     public void Shoot() 
     {
-        if (!GetComponent<AttackComponent>() || !_projectilePrefab || _bIsDead == true) 
+        if (!GetComponent<AttackComponent>() || !projectilePrefab || _bIsDead == true) 
         {
             return;
         }
 
         AttackInfo attack = GetComponent<AttackComponent>().GetCurrentAttackInfo();
-        GameObject projectile = Instantiate(_projectilePrefab, attack.origin.position, Quaternion.identity);
+        GameObject projectile = Instantiate(projectilePrefab, attack.origin.position, Quaternion.identity);
         
         Projectile projectileScript = projectile.GetComponent<Projectile>();
         if (projectileScript)

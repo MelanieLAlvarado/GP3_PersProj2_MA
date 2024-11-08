@@ -24,8 +24,6 @@ public class DataHolder : MonoBehaviour
     public void AddPlayer(Player player)
     {
         _players.Add(player);
-        //Debug.Log($"Player, {player.name}");
-        //OnPlayerCountChanged?.Invoke();
     }
     public void RemovePlayer(Player player)
     {

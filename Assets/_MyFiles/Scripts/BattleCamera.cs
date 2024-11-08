@@ -14,11 +14,9 @@ public class BattleCamera : MonoBehaviour
 
     [Header("Zoom Offset Settings")]
     [SerializeField] float xZoomOffset = 2f;
-    [SerializeField] float yCenterDistanceThreshold = 2f;
 
     [Header("Follow Settings")]
     [SerializeField] float followRate = 2f;
-    [SerializeField] float distFromOriginThreshold = 10f;//may remove or work on further
     [SerializeField] int cameraYDirection = -1;
     public void AddToFollowObjects(GameObject posToAdd) { _followObjects.Add(posToAdd); }
     public void RemoveFromFollowObjects(GameObject posToRemove) { _followObjects.Remove(posToRemove); }
@@ -44,7 +42,7 @@ public class BattleCamera : MonoBehaviour
         }
         if (_followObjects.Count <= 0)
         {
-            return this.transform.position;//Camera doesn't move
+            return this.transform.position; //Camera doesn't move
         }
 
         center /= _followObjects.Count;

@@ -16,15 +16,6 @@ public class LayoutGroupWidget : Widget
     private List<CharacterScriptable> _charactersInSlots = new List<CharacterScriptable>();
 
     public List<Widget> GetLayoutWidgets() { return _layoutWidgets; }
-    /*public void InitializeWidgetsForGameobjects(List<GameObject> connectedObjects)
-    {
-        if (!widgetPrefab)
-        { return; }
-        foreach (GameObject connectedObj in connectedObjects)
-        {
-            InitializeWidgetForSingleGameObj(connectedObj);
-        }
-    }*/
     public void InitializeWidgetForPlayer(Player player) 
     {
         Widget widget = SpawnWidget();
@@ -33,7 +24,6 @@ public class LayoutGroupWidget : Widget
         _widgetDictionary.Add(player, widget);
         player.OnPlayerRemoved += DisconnectPlayerFromWidget;
 
-        //Debug.Log($"Obj = {player.name}; widget = {widget.name}");
         InitializeWidget(player.gameObject, widget);
     }
 
@@ -66,7 +56,6 @@ public class LayoutGroupWidget : Widget
     }
     public void DisconnectPlayerFromWidget(Player player)
     {
-        //Debug.Log("Removing Player from widget");
         Widget widget = _widgetDictionary[player];
         if (!widget)
         { return; }

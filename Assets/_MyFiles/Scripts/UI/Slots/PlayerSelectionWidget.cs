@@ -18,8 +18,6 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     private void Awake()
     {
         OnPlayerSelectionChanged += GameManager.m_Instance.GetSelectUIManager().UpdateFightButton;
-        //Debug.Log("PlayerSelection Widget has spawned!!");
-
     }
     private void Start()
     {
@@ -73,8 +71,6 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     }
     public void ReadPlayerName(string name) 
     {
-        //Debug.Log("text read");
-
         _playerName = name;
         if (!GetOwner()) { return; }
 
@@ -94,6 +90,5 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
     private void OnDestroy()
     {
         OnPlayerSelectionChanged?.Invoke();
-        //Debug.Log("Player Selection Widget destroyed");
     }
 }

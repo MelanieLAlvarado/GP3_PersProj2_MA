@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static FightManager;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
@@ -22,7 +19,7 @@ public class Player : MonoBehaviour
     private int _currentLifes = 3;
 
     [Header("Character Info")]
-    [SerializeField] private CharacterScriptable _characterScriptable;
+    private CharacterScriptable _characterScriptable;
     private GameObject _currentCharacter;
 
     public void SetPlayerName(string nameToSet) { _playerName = nameToSet; }
@@ -68,9 +65,6 @@ public class Player : MonoBehaviour
     }
     public void SpawnCharacter(Transform spawnPosition, GameplayUIManager gameplayUI)
     {
-        /*Debug.Log($"Spawning Character... for {_playerName}");
-        Debug.Log($"Widget spawning on {gameplayUI.name}");*/
-
         if (!_characterScriptable)
         {
             Debug.LogError($"There is no CharacterScriptable on the player {this.gameObject.name}");

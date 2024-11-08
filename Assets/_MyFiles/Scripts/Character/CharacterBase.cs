@@ -1,11 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Android.Gradle.Manifest;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
@@ -13,7 +6,6 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(AttackComponent))]
 public abstract class CharacterBase : MonoBehaviour
 {
-    private AttackComponent _attackComponent;
     private HealthComponent _healthComponent;
 
     Animator _animator;
@@ -29,17 +21,20 @@ public abstract class CharacterBase : MonoBehaviour
     private Vector3 _prevPosition;
     private Vector3 _faceDirection;
 
+    protected bool bAdditionalMovement = false;
+
     [SerializeField] private float characterTurnSpeed = 10f;
     [SerializeField] private float animSpeedChangeRate = 0.4f;
     private float _animMoveSpeed = 0f;
     private float _currentSpeed = 0f;
     [SerializeField] private float maxSpeed = 3f;
     [SerializeField] private float jumpHeight = 3f;
+    [SerializeField] float additionalMoveAmount = 1f;
 
     Player _ownerPlayer;
     protected PlayerController _ownerController;
     public Player GetOwnerPlayer() { return _ownerPlayer; }
-    public void SetOwnerPlayer(Player owner) { _ownerPlayer = owner; } //player will pass this in on spawn
+    public void SetOwnerPlayer(Player owner) { _ownerPlayer = owner; } //player will pass this in during spawn
     public PlayerController GetOwnerController() { return _ownerController;}
     public void SetFaceDirection(Vector3 directionToSet) { _faceDirection = directionToSet; }
     public float GetMaxSpeed() { return maxSpeed; }
@@ -50,7 +45,6 @@ public abstract class CharacterBase : MonoBehaviour
         _healthComponent = GetComponent<HealthComponent>();
         _healthComponent.OnDead += StartDeath;
         _animator = GetComponent<Animator>();
-        _attackComponent = GetComponent<AttackComponent>();
         _prevPosition = transform.position;
 
         if (_faceDirection == new Vector3(0, 0, 0)) 
@@ -74,6 +68,7 @@ public abstract class CharacterBase : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        //calculations to get current movement speed
         Vector3 curMove = transform.position - _prevPosition;
         _currentSpeed = curMove.magnitude / Time.deltaTime;
         _prevPosition = transform.position;
@@ -81,6 +76,7 @@ public abstract class CharacterBase : MonoBehaviour
         //Rotating whole character based on movement direction
         Quaternion goalRot = Quaternion.LookRotation(_faceDirection, Vector3.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, goalRot, Time.deltaTime * characterTurnSpeed);
+
         //updating animating speed through a lerped value
         if (_animator)
         {
@@ -91,8 +87,17 @@ public abstract class CharacterBase : MonoBehaviour
             _animator.SetBool(_isGroundedId, _ownerController.GetIsGrounded());
             _animator.SetBool(_hasJumpedId, _ownerController.GetHasJumped());
         }
+        //additional movement if needed
+        AdditionalMovement();
     }
-
+    private void AdditionalMovement() 
+    {
+        if (!bAdditionalMovement)
+        {
+            return;
+        }
+        GetComponent<CharacterController>().Move(transform.forward * additionalMoveAmount * Time.deltaTime);
+    }
     public void HitReaction() 
     {
         _animator.SetTrigger(_hitId);

@@ -8,7 +8,7 @@ public class CanvasCursor : MonoBehaviour
     public delegate void OnCursorDragDragDelagate();
     public OnCursorDragDragDelagate OnCursorDragEnded;
 
-    [SerializeField] private Image _dragIcon;
+    [SerializeField] private Image dragIcon;
 
     private void Start()
     {
@@ -19,17 +19,17 @@ public class CanvasCursor : MonoBehaviour
 
     public void SetDragIcon(Sprite iconToSet)
     { 
-        _dragIcon.sprite = iconToSet;
+        dragIcon.sprite = iconToSet;
     }
     public void SetIconVisibility(bool stateToSet) 
     {
-        _dragIcon.gameObject.SetActive(stateToSet);
+        dragIcon.gameObject.SetActive(stateToSet);
     }
     private void MoveCursor() 
     {
-        if (_dragIcon)
+        if (dragIcon)
         {
-            _dragIcon.transform.position = Input.mousePosition;
+            dragIcon.transform.position = Input.mousePosition;
         }
     }
     private void CursorDragEnded()

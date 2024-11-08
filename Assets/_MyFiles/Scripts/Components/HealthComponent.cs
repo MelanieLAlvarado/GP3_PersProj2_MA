@@ -8,7 +8,6 @@ public class HealthComponent : MonoBehaviour
 
     public event Action OnDead;
 
-     
     [SerializeField] private float maxHealth = 100;
     private float _health;
 
@@ -32,17 +31,11 @@ public class HealthComponent : MonoBehaviour
         }
 
         _health = Mathf.Clamp(_health + amt, 0, maxHealth);
-        if (amt < 0)
-        { 
-            //OnTakenDamage?.Invoke(_health, amt, maxHealth, instigator);
-        }
-        //OnHealthChanged?.Invoke(_health, amt, maxHealth, instigator);
         OnHealthChanged?.Invoke(_health);
 
         if (_health <= 0)
         { 
             OnDead?.Invoke();
         }
-        //Debug.Log($"current health is '{_health}'");
     }
 }

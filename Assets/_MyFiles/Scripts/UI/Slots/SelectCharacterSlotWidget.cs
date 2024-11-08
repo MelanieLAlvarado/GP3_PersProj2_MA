@@ -14,7 +14,6 @@ public class SelectCharacterSlotWidget : CharacterSlot, IBeginDragHandler, IDrag
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //CharacterScriptable charProfile = GetCharacterProfile();
         if (eventData.pointerDrag == null)
         {
             return;

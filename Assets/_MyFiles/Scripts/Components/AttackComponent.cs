@@ -12,12 +12,10 @@ public struct AttackInfo
     private DamageColliderComponent _damageColliderComponent;
     public EAttackShapeType attackShape;
     public Transform origin; //get postition off of this
-    /*[SerializeField]*/
+
     public Vector3 attackEnd;//attack end
     public float radius; //capsules and spheres
     public float rangeLength; //for capsules
-    /*[SerializeField]*/
-    //private Quaternion _attackDirection; //if dir needed (capsule & box colliders)
 
     public ParticleSystem vfx;
     public Transform overrideVfxSpawnPoint;
@@ -176,9 +174,6 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
                 Gizmos.DrawWireSphere(_currentAttack.origin.position, _currentAttack.radius);//start point of capsule collider
                 _currentAttack.attackEnd = _currentAttack.origin.position + (_currentAttack.origin.forward * _currentAttack.rangeLength);
                 Gizmos.DrawWireSphere(_currentAttack.attackEnd, _currentAttack.radius);      //end point of capsule collider
-                break;
-            case EAttackShapeType.Box:
-                Debug.Log("Still need to program this one in case it gets used");
                 break;
         }
     }

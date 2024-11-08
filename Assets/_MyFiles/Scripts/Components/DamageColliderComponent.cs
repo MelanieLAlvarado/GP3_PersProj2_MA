@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EAttackShapeType { Sphere, Capsule, Box}
+public enum EAttackShapeType { Sphere, Capsule }
 
 [RequireComponent(typeof(Rigidbody))]
 public class DamageColliderComponent : DamageComponent
@@ -13,7 +13,6 @@ public class DamageColliderComponent : DamageComponent
     Collider _attackCollider;
     AttackInfo _attack;
     HashSet<CharacterBase> _hitCharacters = new HashSet<CharacterBase>();
-    Dictionary<CharacterController, Coroutine> _enableControllerDict = new Dictionary<CharacterController, Coroutine>();
     Dictionary<ParticleSystem, Coroutine> _particleCoroutineDict = new Dictionary<ParticleSystem, Coroutine>();
     
     private void Start()
@@ -21,7 +20,6 @@ public class DamageColliderComponent : DamageComponent
         _rigidBody = GetComponent<Rigidbody>();
         _rigidBody.useGravity = false;
         _rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
-        //_rigidBody.isKinematic = true;
     }
     public void SetOwner(GameObject ownerObject) { _owner = ownerObject; }
     public void SpawnAttackCollider(AttackInfo attack)

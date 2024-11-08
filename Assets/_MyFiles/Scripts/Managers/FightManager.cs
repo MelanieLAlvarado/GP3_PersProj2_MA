@@ -1,10 +1,8 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using Random = UnityEngine.Random;
 
 public class FightManager : MonoBehaviour

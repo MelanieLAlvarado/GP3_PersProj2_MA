@@ -366,7 +366,8 @@ MonoBehaviour:
   animSpeedChangeRate: 2
   maxSpeed: 4
   jumpHeight: 3
-  _projectilePrefab: {fileID: 4139512000220293280, guid: 40275514f45229e44a3cb138ab8c904a, type: 3}
+  additionalMoveAmount: 1
+  projectilePrefab: {fileID: 4139512000220293280, guid: 40275514f45229e44a3cb138ab8c904a, type: 3}
   projectileVelocity: 15
 --- !u!4 &5349932522788859983 stripped
 Transform:
