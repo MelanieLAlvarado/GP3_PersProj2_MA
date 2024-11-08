@@ -16,7 +16,6 @@ public class DamageColliderComponent : DamageComponent
     Dictionary<CharacterController, Coroutine> _enableControllerDict = new Dictionary<CharacterController, Coroutine>();
     Dictionary<ParticleSystem, Coroutine> _particleCoroutineDict = new Dictionary<ParticleSystem, Coroutine>();
     
-    float controllerEnableTime = 1f;
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
@@ -82,7 +81,8 @@ public class DamageColliderComponent : DamageComponent
         LaunchComponent launchComponent = target.GetComponent<LaunchComponent>();
         if (launchComponent)
         {
-            launchComponent.Launch(_owner.transform.forward, _attack.hitForce, true);
+            Vector3 direction = (target.transform.position - _owner.transform.position).normalized;
+            launchComponent.Launch(direction, _attack.hitForce, true);
         }
     }
     private void SpawnVfx(Vector3 vfxSpawnPos)
@@ -101,7 +101,6 @@ public class DamageColliderComponent : DamageComponent
         else
         {
             newVfx = Instantiate(_attack.vfx, vfxSpawnPos, Quaternion.identity);
-            newVfx.transform.parent = _attack.origin.transform;
         }
 
         Coroutine particleCoroutine = StartCoroutine(VfxDiscardTimer(newVfx));

@@ -3,11 +3,6 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
-
-    /*public delegate void OnHealthChangedDelegate(float newHealth, float delta, float maxHealth, GameObject instigator);
-     
-    public event OnHealthChangedDelegate OnHealthChanged;
-    public event OnHealthChangedDelegate OnTakenDamage;*/
     public delegate void OnHealthChangedDelegate(float newHealth);
     public event OnHealthChangedDelegate OnHealthChanged;
 
@@ -48,6 +43,6 @@ public class HealthComponent : MonoBehaviour
         { 
             OnDead?.Invoke();
         }
-        Debug.Log($"current health is '{_health}'");
+        //Debug.Log($"current health is '{_health}'");
     }
 }
