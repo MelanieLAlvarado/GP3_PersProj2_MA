@@ -11,12 +11,11 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(HealthComponent))]
 [RequireComponent(typeof(AttackComponent))]
-public class CharacterBase : MonoBehaviour
+public abstract class CharacterBase : MonoBehaviour
 {
     private AttackComponent _attackComponent;
     private HealthComponent _healthComponent;
 
-    PlayerController _playerController;
     Animator _animator;
     private static readonly int _speedId = Animator.StringToHash("Speed");
 
@@ -24,7 +23,7 @@ public class CharacterBase : MonoBehaviour
     protected static readonly int _hasJumpedId = Animator.StringToHash("HasJumped");
     protected static readonly int _isGroundedId = Animator.StringToHash("IsGrounded");
     protected static readonly int _deathId = Animator.StringToHash("Death");
-
+    protected bool _bIsDead = false;
 
     [Header("Base Character Options")]
     private Vector3 _prevPosition;
@@ -97,10 +96,12 @@ public class CharacterBase : MonoBehaviour
     public void HitReaction() 
     {
         _animator.SetTrigger(_hitId);
+        _ownerController.ResetVelocityTimer();
     }
 
     private void StartDeath() 
     {
+        _bIsDead = true;
         _animator.SetTrigger(_deathId);
     }
     public void EndDeath() //triggered in animation events

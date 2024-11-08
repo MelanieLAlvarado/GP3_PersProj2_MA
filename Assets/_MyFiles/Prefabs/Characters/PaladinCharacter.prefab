@@ -195,7 +195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: attack1.hitForce
-      value: 1
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: attack2.hitForce
@@ -203,7 +203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: attack3.hitForce
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: bDrawDebugAttacks
@@ -239,7 +239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: attack3.damageDealt
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5587890132771374398, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       propertyPath: attack3.rangeLength
@@ -288,14 +288,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7150251115021495561, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
       insertIndex: 3
-      addedObject: {fileID: 1846572069535683822}
+      addedObject: {fileID: 8343983051620066823}
   m_SourcePrefab: {fileID: 100100000, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
 --- !u!1 &1348709271056387002 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7150251115021495561, guid: 59d30cda9dc9f074cba895838dd7b13e, type: 3}
   m_PrefabInstance: {fileID: 8182293330879964851}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1846572069535683822
+--- !u!114 &8343983051620066823
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -304,7 +304,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1348709271056387002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32b480f1a84229549a7b8cccb2d22435, type: 3}
+  m_Script: {fileID: 11500000, guid: beb427707ea83fd4b9f9e1c543f98c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   characterTurnSpeed: 10

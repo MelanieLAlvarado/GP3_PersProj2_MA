@@ -8,14 +8,13 @@ public class BattleCamera : MonoBehaviour
     Vector3 _followPosition; [SerializeField]
     List<GameObject> _followObjects = new List<GameObject>();
     [Header("Move Offset Settings")]
-    [SerializeField] float yOffset = 2f;
+    [SerializeField] float yBaseOffset = 1.5f;
     [SerializeField] float minDistance = 4f;
-    [SerializeField] float maxDistance = 15f;
+    [SerializeField] float maxDistance = 20f;
 
     [Header("Zoom Offset Settings")]
     [SerializeField] float xZoomOffset = 2f;
-    [SerializeField] float yZoomThreshold = 2f;
-    [SerializeField] float yZoomOffset = 1.5f;
+    [SerializeField] float yCenterDistanceThreshold = 2f;
 
     [Header("Follow Settings")]
     [SerializeField] float followRate = 2f;
@@ -35,7 +34,7 @@ public class BattleCamera : MonoBehaviour
         this.transform.position = Vector3.Lerp(this.transform.position, _followPosition, Time.deltaTime * followRate);
     }
 
-    private Vector3 CalculateCenter() 
+    private Vector3 CalculateCenter()
     {
         Vector3 center = Vector3.zero;
 
@@ -44,42 +43,42 @@ public class BattleCamera : MonoBehaviour
             center += followObject.transform.position;
         }
         if (_followObjects.Count <= 0)
-        { 
-            return this.transform.position;//doesn't move
+        {
+            return this.transform.position;//Camera doesn't move
         }
 
         center /= _followObjects.Count;
         //Debug.Log($"center: {center.x},{center.y},{center.z}");
 
-        float zDist = CalculateZoomDistance(center);
+        float yDist = Mathf.Abs(_followObjects[0].transform.position.y - center.y);
+        float zDist = CalculateZoomDistance(center, yDist);
 
+        float yOffset = yBaseOffset;
+        yOffset = yOffset - (0.8f * yDist);
+
+        zDist *= cameraYDirection;
         center = new Vector3(center.x, center.y + yOffset, zDist);
-        //center = new Vector3(center.x, center.y + yOffset, transform.position.z);
         return center;
     }
-    private float CalculateZoomDistance(Vector3 center) 
+    private float CalculateZoomDistance(Vector3 center, float yDist) 
     {
-        float dist = Vector3.Distance(_followObjects[0].transform.position, center);
-
-        //Debug.Log("distance from center:" + dist);
-        dist = Mathf.Abs(dist) + xZoomOffset;
-
-        if (Mathf.Abs(center.y) > yZoomThreshold)//in case player jumped or fell too close to edge of screen.
+        float zoomOffset = xZoomOffset;
+        if (yDist > 0.5f)
         {
-            dist += yZoomOffset;
+            zoomOffset = 1.75f * yDist * xZoomOffset;
         }
 
-        dist = Mathf.Clamp(dist, minDistance, maxDistance);
 
-        //center.x = Mathf.Clamp(center.x, -distFromOriginThreshold, distFromOriginThreshold);
-        //clamping so screen doesn't go farther than needs to
-        //   for when player goes offscreen to fall off(if killbox)
+        float dist = Vector3.Distance(_followObjects[0].transform.position, center);
+        dist = Mathf.Abs(dist) + zoomOffset;
+
+        dist = Mathf.Clamp(dist, minDistance, maxDistance);
 
         if (cameraYDirection == 0)
         {
             cameraYDirection = -1;
         }
-        return dist * cameraYDirection;
+        return dist;
     }
 
 }

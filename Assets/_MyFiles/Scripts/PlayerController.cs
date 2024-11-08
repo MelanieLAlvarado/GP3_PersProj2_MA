@@ -51,11 +51,14 @@ public class PlayerController : MonoBehaviour
     public void LaunchCharacter(Vector3 velocityToSet) 
     {
         _playerVelocity = velocityToSet;
-        StartCoroutine(ResetVelocityTimer());
     }
-    public IEnumerator ResetVelocityTimer() 
+    public void ResetVelocityTimer()
     {
-        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(ResetVelocityTimerCoroutine(1.5f));
+    }
+    private IEnumerator ResetVelocityTimerCoroutine(float time) 
+    {
+        yield return new WaitForSeconds(time);
         ResetPlayerVelocity();
     }
     public void SetCanMove(bool bCanMove) { _bCanMove = bCanMove; }

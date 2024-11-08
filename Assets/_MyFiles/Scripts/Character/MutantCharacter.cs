@@ -5,7 +5,6 @@ public class MutantCharacter : CharacterBase
 {
     [Header("Mutant Jump Options")]
     [SerializeField] private float jumpVelocity = 2f;
-    [SerializeField] private float forceFallVelocity = -6f;
 
     LaunchComponent _launchComponent;
    
@@ -20,12 +19,8 @@ public class MutantCharacter : CharacterBase
             _launchComponent.Launch(transform.forward, jumpVelocity, true);
         }
     }
-    /*public void ResetVelocity() 
+    public void EndAttackJump() 
     {
-        if (_ownerController)
-        { 
-            _ownerController.SetCanMove(false);
-            _ownerController.ResetPlayerVelocity();
-        }
-    }*/
+        _ownerController.ResetPlayerVelocity();
+    }
 }

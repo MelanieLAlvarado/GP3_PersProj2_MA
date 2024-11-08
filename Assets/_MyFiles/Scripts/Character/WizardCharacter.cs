@@ -8,7 +8,7 @@ public class WizardCharacter : CharacterBase
 
     public void Shoot() 
     {
-        if (!GetComponent<AttackComponent>() || !_projectilePrefab) 
+        if (!GetComponent<AttackComponent>() || !_projectilePrefab || _bIsDead == true) 
         {
             return;
         }

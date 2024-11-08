@@ -8,7 +8,7 @@ public class LaunchComponent : MonoBehaviour
     PlayerController _playerController;
     public void Launch(Vector3 launchDirection, float launchVelocity, bool bFlattenZ = false, bool bFlattenY = false) 
     {
-        Debug.Log(launchDirection);
+        //Debug.Log(launchDirection);
         Vector3 finalVelocity = launchDirection * launchVelocity;
         if (bFlattenZ)
         {
