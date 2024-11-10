@@ -32,12 +32,9 @@ public class GameManager : MonoBehaviour
     GameObject _playerHolder;
     [SerializeField] private Player playerPrefab;
 
-    public GameObject GetPlayerHolder() { return _playerHolder; }
-    public Camera GetMainCamera() { return _mainCamera; }
     public SceneLoader GetSceneLoader() { return _sceneLoader; }
     public SelectionUIManager GetSelectUIManager() { return _selectionUIManager; }
     public FightManager GetFightManager() { return _fightManager; }
-    public GameplayUIManager GetGameplayUIManager() { return _gameplayUIManager; }
     private void Awake()
     {
         GameObject dataHolderObject = GameObject.FindGameObjectWithTag(_dataHolderName);

@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     PlayerController _playerController;
     [Header("Player Info")]
     private string _playerName = "";
-    [SerializeField] private int playerLifes = 3;
+    [SerializeField] private int playerMaxLifes = 3;
     private int _currentLifes = 3;
 
     [Header("Character Info")]
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     public int GetPlayerLifes() { return _currentLifes; }
     public void ResetPlayerLifes()
     {
-        _currentLifes = playerLifes;
+        _currentLifes = playerMaxLifes;
     }
     public void RemoveLife() 
     {
@@ -71,10 +71,11 @@ public class Player : MonoBehaviour
             return;
         }
 
-        _currentCharacter = Instantiate(_characterScriptable.GetCharacterPrefab(), spawnPosition.position, spawnPosition.rotation);
+        _currentCharacter = Instantiate(_characterScriptable.GetCharacterPrefab(), 
+            spawnPosition.position, spawnPosition.rotation);
+
         CharacterBase charBase = _currentCharacter.GetComponent<CharacterBase>();
         charBase.SetOwnerPlayer(this);
-
         _playerController.SetControlledCharacter(charBase);
 
         if (gameplayUI.CanAddGameplayWidget(this))

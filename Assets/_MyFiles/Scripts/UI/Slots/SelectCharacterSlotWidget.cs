@@ -14,10 +14,7 @@ public class SelectCharacterSlotWidget : CharacterSlot, IBeginDragHandler, IDrag
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null)
-        {
-            return;
-        }
+        if (eventData.pointerDrag == null) { return; }
 
         Sprite iconSprite = GetCharacterProfile().GetCharacterSprite();
         if (!iconSprite)
@@ -31,12 +28,7 @@ public class SelectCharacterSlotWidget : CharacterSlot, IBeginDragHandler, IDrag
             _dragCursor.SetIconVisibility(true);
         }
     }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        //Debug.Log("Drag");
-    }
-
+    public void OnDrag(PointerEventData eventData) { }
     public void OnEndDrag(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null || !_dragCursor) { return; }

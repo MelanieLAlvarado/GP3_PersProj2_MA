@@ -5,7 +5,6 @@ public class WidgetComponent : MonoBehaviour
     [SerializeField] private Widget widgetPrefab;
     [SerializeField] private Transform attachTransform;
     private Camera _mainCamera;
-
     private Widget _widget;
 
     private void Start()

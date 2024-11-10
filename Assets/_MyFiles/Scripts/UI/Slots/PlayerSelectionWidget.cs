@@ -38,11 +38,6 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (eventData.pointerPress == null) 
-        {
-            return;
-        }
-
         if (GetCharacterProfile() == null) 
         {
             return;
@@ -60,6 +55,10 @@ public class PlayerSelectionWidget : CharacterSlot, IPointerDownHandler, IDropHa
             SetCharacterInSlot(charScriptObj);
             GetOwner().GetComponent<Player>().SetCharacter(charScriptObj);
             OnPlayerSelectionChanged?.Invoke();
+        }
+        else 
+        {
+            return;
         }
 
         SelectionUIManager selectManager = GetOwner().GetComponent<SelectionUIManager>();

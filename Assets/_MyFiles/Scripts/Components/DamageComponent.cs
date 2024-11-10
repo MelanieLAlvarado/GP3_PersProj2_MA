@@ -12,7 +12,6 @@ public class DamageComponent : MonoBehaviour
     }
     public void ApplyDamage(GameObject target, float damageToDeal) 
     {
-        Debug.Log($"target: '{target.name}' gets '{damageToDeal}'");
         HealthComponent _healthComponent = target.GetComponent<HealthComponent>();
         if (_healthComponent) 
         {

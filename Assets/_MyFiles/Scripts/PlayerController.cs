@@ -9,10 +9,8 @@ public class PlayerController : MonoBehaviour
     public event OnTriggerPauseDelegate OnPauseTriggered;
 
     PlayerInput _playerInput;
-    protected static string _keyboardFullScheme = "KeyboardFull";
     protected static string _keyboardLeftScheme = "KeyboardLeft";
     protected static string _keyboardRightScheme = "KeyboardRight";
-    protected static string _controllerScheme = "Controller";
 
     private CharacterBase _characterBase;
     private PlayerInputActions _playerInputActions;
@@ -73,7 +71,6 @@ public class PlayerController : MonoBehaviour
         if (!_characterController) { return; }
 
         _bIsGrounded = _characterController.isGrounded;
-        
     }
     private void FixedUpdate()
     {
