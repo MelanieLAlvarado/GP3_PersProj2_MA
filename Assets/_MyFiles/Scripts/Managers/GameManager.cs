@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] DataHolder dataHolderPrefab;
     DataHolder _dataHolder;
     private string _dataHolderName = "DataHolder";
-    private bool _keyboardSoloPlayer; 
+    private bool _bKeyboardSoloPlayer; 
 
     [SerializeField] private string playerHolderName = "PlayerHolder";
     GameObject _playerHolder;
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
             _dataHolder = Instantiate(dataHolderPrefab);
         }
 
-        _keyboardSoloPlayer = _dataHolder.GetKeyboardSoloPlayer();
+        _bKeyboardSoloPlayer = _dataHolder.GetKeyboardSoloPlayer();
         
         if (m_Instance != null && m_Instance != this)
         {
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
     {
         if (!_sceneLoader.IsSelectionScreenScene()) { return; } 
 
-        if (_keyboardSoloPlayer)
+        if (_bKeyboardSoloPlayer)
         {
             Player player = Instantiate(playerPrefab);
             player.transform.SetParent(_playerHolder.transform);
@@ -105,14 +105,14 @@ public class GameManager : MonoBehaviour
 
             InputUser.PerformPairingWithDevice(Keyboard.current, spawnPlayerInput.user);
             spawnPlayerInput.user.ActivateControlScheme(rightScheme);
-            _keyboardSoloPlayer = !_keyboardSoloPlayer;
+            _bKeyboardSoloPlayer = !_bKeyboardSoloPlayer;
         }
         else if (triggeredPlayerInput.currentControlScheme == rightScheme)
         {
             Player player = triggeredPlayerInput.GetComponent<Player>();
             player.RemoveFromGame();
-            _keyboardSoloPlayer = !_keyboardSoloPlayer;
+            _bKeyboardSoloPlayer = !_bKeyboardSoloPlayer;
         }
-        _dataHolder.SetKeyboardSoloPlayer(_keyboardSoloPlayer);
+        _dataHolder.SetKeyboardSoloPlayer(_bKeyboardSoloPlayer);
     }
 }
