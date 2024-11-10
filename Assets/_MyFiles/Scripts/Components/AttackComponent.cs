@@ -26,6 +26,7 @@ public struct AttackInfo
 
     public void InitializeAttack(GameObject owner) 
     {
+        bIsAttackActive = false;
         if (!owner)
         {
             Debug.LogError("Owner of attack is missing!");
@@ -36,7 +37,6 @@ public struct AttackInfo
             Debug.LogError("Origin Point of attack is missing!");
             return;
         }
-
         bIsAttackActive = false;
         DamageColliderComponent attack = origin.GetComponent<DamageColliderComponent>();
         if (attack)
@@ -95,31 +95,6 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         AssignAttack(attack3, _attack3Id);
     }
-    public void Attack() //attack physics will spawn (in Animation Events)
-    {
-        _currentAttack.bIsAttackActive = true;
-        if (IsAttackValid())
-        { 
-            _currentAttack.GetDamageColliderComp().SpawnAttackCollider(_currentAttack);
-        }
-    }
-    private bool IsAttackValid() 
-    {
-        if (!_currentAttack.origin)
-        {
-            Debug.LogError("There is no origin on this attack!\n Please assign an origin");
-            return false;
-        }
-
-        if (_currentAttack.GetDamageColliderComp().gameObject != _currentAttack.origin.gameObject)
-        {
-            Debug.LogError("Attack Script not on origin! fixing...");
-            Destroy(_currentAttack.GetDamageColliderComp());
-            _currentAttack.InitializeAttack(gameObject);
-        }
-        return true;
-    }
-
     public void AssignAttack(AttackInfo attack, int animationId)
     {
         if (_animator && _bCanAttack == true)
@@ -137,6 +112,31 @@ public class AttackComponent : MonoBehaviour, IAttackInterface
     {
         _currentAttackId = animationId;
         _animator.SetTrigger(_currentAttackId);
+    }
+    public void Attack() //attack physics will spawn (in Animation Events)
+    {
+        _currentAttack.bIsAttackActive = true;
+        if (IsAttackValid())
+        { 
+            _currentAttack.GetDamageColliderComp().SpawnAttackCollider(_currentAttack);
+        }
+    }
+
+    private bool IsAttackValid() 
+    {
+        if (!_currentAttack.origin)
+        {
+            Debug.LogError("There is no origin on this attack!\n Please assign an origin");
+            return false;
+        }
+
+        if (_currentAttack.GetDamageColliderComp().gameObject != _currentAttack.origin.gameObject)
+        {
+            Debug.LogError("Attack Script not on origin! fixing...");
+            Destroy(_currentAttack.GetDamageColliderComp());
+            _currentAttack.InitializeAttack(gameObject);
+        }
+        return true;
     }
     public void EndAttack() //attack physics wont spawn anymore (in Animation Events)
     {

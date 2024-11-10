@@ -7,38 +7,29 @@ public class SelectionUIManager : MonoBehaviour
 {
     [Header("UI Info")]
     [SerializeField] private Transform canvasTransform;
-    [SerializeField] private GameObject selectionLayoutUIPrefab;
+    [SerializeField] private GameObject selectionLayoutUIPrefab; //Selection UI
     private LayoutGroupWidget _selectionUI;
 
-    [SerializeField] private GameObject playerSelectionLayoutUIPrefab;
+    [SerializeField] private GameObject playerSelectionLayoutUIPrefab;//Player UI
     private LayoutGroupWidget _playerSelectionUI;
 
-    [SerializeField] private GameObject fightButtonPrefab;
+    [SerializeField] private GameObject fightButtonPrefab; //FightButton
     private Button _fightButton;
 
-    [SerializeField] private GameObject dragCursorPrefab;
+    [SerializeField] private GameObject dragCursorPrefab;//Drag Cursor
     private CanvasCursor _dragCursor;
 
     [Header("Character Selections Info")]
     [SerializeField] private CharacterScriptable[] Characters;
 
     public CanvasCursor GetDragCursor() { return _dragCursor; }
-    public void SpawnPlayerSelectionWidget(Player player) 
-    {
-        if (!playerSelectionLayoutUIPrefab) { return; }
 
-        if (!_playerSelectionUI)
-        {
-            _playerSelectionUI = Instantiate(playerSelectionLayoutUIPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
-            _playerSelectionUI.SetOwner(gameObject);
-        }
-        _playerSelectionUI.InitializeWidgetForPlayer(player);
-    }
     private void Awake()
     {
         if (!selectionLayoutUIPrefab) { return; }
 
-        _selectionUI = Instantiate(selectionLayoutUIPrefab, canvasTransform).GetComponent<LayoutGroupWidget>();
+        _selectionUI = Instantiate(selectionLayoutUIPrefab, 
+            canvasTransform).GetComponent<LayoutGroupWidget>();
         _selectionUI.InitializeWidgetsForCharacters(Characters);
         _selectionUI.SetOwner(gameObject);
     }
@@ -47,9 +38,10 @@ public class SelectionUIManager : MonoBehaviour
         SpawnPlayerSelectionLayout();
         CreateFightButton();
 
-        _dragCursor = Instantiate(dragCursorPrefab, canvasTransform).GetComponent<CanvasCursor>();
+        _dragCursor = Instantiate(dragCursorPrefab, 
+            canvasTransform).GetComponent<CanvasCursor>();
     }
-    public void SpawnPlayerSelectionLayout() 
+    public void SpawnPlayerSelectionLayout()
     {
         if (!_playerSelectionUI || _playerSelectionUI.GetLayoutWidgets().Count <= 0)
         {
@@ -60,14 +52,25 @@ public class SelectionUIManager : MonoBehaviour
             }
         }
     }
+    public void SpawnPlayerSelectionWidget(Player player)
+    {
+        if (!playerSelectionLayoutUIPrefab) { return; }
+
+        if (!_playerSelectionUI)
+        {
+            _playerSelectionUI = Instantiate(playerSelectionLayoutUIPrefab,
+                canvasTransform).GetComponent<LayoutGroupWidget>();
+            _playerSelectionUI.SetOwner(gameObject);
+        }
+        _playerSelectionUI.InitializeWidgetForPlayer(player);
+    }
+
     private void CreateFightButton() 
     {
         _fightButton = Instantiate(fightButtonPrefab, canvasTransform).GetComponent<Button>();
-
         SceneLoader sceneLoader = GameManager.m_Instance.GetSceneLoader();
 
-        Button fightbtn = _fightButton;
-        fightbtn.onClick.AddListener(delegate { sceneLoader.OpenFightScene(); });
+        _fightButton.onClick.AddListener(delegate { sceneLoader.OpenFightScene(); });
         _fightButton.gameObject.SetActive(false);
     }
 

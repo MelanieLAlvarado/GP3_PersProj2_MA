@@ -171,6 +171,7 @@ public class FightManager : MonoBehaviour
     }
     public void EndGame(Player winnerPlayer)
     {
+        _bIsFightActive = false;
         _gameEndMenu = Instantiate(gameEndMenuPrefab, canvasTransform);
         
         string playerName = winnerPlayer.GetPlayerName();

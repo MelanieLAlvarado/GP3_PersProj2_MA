@@ -8,7 +8,6 @@ public abstract class CharacterSlot : Widget
     [SerializeField] private CharacterScriptable characterProfile;
     [SerializeField] private Image characterIcon;
     [SerializeField] private TextMeshProUGUI characterText;
-
     public CharacterScriptable GetCharacterProfile() { return characterProfile; }
     public void SetCharacterInSlot(CharacterScriptable characterToSet)
     {

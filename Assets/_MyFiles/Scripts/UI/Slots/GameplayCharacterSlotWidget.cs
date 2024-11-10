@@ -5,7 +5,7 @@ public class GameplayCharacterSlotWidget : CharacterSlot
 {
     [Header("Gameplay Attributes")]
     [SerializeField] private TextMeshProUGUI playerNameText;
-    [SerializeField] private TextMeshProUGUI healthText;//might change to damage later on
+    [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI lifeText;
 
     public void SetPlayerNameText(string name)

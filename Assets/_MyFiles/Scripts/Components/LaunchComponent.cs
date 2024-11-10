@@ -17,14 +17,14 @@ public class LaunchComponent : MonoBehaviour
             finalVelocity.y = 0;
         }
 
-        if (CanLaunchRigidBody())
+        if (CanLaunchRigidBody()) //checks if a rigidbody is detected
         {
             Debug.Log($"can launch rigidbody. Final Velocity: {finalVelocity}");
             _rigidBody.AddForce(finalVelocity, ForceMode.Impulse);
             return;
         }
 
-        if (CanLaunchCharacter())
+        if (CanLaunchCharacter()) //checks if a CharacterBase is detected
         {
             finalVelocity.x = launchVelocity/2 * finalVelocity.x;
             finalVelocity.y = Mathf.Sqrt(launchVelocity/2 * -3.0f * _playerController.GetGravity());

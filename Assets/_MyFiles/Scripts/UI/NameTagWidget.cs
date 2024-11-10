@@ -8,10 +8,7 @@ public class NameTagWidget : Widget
     public override void SetOwner(GameObject owner) 
     {
         base.SetOwner(owner);
-        if (owner == null)
-        { 
-            return;
-        }
+        if (owner == null) { return; }
 
         HealthComponent ownerHealthComponent = owner.GetComponent<HealthComponent>();
         if (ownerHealthComponent != null) 
@@ -26,7 +23,6 @@ public class NameTagWidget : Widget
             SetPlayerNameText(playerName);
         }
     }
-
     private void SetPlayerNameText(string playerName) 
     {
         if (playerName != null)
@@ -34,9 +30,5 @@ public class NameTagWidget : Widget
             playerNameText.text = playerName;
         }
     }
-    private void OwnerDead() 
-    {
-        Destroy(gameObject);
-    }
-
+    private void OwnerDead() { Destroy(gameObject); }
 }

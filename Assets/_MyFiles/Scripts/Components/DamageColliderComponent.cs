@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EAttackShapeType { Sphere, Capsule }
+public enum EAttackShapeType 
+    { Sphere, Capsule }
 
 [RequireComponent(typeof(Rigidbody))]
 public class DamageColliderComponent : DamageComponent

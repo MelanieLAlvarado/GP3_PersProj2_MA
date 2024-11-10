@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
         {
             _bHasJumped = true;
             _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
-            StartCoroutine(HasJumpedResetDelay());
+            StartCoroutine(HasJumpedResetDelay());//for animator
         }
     }
 

@@ -45,36 +45,35 @@ public class BattleCamera : MonoBehaviour
             return this.transform.position; //Camera doesn't move
         }
 
-        center /= _followObjects.Count;
-        //Debug.Log($"center: {center.x},{center.y},{center.z}");
+        center /= _followObjects.Count;  //getting average position of GameObjects
 
         float yDist = Mathf.Abs(_followObjects[0].transform.position.y - center.y);
         float zDist = CalculateZoomDistance(center, yDist);
 
         float yOffset = yBaseOffset;
-        yOffset = yOffset - (0.8f * yDist);
+        yOffset = yOffset - (0.8f * yDist); //moves camera up so UI doesn't cover characters
 
-        zDist *= cameraYDirection;
+        zDist *= cameraYDirection;//+z direction or -z direction (since this became abs() in code)
         center = new Vector3(center.x, center.y + yOffset, zDist);
         return center;
     }
     private float CalculateZoomDistance(Vector3 center, float yDist) 
     {
-        float zoomOffset = xZoomOffset;
+        float zoomOffset = xZoomOffset;  //characters won't off-screen indirection x
         if (yDist > 0.5f)
         {
-            zoomOffset = 1.75f * yDist * xZoomOffset;
+            zoomOffset = 1.75f * yDist * xZoomOffset; //characters won't off-screen indirection y
         }
 
 
         float dist = Vector3.Distance(_followObjects[0].transform.position, center);
-        dist = Mathf.Abs(dist) + zoomOffset;
+        dist = Mathf.Abs(dist) + zoomOffset; //applying any zoom to distance
 
-        dist = Mathf.Clamp(dist, minDistance, maxDistance);
+        dist = Mathf.Clamp(dist, minDistance, maxDistance); //clamping zoom
 
         if (cameraYDirection == 0)
         {
-            cameraYDirection = -1;
+            cameraYDirection = -1;//+z direction or -z direction
         }
         return dist;
     }

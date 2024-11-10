@@ -7,10 +7,8 @@ using UnityEngine;
 public abstract class CharacterBase : MonoBehaviour
 {
     private HealthComponent _healthComponent;
-
     Animator _animator;
     private static readonly int _speedId = Animator.StringToHash("Speed");
-
     protected static readonly int _hitId = Animator.StringToHash("Hit");
     protected static readonly int _hasJumpedId = Animator.StringToHash("HasJumped");
     protected static readonly int _isGroundedId = Animator.StringToHash("IsGrounded");
@@ -22,7 +20,6 @@ public abstract class CharacterBase : MonoBehaviour
     private Vector3 _faceDirection;
 
     protected bool bAdditionalMovement = false;
-
     [SerializeField] private float characterTurnSpeed = 10f;
     [SerializeField] private float animSpeedChangeRate = 0.4f;
     private float _animMoveSpeed = 0f;
