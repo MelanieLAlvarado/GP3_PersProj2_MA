@@ -5,9 +5,7 @@ public class MutantCharacter : CharacterBase
 {
     [Header("Mutant Jump Options")]
     [SerializeField] private float jumpVelocity = 2f;
-
     LaunchComponent _launchComponent;
-   
     public void AttackJump() 
     {
         if (!_launchComponent)

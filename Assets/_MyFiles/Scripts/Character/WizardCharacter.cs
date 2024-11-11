@@ -8,10 +8,7 @@ public class WizardCharacter : CharacterBase
 
     public void Shoot() 
     {
-        if (!GetComponent<AttackComponent>() || !projectilePrefab || _bIsDead == true) 
-        {
-            return;
-        }
+        if (!GetComponent<AttackComponent>() || !projectilePrefab || _bIsDead == true) { return;  }
 
         AttackInfo attack = GetComponent<AttackComponent>().GetCurrentAttackInfo();
         GameObject projectile = Instantiate(projectilePrefab, attack.origin.position, Quaternion.identity);
